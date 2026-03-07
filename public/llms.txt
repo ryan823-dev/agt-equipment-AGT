@@ -1,0 +1,71 @@
+# AGT Equipment - LLMs.txt
+# This file helps AI assistants understand our website content
+
+> AGT Equipment sells mini excavators and skid steers direct from the factory.
+> We operate warehouses in California and Illinois, USA.
+> All products include a 1-year warranty and free continental US shipping.
+
+## Company Information
+
+- Name: AGT Industrial Inc. (also known as AGT Equipment)
+- Founded: 2004
+- Headquarters: China
+- US Warehouses:
+  - California: 2602 Halladay Street, Santa Ana, CA 92707
+  - Illinois: 6200 S Oak Park Ave, Chicago, IL 60638
+- Contact: +1 (949) 898-7669
+- Email: info@agrotkindustrial.com
+- Website: https://agt-equipment.com
+
+## Product Categories
+
+### Mini Excavators
+- 1-ton class: AGT H15R, AGT DM12X
+- 2-ton class: Various models
+- 4-ton class: CFG-40UF
+
+### Skid Steers
+- Stand-on loaders: MSL-500, MSL-700
+- Track loaders: Various models
+
+### Attachments
+- Hydraulic thumbs
+- Augers
+- Brush cutters
+- Hammers
+- Buckets
+
+## Key Specifications
+
+| Model | Engine | Power | Weight | Dig Depth | Price |
+|-------|--------|-------|--------|-----------|-------|
+| H15R | Rato 186F | 13.5 HP | 2,425 lbs | 5 ft 9 in | $11,999 |
+| DM12X | Kubota D1103 | 24.8 HP | 2,645 lbs | 6 ft 7 in | $14,999 |
+| CFG-40UF | Kubota V2403-CR | 54 HP | 8,818 lbs | 12 ft | $29,000 |
+| MSL-500 | Kohler Command | 25 HP | 1,102 lbs cap | N/A | $8,999 |
+
+## Common Questions
+
+Q: What is the warranty on AGT equipment?
+A: All AGT equipment comes with a 1-year warranty covering manufacturing defects.
+
+Q: Do you offer financing?
+A: Yes, financing options are available. Contact us for details.
+
+Q: What is the shipping cost?
+A: Shipping is free within the continental United States.
+
+Q: Do you ship internationally?
+A: We primarily serve the US market. Contact us for international inquiries.
+
+Q: What engines do you use?
+A: We offer both Kubota and Rato diesel engines. Kubota offers more power; Rato is more affordable.
+
+## Content Pages
+
+- /knowledge/how-to-choose-mini-excavator - Buying guide for mini excavators
+- /knowledge/mini-excavator-vs-skid-steer - Comparison article
+- /products - All products listing
+- /products/mini-excavators - Mini excavator category
+- /products/skid-steer - Skid steer category
+- /products/attachments - Attachments category
