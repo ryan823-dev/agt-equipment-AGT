@@ -1,20 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { Bot, Send, Sparkles, Phone } from 'lucide-react';
+import { Bot, Send, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
 import { useAI } from '@/lib/ai-context';
 
 const quickActions = [
   { label: 'Find Products', prompt: 'Help me find the right equipment for my needs' },
   { label: 'Get a Quote', prompt: 'I need a quotation for equipment. What information do you need?' },
-  { label: 'Order Help', prompt: 'I have a question about my order or shipping' },
+  { label: 'Order Inquiry', prompt: 'I have a question about my order or shipping' },
 ];
 
 export function HeroAIAssistant() {
-  const { openChat, sendMessage } = useAI();
+  const { openChat } = useAI();
   const [input, setInput] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -37,35 +36,38 @@ export function HeroAIAssistant() {
   };
 
   return (
-    <div className="bg-card border rounded-xl shadow-lg overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-2xl overflow-hidden w-full">
       {/* Header */}
-      <div className="px-5 py-4 bg-primary text-primary-foreground">
+      <div className="px-6 py-5 bg-gradient-to-r from-blue-600 to-blue-500 text-white">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary-foreground/20 flex items-center justify-center">
-            <Bot className="w-5 h-5" />
+          <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+            <Bot className="w-6 h-6" />
           </div>
-          <div>
-            <h3 className="font-semibold">AI Sourcing Assistant</h3>
-            <p className="text-xs text-primary-foreground/80">Find products · Add to cart · Get quotes</p>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <h3 className="font-bold text-lg">AI Sourcing Assistant</h3>
+              <Sparkles className="w-4 h-4 text-yellow-300" />
+            </div>
+            <p className="text-sm text-blue-100">Find products · Add to cart · Get quotes</p>
           </div>
         </div>
       </div>
 
       {/* Body */}
-      <div className="p-5">
-        <p className="text-sm text-muted-foreground mb-4">
-          Tell me what you need, I&apos;ll help you find it!
+      <div className="p-6 space-y-4">
+        <p className="text-base text-slate-600 leading-relaxed">
+          Tell me what you&apos;re looking for. I&apos;ll help you find the right equipment!
         </p>
 
         {/* Quick Actions */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-2">
           {quickActions.map((action) => (
             <Button
               key={action.label}
               variant="outline"
               size="sm"
               onClick={() => handleQuickAction(action.prompt)}
-              className="h-8 text-xs"
+              className="h-9 text-sm px-4 border-slate-200 hover:border-blue-300 hover:text-blue-600"
             >
               {action.label}
             </Button>
@@ -73,27 +75,27 @@ export function HeroAIAssistant() {
         </div>
 
         {/* Input */}
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="flex gap-3">
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="What are you looking for? e.g., mini excavator for landscaping..."
-            className="flex-1 min-h-[44px] max-h-[100px] resize-none"
-            rows={1}
+            placeholder="e.g., mini excavator for landscaping..."
+            className="flex-1 min-h-[80px] max-h-[120px] resize-none text-base"
+            rows={2}
           />
           <Button
             type="submit"
             disabled={!input.trim()}
             size="icon"
-            className="shrink-0 h-11 w-11"
+            className="shrink-0 h-[80px] w-12 bg-blue-600 hover:bg-blue-700"
           >
-            <Send className="h-4 w-4" />
+            <Send className="h-5 w-5" />
           </Button>
         </form>
 
         {/* Disclaimer */}
-        <p className="text-[10px] text-muted-foreground mt-3 text-center">
+        <p className="text-xs text-slate-400 text-center">
           AI provides preliminary guidance · Our team verifies all technical details
         </p>
       </div>

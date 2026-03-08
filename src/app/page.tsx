@@ -1,45 +1,78 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Truck, 
-  Wrench, 
+import {
+  Truck,
+  Wrench,
   ArrowRight,
   CheckCircle2,
   Phone,
   MapPin,
   Shield,
-  Cog
+  Cog,
+  Bot,
+  Send,
+  ChevronRight,
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import { HeroAIAssistant } from '@/components/ai-assistant/HeroAIAssistant';
+import { FloatingAssistantButton } from '@/components/ai-assistant/FloatingAssistantButton';
+import { products } from '@/data/products';
+import { solutions } from '@/data/solutions';
 
-// Semantic triples for AEO - these are clear, extractable facts
-const heroTriples = [
-  'AGT Equipment sells mini excavators and skid steers.',
-  'AGT Equipment operates warehouses in California and Illinois.',
-  'AGT Equipment offers factory direct pricing on all machinery.',
-];
-
+// Category cards with sub-links
 const categories = [
   {
     title: 'Mini Excavators',
-    description: '1-4 ton compact excavators with Kubota and Rato diesel engines. Cabin and canopy options available.',
-    href: '/category/mini-excavators',
+    description: '1-4 ton compact excavators for construction, landscaping, and property maintenance.',
+    href: '/mini-excavators/',
     icon: Cog,
-    specs: ['1-4 ton capacity', 'Kubota/Rato engines', 'Hydraulic thumb'],
+    image: 'https://images.unsplash.com/photo-1580901368919-7738efb0f87e?w=600&h=800&fit=crop',
+    subLinks: [
+      { name: '1 Ton Mini Excavators', href: '/mini-excavators/1-ton/' },
+      { name: '1-2 Ton Models', href: '/mini-excavators/1-2-ton/' },
+      { name: '3-4 Ton Models', href: '/mini-excavators/3-4-ton/' },
+    ],
   },
   {
     title: 'Mini Skid Steers',
     description: 'Stand-on and track loaders for landscaping, construction, and property maintenance.',
-    href: '/category/skid-steer',
+    href: '/mini-skid-steers/',
     icon: Truck,
-    specs: ['500-900 kg', 'Multiple attachments', 'Track or wheel'],
+    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=800&fit=crop',
+    subLinks: [
+      { name: 'Track Loaders', href: '/mini-skid-steers/track-loaders/' },
+      { name: 'Stand-On Models', href: '/mini-skid-steers/stand-on/' },
+      { name: 'Landscaping Use', href: '/solutions/landscaping-mini-excavator' },
+    ],
   },
   {
-    title: 'Attachments & Parts',
-    description: 'Buckets, augers, brush cutters, hammers, and genuine replacement parts.',
-    href: '/category/attachments',
+    title: 'Attachments',
+    description: 'Buckets, augers, brush cutters, hydraulic thumbs, and more for your equipment.',
+    href: '/attachments/',
     icon: Wrench,
-    specs: ['100+ attachments', 'Genuine parts', 'Fast shipping'],
+    image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&h=800&fit=crop',
+    subLinks: [
+      { name: 'Hydraulic Thumbs', href: '/attachments/hydraulic-thumbs/' },
+      { name: 'Buckets', href: '/attachments/buckets/' },
+      { name: 'Brush Cutters', href: '/attachments/brush-cutters/' },
+    ],
+  },
+  {
+    title: 'Parts',
+    description: 'Genuine and aftermarket replacement parts for AGT mini excavators and skid steers.',
+    href: '/parts/',
+    icon: Wrench,
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=800&fit=crop',
+    subLinks: [
+      { name: 'Hydraulic Parts', href: '/parts/hydraulic/' },
+      { name: 'Filters', href: '/parts/filters/' },
+      { name: 'Parts by Model', href: '/parts/by-model/' },
+    ],
   },
 ];
 
@@ -66,214 +99,455 @@ const trustSignals = [
   },
 ];
 
+// Homepage FAQ for SEO
+const homepageFAQ = [
+  {
+    question: 'What types of equipment does AGT sell?',
+    answer: 'AGT Equipment sells 1-4 ton mini excavators, mini skid steers, attachments, and replacement parts. We offer both Kubota and Rato engine options across our excavator lineup, with machines shipping from US warehouses in California and Illinois.',
+  },
+  {
+    question: 'Do your mini excavators ship from US warehouses?',
+    answer: 'Yes, all AGT mini excavators and mini skid steers ship from our US warehouses in Santa Ana, California and Chicago, Illinois. This enables fast delivery across the continental United States with free shipping included.',
+  },
+  {
+    question: 'What engine options are available?',
+    answer: 'AGT mini excavators are available with Kubota diesel engines (D1103, D1703) or RATO gasoline engines. Kubota engines are preferred for professional use and resale value, while RATO engines offer excellent value for residential and light commercial applications.',
+  },
+  {
+    question: 'Do AGT machines include a warranty?',
+    answer: 'Yes, all AGT mini excavators and mini skid steers include a 1-year warranty covering parts and labor. We also provide technical support and stock replacement parts in our US warehouses for after-sale service.',
+  },
+  {
+    question: 'Do you sell attachments and replacement parts?',
+    answer: 'Yes, AGT Equipment sells a full range of attachments including hydraulic thumbs, digging buckets, augers, brush cutters, and pallet forks. We also stock replacement parts including filters, hydraulic components, and undercarriage parts for all AGT models.',
+  },
+  {
+    question: 'What is the difference between a mini excavator and a mini skid steer?',
+    answer: 'A mini excavator has a boom and arm for digging, with 360-degree rotation. It excels at digging trenches, foundations, and holes. A mini skid steer is a compact loader that pushes, lifts, and carries materials. Skid steers are better for moving material, grading, and property maintenance. Both accept various attachments.',
+  },
+];
+
+// Application/Solution cards
+const applications = [
+  {
+    title: 'Farm Use',
+    description: 'Drainage, fence installation, and general farm maintenance.',
+    href: '/solutions/farm-use-mini-excavators',
+    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=300&fit=crop',
+  },
+  {
+    title: 'Landscaping',
+    description: 'Grading, planting, hardscape installation.',
+    href: '/solutions/landscaping-mini-excavator',
+    image: 'https://images.unsplash.com/photo-1558904541-efa843a96f01?w=400&h=300&fit=crop',
+  },
+  {
+    title: 'Backyard Access',
+    description: 'Compact machines that fit through standard gates.',
+    href: '/mini-excavators/1-ton/',
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop',
+  },
+  {
+    title: 'Trenching',
+    description: 'Utility trenches, irrigation lines, and drainage.',
+    href: '/solutions/utility-trenching-excavation',
+    image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&h=300&fit=crop',
+  },
+  {
+    title: 'Property Maintenance',
+    description: 'Land clearing, brush removal, snow removal.',
+    href: '/solutions/land-clearing-brush-removal',
+    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=300&fit=crop',
+  },
+  {
+    title: 'Light Demolition',
+    description: 'Concrete breaking, shed removal, site clearing.',
+    href: '/solutions/light-demolition-mini-excavator',
+    image: 'https://images.unsplash.com/photo-1590496793929-36417d3117de?w=400&h=300&fit=crop',
+  },
+];
+
+// Get featured products (first 6 mini excavators)
+const getFeaturedProducts = () => {
+  return products
+    .filter(p => p.categorySlug === 'mini-excavators' || p.categorySlug === 'skid-steers')
+    .slice(0, 6);
+};
+
 export default function HomePage() {
+  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const featuredProducts = getFeaturedProducts();
+
   return (
     <div className="flex flex-col">
-      {/* Hero Section */}
-      <section id="hero-section" className="relative bg-gradient-to-b from-primary/5 to-background py-16 md:py-24">
-        <div className="container">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl text-balance">
-              Mini Excavators & Skid Steers{' '}
-              <span className="text-primary">Factory Direct</span>
-            </h1>
-            <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-              AGT Equipment delivers compact excavators and skid steers directly from our 
-              US warehouses. Kubota and Rato engines, 1-year warranty, and free shipping.
-            </p>
-            
-            {/* Quick Answer for AEO */}
-            <div className="mt-8 quick-answer text-left" data-speakable="quick-answer">
-              <strong>Quick Answer:</strong>{' '}
-              AGT Equipment sells 1-4 ton mini excavators and skid steers with Kubota or Rato 
-              diesel engines. Machines ship free from US warehouses in California and Illinois. 
-              All equipment includes a 1-year warranty.
-            </div>
-
-            {/* Semantic Triples (machine-readable facts) */}
-            <div className="mt-6 text-sm text-muted-foreground">
-              {heroTriples.map((triple, i) => (
-                <span key={i} className="semantic-triple mr-2">{triple}</span>
-              ))}
-            </div>
-
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg">
-                <Link href="/products">
-                  Browse Equipment
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/knowledge/how-to-choose-mini-excavator">
-                  Buying Guide
-                </Link>
-              </Button>
-            </div>
-          </div>
+      {/* Hero Section - Modern, balanced layout */}
+      <section id="hero-section" className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 md:py-16 lg:py-20 overflow-hidden">
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }} />
         </div>
-      </section>
 
-      {/* Trust Signals */}
-      <section className="border-y bg-muted/30 py-8">
-        <div className="container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {trustSignals.map((signal) => (
-              <div key={signal.title} className="flex items-center gap-3">
-                <signal.icon className="h-8 w-8 text-primary flex-shrink-0" />
-                <div>
-                  <div className="font-semibold">{signal.title}</div>
-                  <div className="text-sm text-muted-foreground">{signal.description}</div>
+        <div className="container relative z-10">
+          <div className="grid lg:grid-cols-5 gap-8 lg:gap-12">
+            {/* Left: Hero Content - 3 columns */}
+            <div className="lg:col-span-3 text-white">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight">
+                Mini Excavators & Mini Skid Steers{' '}
+                <span className="text-blue-400">for Sale</span>
+              </h1>
+
+              <p className="mt-6 text-lg text-slate-300 max-w-xl leading-relaxed">
+                AGT Equipment sells 1–4 ton mini excavators, mini skid steers, attachments, and parts with Kubota and Rato engine options, free shipping, and US-based support. Machines ship from California and Illinois warehouses with 1-year warranty coverage.
+              </p>
+
+              {/* Quick Answer Q&A Block for AEO */}
+              <div className="mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5">
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white font-bold text-sm">Q</span>
+                  </div>
+                  <div>
+                    <h2 className="font-semibold text-white text-lg">What does AGT Equipment sell?</h2>
+                    <p className="mt-2 text-slate-200 leading-relaxed">
+                      AGT Equipment sells 1–4 ton mini excavators, mini skid steers, attachments, and replacement parts. Machines ship from US warehouses in California and Illinois, with Kubota or Rato engine options, free shipping, and 1-year warranty coverage.
+                    </p>
+                  </div>
                 </div>
               </div>
-            ))}
+
+              {/* CTA Buttons */}
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Button asChild size="lg" className="bg-blue-500 hover:bg-blue-600 text-white px-8 h-12 text-base">
+                  <Link href="/mini-excavators/">
+                    Shop Mini Excavators
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" className="bg-green-500 hover:bg-green-600 text-white px-8 h-12 text-base">
+                  <Link href="/mini-skid-steers/">
+                    Shop Mini Skid Steers
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Secondary CTAs */}
+              <div className="mt-4 flex flex-wrap gap-6 text-sm">
+                <Link href="/attachments/" className="text-slate-300 hover:text-white underline underline-offset-4 transition-colors">
+                  View Attachments
+                </Link>
+                <Link href="/knowledge/how-to-choose-mini-excavator" className="text-slate-300 hover:text-white underline underline-offset-4 transition-colors">
+                  Buying Guide
+                </Link>
+              </div>
+            </div>
+
+            {/* Right: AI Assistant Card + Trust Signals - 2 columns */}
+            <div className="lg:col-span-2 flex flex-col gap-6">
+              <HeroAIAssistant />
+
+              {/* Trust Signals - below AI card on right side */}
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5">
+                <div className="grid grid-cols-2 gap-4">
+                  {trustSignals.map((signal) => (
+                    <div key={signal.title} className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                        <signal.icon className="h-4 w-4 text-blue-400" />
+                      </div>
+                      <div>
+                        <div className="font-medium text-white text-sm">{signal.title}</div>
+                        <div className="text-xs text-slate-400">{signal.description}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Product Categories */}
-      <section className="py-16 md:py-24">
+      {/* Product Categories - Image-focused cards */}
+      <section className="py-16 md:py-20 bg-white">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tight">Product Categories</h2>
-            <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-              Explore our range of compact equipment for construction, landscaping, 
-              agriculture, and property maintenance.
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">Product Categories</h2>
+            <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
+              Explore our range of compact equipment for construction, landscaping, agriculture, and property maintenance.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((category) => (
-              <Card key={category.title} className="group hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <category.icon className="h-10 w-10 text-primary mb-2" />
-                  <CardTitle className="group-hover:text-primary transition-colors">
-                    {category.title}
-                  </CardTitle>
-                  <CardDescription>{category.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 mb-4">
-                    {category.specs.map((spec) => (
-                      <li key={spec} className="flex items-center text-sm">
-                        <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                        {spec}
+              <Link
+                key={category.title}
+                href={category.href}
+                className="group relative overflow-hidden rounded-2xl aspect-[4/5] bg-gradient-to-br from-slate-600 to-slate-800"
+                style={{
+                  backgroundImage: `url('${category.image}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              >
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:bg-black/70 transition-colors" />
+
+                {/* Content */}
+                <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                  <div className="mb-4">
+                    <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3">
+                      <category.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white">{category.title}</h3>
+                  </div>
+
+                  <p className="text-sm text-white/80 mb-4 line-clamp-2">{category.description}</p>
+
+                  {/* Sub-links */}
+                  <ul className="space-y-1.5">
+                    {category.subLinks.map((link) => (
+                      <li key={link.name}>
+                        <span className="inline-flex items-center text-sm text-white/90 hover:text-white transition-colors">
+                          <ChevronRight className="w-4 h-4 mr-1" />
+                          {link.name}
+                        </span>
                       </li>
                     ))}
                   </ul>
-                  <Button asChild variant="outline" className="w-full">
-                    <Link href={category.href}>
-                      View Products
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Why AGT Section */}
-      <section className="bg-primary text-primary-foreground py-16 md:py-24">
+      {/* Featured Equipment - Large product cards */}
+      <section className="py-16 md:py-20 bg-slate-50">
         <div className="container">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-12">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight">
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">Featured Equipment</h2>
+              <p className="mt-2 text-lg text-slate-600">Top-selling mini excavators and skid steers</p>
+            </div>
+            <Link
+              href="/products/"
+              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-base group"
+            >
+              View All Products
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredProducts.map((product) => (
+              <Link
+                key={product.id}
+                href={`/${product.categorySlug}/${product.subcategorySlug || ''}/${product.slug}/`}
+                className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300"
+              >
+                {/* Product Image - Larger */}
+                <div className="relative aspect-square bg-slate-50 overflow-hidden">
+                  {product.images[0] && (
+                    <img
+                      src={product.images[0].url}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  )}
+                  {/* Category Badge */}
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 bg-slate-900/80 text-white text-xs font-medium rounded-full backdrop-blur-sm">
+                      {product.category}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Product Info */}
+                <div className="p-6">
+                  <p className="text-sm text-slate-500 mb-1">{product.sku}</p>
+                  <h3 className="font-semibold text-lg text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight">
+                    {product.name}
+                  </h3>
+
+                  <div className="mt-4 flex items-end justify-between">
+                    <div>
+                      <span className="text-2xl font-bold text-blue-600">
+                        ${product.price.toLocaleString()}
+                      </span>
+                    </div>
+                    <span className="inline-flex items-center text-sm font-medium text-slate-600 group-hover:text-blue-600 transition-colors">
+                      View Details
+                      <ChevronRight className="w-4 h-4 ml-1" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Shop by Application - Image overlay cards */}
+      <section className="py-16 md:py-20 bg-white">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">Shop by Application</h2>
+            <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">Find equipment for your specific project needs</p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {applications.map((app) => (
+              <Link
+                key={app.title}
+                href={app.href}
+                className="group relative overflow-hidden rounded-2xl aspect-[4/3] bg-slate-200"
+              >
+                <img
+                  src={app.image}
+                  alt={app.title}
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                  <h3 className="text-xl font-bold text-white mb-1">{app.title}</h3>
+                  <p className="text-sm text-white/80">{app.description}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose AGT - Split layout with stats */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-blue-600 to-blue-700 text-white">
+        <div className="container">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
                 Why Choose AGT Equipment?
               </h2>
-              <div className="mt-6 space-y-4">
-                <p>
-                  <strong>AGT Equipment</strong> specializes in compact excavation and 
-                  loading equipment for contractors, farmers, and property owners.
+              <div className="mt-8 space-y-6">
+                <p className="text-lg text-blue-100 leading-relaxed">
+                  Factory-direct compact equipment for contractors, farmers, and property owners. We eliminate middleman markup and pass the savings to you.
                 </p>
-                <p>
-                  <strong>We operate</strong> warehouses in California and Illinois, 
-                  enabling fast delivery across the continental United States.
+                <p className="text-lg text-blue-100 leading-relaxed">
+                  Fast shipping from California and Illinois warehouses means you get your equipment in days, not weeks. No international freight delays.
                 </p>
-                <p>
-                  <strong>Every machine</strong> includes a 1-year warranty and 
-                  access to our technical support team.
+                <p className="text-lg text-blue-100 leading-relaxed">
+                  Every machine includes a 1-year warranty, parts support from our US inventory, and technical assistance from our support team.
                 </p>
-                {/* Semantic triples for AEO */}
-                <div className="mt-6 text-sm opacity-90 space-y-1">
-                  <p>AGT Equipment specializes in compact construction equipment.</p>
-                  <p>AGT Equipment operates warehouses in California and Illinois.</p>
-                  <p>AGT Equipment provides 1-year warranty on all machinery.</p>
-                </div>
+              </div>
+
+              <div className="mt-10">
+                <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-50 px-8">
+                  <Link href="/about/">
+                    Learn More About AGT
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <Card className="bg-primary-foreground/10 border-primary-foreground/20">
-                <CardHeader>
-                  <CardTitle className="text-2xl">250+</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-primary-foreground/80">
-                    Products in stock
-                  </CardDescription>
-                </CardContent>
-              </Card>
-              <Card className="bg-primary-foreground/10 border-primary-foreground/20">
-                <CardHeader>
-                  <CardTitle className="text-2xl">500+</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-primary-foreground/80">
-                    Machines sold
-                  </CardDescription>
-                </CardContent>
-              </Card>
-              <Card className="bg-primary-foreground/10 border-primary-foreground/20">
-                <CardHeader>
-                  <CardTitle className="text-2xl">4.9★</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-primary-foreground/80">
-                    Average rating
-                  </CardDescription>
-                </CardContent>
-              </Card>
-              <Card className="bg-primary-foreground/10 border-primary-foreground/20">
-                <CardHeader>
-                  <CardTitle className="text-2xl">2</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-primary-foreground/80">
-                    US warehouses
-                  </CardDescription>
-                </CardContent>
-              </Card>
+
+            <div className="grid grid-cols-2 gap-5">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
+                <div className="text-4xl font-bold">1–4 Ton</div>
+                <div className="mt-2 text-blue-100">Equipment Range</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
+                <div className="text-4xl font-bold">2</div>
+                <div className="mt-2 text-blue-100">US Warehouses</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
+                <div className="text-4xl font-bold">100+</div>
+                <div className="mt-2 text-blue-100">Attachments & Parts</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
+                <div className="text-4xl font-bold">1 Year</div>
+                <div className="mt-2 text-blue-100">Warranty Included</div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-20 bg-white">
         <div className="container">
-          <div className="text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold tracking-tight">
-              Ready to Find Your Equipment?
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              Browse our catalog or contact our team for personalized recommendations.
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg">
-                <Link href="/products">
-                  View All Products
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/contact">
-                  Contact Us
-                </Link>
-              </Button>
+          <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-10 md:p-16 text-center relative overflow-hidden">
+            {/* Subtle pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute inset-0" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              }} />
+            </div>
+
+            <div className="relative z-10">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white">
+                Find the Right Equipment for Your Job
+              </h2>
+              <p className="mt-6 text-lg text-slate-300 max-w-2xl mx-auto">
+                Browse our selection of mini excavators and skid steers, or contact our team for personalized recommendations.
+              </p>
+              <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+                <Button asChild size="lg" className="bg-blue-500 hover:bg-blue-600 text-white px-10 h-12 text-base">
+                  <Link href="/mini-excavators/">
+                    View Mini Excavators
+                  </Link>
+                </Button>
+                <Button asChild size="lg" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-slate-900 px-10 h-12 text-base">
+                  <Link href="/contact/">
+                    Contact Sales
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 md:py-20 bg-slate-50">
+        <div className="container">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">
+                Frequently Asked Questions
+              </h2>
+            </div>
+
+            <div className="space-y-4">
+              {homepageFAQ.map((faq, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl overflow-hidden shadow-sm"
+                >
+                  <button
+                    onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                    className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-slate-50 transition-colors"
+                  >
+                    <span className="font-semibold text-slate-900 text-lg pr-4">{faq.question}</span>
+                    <ChevronRight
+                      className={`w-5 h-5 text-slate-400 transition-transform flex-shrink-0 ${
+                        openFAQ === index ? 'rotate-90' : ''
+                      }`}
+                    />
+                  </button>
+                  {openFAQ === index && (
+                    <div className="px-6 pb-5 text-slate-600 leading-relaxed">
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Floating AI Button */}
+      <FloatingAssistantButton />
     </div>
   );
 }
