@@ -58,6 +58,12 @@ export default async function SolutionPage({ params }: SolutionPageProps) {
           __html: JSON.stringify(generateBreadcrumbSchema(solution)),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateArticleSchema(solution)),
+        }}
+      />
       {solution.faq.length > 0 && (
         <script
           type="application/ld+json"
@@ -231,5 +237,35 @@ function generateFAQSchema(faqs: { question: string; answer: string }[]): FAQSch
       name: faq.question,
       acceptedAnswer: { '@type': 'Answer', text: faq.answer },
     })),
+  };
+}
+
+function generateArticleSchema(solution: Solution) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: solution.title,
+    description: solution.excerpt,
+    author: {
+      '@type': 'Organization',
+      name: 'AGT Equipment',
+      url: 'https://agt-equipment.com',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'AGT Equipment',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://agt-equipment.com/icon-512.png',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://agt-equipment.com/solutions/${solution.slug}/`,
+    },
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['[data-speakable="quick-answer"]'],
+    },
   };
 }

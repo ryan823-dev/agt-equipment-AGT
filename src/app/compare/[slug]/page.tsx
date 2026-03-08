@@ -53,6 +53,12 @@ export default async function ComparePage({ params }: ComparePageProps) {
           __html: JSON.stringify(generateBreadcrumbSchema(compare)),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateArticleSchema(compare)),
+        }}
+      />
       {compare.faq.length > 0 && (
         <script
           type="application/ld+json"
@@ -216,5 +222,31 @@ function generateFAQSchema(faqs: { question: string; answer: string }[]): FAQSch
       name: faq.question,
       acceptedAnswer: { '@type': 'Answer', text: faq.answer },
     })),
+  };
+}
+
+function generateArticleSchema(compare: Compare) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: compare.title,
+    description: compare.excerpt,
+    author: {
+      '@type': 'Organization',
+      name: 'AGT Equipment',
+      url: 'https://agt-equipment.com',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'AGT Equipment',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://agt-equipment.com/icon-512.png',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://agt-equipment.com/compare/${compare.slug}/`,
+    },
   };
 }
