@@ -719,4 +719,395 @@ export const articles: Article[] = [
     publishedAt: '2024-10-15',
     updatedAt: '2024-10-15',
   },
+  // New AEO-focused articles for Phase 3
+  {
+    id: '11',
+    slug: 'mini-excavator-prices-2026',
+    title: 'Mini Excavator Prices 2026: Complete Cost Guide',
+    excerpt: 'Comprehensive guide to mini excavator pricing in 2026. Compare new vs used prices, ownership costs, and financing options for 1-4 ton machines.',
+    content: `<h2>Mini Excavator Price Ranges by Size</h2>
+<table>
+<tr><th>Size Class</th><th>New Price Range</th><th>Used Price Range</th></tr>
+<tr><td>1-Ton</td><td>$8,000 - $15,000</td><td>$5,000 - $10,000</td></tr>
+<tr><td>2-Ton</td><td>$15,000 - $25,000</td><td>$10,000 - $18,000</td></tr>
+<tr><td>3-4 Ton</td><td>$25,000 - $45,000</td><td>$18,000 - $35,000</td></tr>
+</table>
+
+<h2>What Affects Mini Excavator Price?</h2>
+<h3>Engine Type</h3>
+<ul>
+<li><strong>Kubota diesel</strong>: +$2,000-4,000 premium, better resale value</li>
+<li><strong>Rato gasoline</strong>: Lower upfront cost, good for occasional use</li>
+</ul>
+
+<h3>Features</h3>
+<ul>
+<li>Hydraulic thumb: +$1,500-3,000</li>
+<li>Enclosed cab with A/C: +$3,000-5,000</li>
+<li>Hydraulic quick coupler: +$800-1,500</li>
+<li>Extended arm: +$1,000-2,000</li>
+</ul>
+
+<h2>Total Cost of Ownership</h2>
+<p>Beyond purchase price, budget for:</p>
+<ul>
+<li><strong>Fuel</strong>: $2-5/hour depending on size and load</li>
+<li><strong>Maintenance</strong>: $500-1,500/year for regular service</li>
+<li><strong>Insurance</strong>: $500-1,500/year</li>
+<li><strong>Transport</strong>: Trailer ($2,000-8,000) + tow vehicle</li>
+</ul>
+
+<h2>New vs Used: Which Is Better?</h2>
+<h3>Buy New When:</h3>
+<ul>
+<li>You plan to use it 200+ hours per year</li>
+<li>You need warranty coverage</li>
+<li>You want the latest features</li>
+</ul>
+
+<h3>Buy Used When:</h3>
+<ul>
+<li>Budget is under $15,000</li>
+<li>You can inspect before purchase</li>
+<li>You're comfortable with basic repairs</li>
+</ul>
+
+<h2>Financing Options</h2>
+<ul>
+<li><strong>Equipment financing</strong>: 3-7 year terms, 6-12% APR</li>
+<li><strong>Lease</strong>: Lower monthly payments, no ownership</li>
+<li><strong>Cash</strong>: Best price negotiation power</li>
+</ul>`,
+    quickAnswer: 'Mini excavator prices in 2026 range from $8,000-15,000 for 1-ton models, $15,000-25,000 for 2-ton, and $25,000-45,000 for 3-4 ton machines. Kubota engines add $2,000-4,000. Budget 10-15% of purchase price annually for maintenance and operating costs.',
+    category: 'buying-guide',
+    tags: ['prices', 'cost', 'buying guide', 'financing', 'mini excavator'],
+    author: {
+      name: 'AGT Equipment Team',
+      role: 'Sales',
+    },
+    faq: [
+      {
+        question: 'How much does a 1-ton mini excavator cost?',
+        answer: 'A new 1-ton mini excavator costs $8,000-15,000. Used models typically sell for $5,000-10,000. Prices vary by brand, engine type (Kubota vs Rato), and included features like hydraulic thumb or enclosed cab.',
+      },
+      {
+        question: 'Is it better to buy new or used mini excavator?',
+        answer: 'Buy new if you plan 200+ hours of annual use and want warranty coverage. Buy used if your budget is under $15,000 and you can inspect the machine. Used excavators 5+ years old often offer the best value.',
+      },
+      {
+        question: 'What are the hidden costs of owning a mini excavator?',
+        answer: 'Beyond purchase price, budget for fuel ($2-5/hour), annual maintenance ($500-1,500), insurance ($500-1,500/year), and transport equipment (trailer $2,000-8,000). Total ownership cost is typically 10-15% of purchase price annually.',
+      },
+    ],
+    readingTime: 6,
+    publishedAt: '2026-01-15',
+    updatedAt: '2026-01-15',
+  },
+  {
+    id: '12',
+    slug: 'how-much-does-mini-excavator-weigh',
+    title: 'How Much Does a Mini Excavator Weigh?',
+    excerpt: 'Complete guide to mini excavator weights by size class. Learn operating weights, transport requirements, and ground pressure for 1-4 ton machines.',
+    content: `<h2>Mini Excavator Weight by Size Class</h2>
+<table>
+<tr><th>Size</th><th>Operating Weight</th><th>Shipping Weight</th></tr>
+<tr><td>1-Ton (H15R)</td><td>2,400-2,800 lbs</td><td>2,200-2,500 lbs</td></tr>
+<tr><td>1.5-Ton</td><td>3,000-3,500 lbs</td><td>2,800-3,200 lbs</td></tr>
+<tr><td>2-Ton (DM12X)</td><td>4,200-4,600 lbs</td><td>4,000-4,400 lbs</td></tr>
+<tr><td>3-Ton</td><td>6,000-6,800 lbs</td><td>5,800-6,500 lbs</td></tr>
+<tr><td>4-Ton (CFG-40UF)</td><td>8,500-9,200 lbs</td><td>8,200-8,800 lbs</td></tr>
+</table>
+
+<h2>Operating vs Shipping Weight</h2>
+<p><strong>Operating weight</strong> includes full fuel tank, hydraulic fluid, and standard bucket. <strong>Shipping weight</strong> is the machine dry, without fluids.</p>
+
+<h2>Why Weight Matters</h2>
+<h3>Transport Requirements</h3>
+<ul>
+<li><strong>Under 3,000 lbs</strong>: Can be hauled on a 5,000 lb trailer behind half-ton truck</li>
+<li><strong>3,000-6,000 lbs</strong>: Requires 7,000 lb trailer, 3/4 ton truck recommended</li>
+<li><strong>Over 6,000 lbs</strong>: Needs 10,000+ lb trailer, may require CDL</li>
+</ul>
+
+<h3>Ground Pressure</h3>
+<p>Heavier machines exert more ground pressure:</p>
+<ul>
+<li>1-ton: ~3-4 psi (minimal lawn damage)</li>
+<li>2-ton: ~4-5 psi (moderate lawn impact)</li>
+<li>4-ton: ~5-7 psi (may damage soft ground)</li>
+</ul>
+
+<h3>Lifting Capacity</h3>
+<p>Excavators can safely lift about 30-40% of their operating weight over the side, 50-60% over the front.</p>`,
+    quickAnswer: 'Mini excavators weigh 2,400-2,800 lbs for 1-ton models, 4,200-4,600 lbs for 2-ton, and 8,500-9,200 lbs for 4-ton machines. Operating weight includes fluids and bucket; shipping weight is 100-400 lbs lighter. Weight determines trailer requirements and ground pressure.',
+    category: 'explainer',
+    tags: ['weight', 'specifications', 'transport', 'mini excavator'],
+    author: {
+      name: 'AGT Equipment Team',
+      role: 'Technical Support',
+    },
+    faq: [
+      {
+        question: 'How much does a 1-ton mini excavator weigh?',
+        answer: 'A 1-ton mini excavator weighs 2,400-2,800 lbs in operating condition with fuel, hydraulic fluid, and bucket. Shipping weight (dry) is about 2,200-2,500 lbs. This weight class can be hauled on a 5,000 lb trailer.',
+      },
+      {
+        question: 'What size trailer do I need for a mini excavator?',
+        answer: 'For 1-ton excavators (under 3,000 lbs), use a 5,000 lb trailer. For 2-ton machines (4,000-5,000 lbs), use a 7,000 lb trailer. For 4-ton excavators (8,000+ lbs), you need a 10,000+ lb trailer and may require a CDL.',
+      },
+      {
+        question: 'Can a mini excavator cross a lawn without damage?',
+        answer: '1-ton mini excavators (3-4 psi ground pressure) can cross dry lawns with minimal damage. 2-ton machines may leave tracks in soft ground. Use plywood sheets under tracks to distribute weight on sensitive surfaces.',
+      },
+    ],
+    readingTime: 4,
+    publishedAt: '2026-02-01',
+    updatedAt: '2026-02-01',
+  },
+  {
+    id: '13',
+    slug: 'mini-excavator-dig-depth-guide',
+    title: 'How Deep Can a Mini Excavator Dig?',
+    excerpt: 'Complete guide to mini excavator digging depths by size class. Match your trenching needs to the right machine.',
+    content: `<h2>Digging Depth by Excavator Size</h2>
+<table>
+<tr><th>Excavator Size</th><th>Max Dig Depth</th><th>Typical Applications</th></tr>
+<tr><td>1-Ton</td><td>3.5 - 4.5 ft</td><td>Irrigation, fence posts, landscaping</td></tr>
+<tr><td>1.5-Ton</td><td>4.5 - 5.5 ft</td><td>Utility lines, shallow foundations</td></tr>
+<tr><td>2-Ton</td><td>5.5 - 7 ft</td><td>Sewer laterals, footings</td></tr>
+<tr><td>3-Ton</td><td>7 - 9 ft</td><td>Septic systems, deep utilities</td></tr>
+<tr><td>4-Ton</td><td>9 - 12 ft</td><td>Basements, pools, construction</td></tr>
+</table>
+
+<h2>Understanding Dig Depth Ratings</h2>
+<p>Manufacturer dig depth ratings are maximum theoretical depths. Real-world digging is typically 6-12 inches shallower due to:</p>
+<ul>
+<li>Ground conditions (rock, clay reduce depth)</li>
+<li>Bucket size (larger buckets = less reach)</li>
+<li>Operator technique</li>
+<li>Machine stability requirements</li>
+</ul>
+
+<h2>Dig Depth vs Reach</h2>
+<p><strong>Dig depth</strong> is how deep you can dig directly below the machine. <strong>Reach</strong> is how far you can dig from the tracks. A 2-ton excavator might dig 6 feet deep but only 8 feet away from the tracks.</p>
+
+<h2>Matching Depth to Your Needs</h2>
+<h3>Common Trench Depths</h3>
+<ul>
+<li>Electrical conduit: 18-24 inches</li>
+<li>Water lines: 36-48 inches (frost line varies)</li>
+<li>Sewer lines: 4-6 feet</li>
+<li>Foundation footings: 3-4 feet</li>
+</ul>
+
+<h2>Tips for Maximum Dig Depth</h2>
+<ul>
+<li>Position machine close to excavation edge</li>
+<li>Use narrower bucket for deep digging</li>
+<li>Extend boom fully before curling bucket</li>
+<li>Keep tracks level for stability</li>
+</ul>`,
+    quickAnswer: 'Mini excavators can dig 3.5-4.5 feet deep for 1-ton models, 5.5-7 feet for 2-ton, and 9-12 feet for 4-ton machines. Real-world depth is 6-12 inches less than rated maximum. Match your deepest expected trench to the excavator size.',
+    category: 'explainer',
+    tags: ['dig depth', 'trenching', 'specifications', 'mini excavator'],
+    author: {
+      name: 'AGT Equipment Team',
+      role: 'Technical Support',
+    },
+    faq: [
+      {
+        question: 'How deep can a 1-ton mini excavator dig?',
+        answer: 'A 1-ton mini excavator can dig 3.5-4.5 feet deep, suitable for irrigation lines, fence posts, and shallow utility work. For trenches deeper than 4 feet, you need a 2-ton or larger machine.',
+      },
+      {
+        question: 'What size mini excavator for 6 foot trench?',
+        answer: 'For a 6-foot deep trench, you need at least a 2-ton mini excavator (rated for 5.5-7 feet dig depth). A 3-ton machine provides more power and stability for deeper work.',
+      },
+      {
+        question: 'Can a mini excavator dig a basement?',
+        answer: 'A 4-ton mini excavator can dig 9-12 feet deep, sufficient for many basement excavations. However, you need an exit ramp or crane to remove the machine. Standard excavators (10+ ton) are more efficient for full basements.',
+      },
+    ],
+    readingTime: 5,
+    publishedAt: '2026-02-10',
+    updatedAt: '2026-02-10',
+  },
+  {
+    id: '14',
+    slug: 'mini-excavator-rental-vs-buy',
+    title: 'Mini Excavator Rental vs Buying: Complete Analysis',
+    excerpt: 'Should you rent or buy a mini excavator? Compare costs, break-even analysis, and decision factors for contractors and property owners.',
+    content: `<h2>Quick Decision Guide</h2>
+<p><strong>Buy if:</strong> You need the machine 4+ weeks per year, want to build equity, or need it available on-demand.</p>
+<p><strong>Rent if:</strong> You need it less than 4 weeks per year, want to try before buying, or need different sizes for different jobs.</p>
+
+<h2>Cost Comparison</h2>
+<table>
+<tr><th></th><th>1-Ton</th><th>2-Ton</th><th>4-Ton</th></tr>
+<tr><td>Purchase Price</td><td>$10,000</td><td>$20,000</td><td>$35,000</td></tr>
+<tr><td>Daily Rental</td><td>$200-300</td><td>$300-400</td><td>$400-600</td></tr>
+<tr><td>Weekly Rental</td><td>$600-800</td><td>$800-1,200</td><td>$1,200-1,800</td></tr>
+<tr><td>Monthly Rental</td><td>$1,800-2,500</td><td>$2,500-3,500</td><td>$3,500-5,000</td></tr>
+</table>
+
+<h2>Break-Even Analysis</h2>
+<p>How many rental days until buying makes sense?</p>
+<ul>
+<li><strong>1-Ton ($10,000)</strong>: 35-50 rental days (7-10 weeks)</li>
+<li><strong>2-Ton ($20,000)</strong>: 50-65 rental days (10-13 weeks)</li>
+<li><strong>4-Ton ($35,000)</strong>: 60-90 rental days (12-18 weeks)</li>
+</ul>
+
+<h2>Hidden Costs of Ownership</h2>
+<ul>
+<li><strong>Maintenance</strong>: $500-1,500/year</li>
+<li><strong>Insurance</strong>: $500-1,500/year</li>
+<li><strong>Storage</strong>: $0-200/month</li>
+<li><strong>Transport</strong>: Trailer + tow vehicle</li>
+<li><strong>Depreciation</strong>: 10-15% per year</li>
+</ul>
+
+<h2>Hidden Costs of Renting</h2>
+<ul>
+<li><strong>Delivery/pickup</strong>: $50-150 each way</li>
+<li><strong>Damage waiver</strong>: 10-15% of rental</li>
+<li><strong>Fuel</strong>: Usually not included</li>
+<li><strong>Cleaning fee</strong>: If returned dirty</li>
+<li><strong>Availability</strong>: May need advance booking</li>
+</ul>
+
+<h2>When to Rent</h2>
+<ul>
+<li>One-time project under 2 weeks</li>
+<li>Testing a machine before purchase</li>
+<li>Need a different size than you own</li>
+<li>Your machine is in the shop</li>
+</ul>
+
+<h2>When to Buy</h2>
+<ul>
+<li>Regular use (4+ weeks/year)</li>
+<li>Need immediate availability</li>
+<li>Want to customize with attachments</li>
+<li>Building business assets</li>
+</ul>`,
+    quickAnswer: 'Buy a mini excavator if you need it 4+ weeks per year. Rent for one-time projects under 2 weeks. Break-even is 35-50 rental days for 1-ton, 50-65 days for 2-ton, 60-90 days for 4-ton machines. Ownership costs 10-15% of purchase price annually.',
+    category: 'buying-guide',
+    tags: ['rental', 'buying', 'cost analysis', 'mini excavator'],
+    author: {
+      name: 'AGT Equipment Team',
+      role: 'Sales',
+    },
+    faq: [
+      {
+        question: 'Is it cheaper to rent or buy a mini excavator?',
+        answer: 'Buying is cheaper if you need the machine 4+ weeks per year. For 1-ton machines, break-even is 35-50 rental days. For occasional use under 4 weeks, renting is more economical with no maintenance or storage costs.',
+      },
+      {
+        question: 'How much does it cost to rent a mini excavator for a week?',
+        answer: 'Weekly mini excavator rental costs $600-800 for 1-ton, $800-1,200 for 2-ton, and $1,200-1,800 for 4-ton machines. Add $100-300 for delivery/pickup and 10-15% for damage waiver.',
+      },
+      {
+        question: 'What are the hidden costs of owning a mini excavator?',
+        answer: 'Beyond purchase price, budget $500-1,500/year for maintenance, $500-1,500/year for insurance, storage costs, and a trailer ($2,000-8,000). Depreciation is 10-15% annually. Total ownership cost averages 10-15% of purchase price per year.',
+      },
+    ],
+    readingTime: 6,
+    publishedAt: '2026-02-15',
+    updatedAt: '2026-02-15',
+  },
+  {
+    id: '15',
+    slug: 'mini-excavator-for-farm-use',
+    title: 'Best Mini Excavator for Farm Use: Complete Guide',
+    excerpt: 'Choosing the right mini excavator for agricultural applications. Compare sizes, attachments, and features for farm work.',
+    content: `<h2>Why Farmers Choose Mini Excavators</h2>
+<ul>
+<li>Dig drainage ditches and ponds</li>
+<li>Install fence posts and water lines</li>
+<li>Clear brush and remove stumps</li>
+<li>Maintain gravel roads</li>
+<li>Build retaining walls</li>
+</ul>
+
+<h2>Best Size for Farm Use</h2>
+<table>
+<tr><th>Farm Size</th><th>Recommended Size</th><th>Why</th></tr>
+<tr><td>Under 10 acres</td><td>1-Ton</td><td>Fits through gates, easy transport</td></tr>
+<tr><td>10-50 acres</td><td>2-Ton</td><td>Better dig depth, more power</td></tr>
+<tr><td>50+ acres</td><td>3-4 Ton</td><td>Heavy-duty work, faster completion</td></tr>
+</table>
+
+<h2>Essential Farm Attachments</h2>
+<h3>Must-Have</h3>
+<ul>
+<li><strong>Digging bucket</strong>: General excavation (included)</li>
+<li><strong>Hydraulic thumb</strong>: Moving logs, rocks, debris</li>
+<li><strong>Auger</strong>: Fence posts, tree planting</li>
+</ul>
+
+<h3>Nice to Have</h3>
+<ul>
+<li><strong>Brush cutter</strong>: Clearing overgrown areas</li>
+<li><strong>Stump grinder</strong>: Removing tree stumps</li>
+<li><strong>Rake</strong>: Clearing rocks, preparing soil</li>
+<li><strong>Pallet forks</strong>: Moving feed, supplies</li>
+</ul>
+
+<h2>Engine Choice for Farms</h2>
+<h3>Kubota Diesel (Recommended)</h3>
+<ul>
+<li>Better for daily use</li>
+<li>More torque for tough digging</li>
+<li>Better fuel economy</li>
+<li>Higher resale value</li>
+</ul>
+
+<h3>Rato Gasoline</h3>
+<ul>
+<li>Lower cost for occasional use</li>
+<li>Easier cold-weather starting</li>
+<li>Gas easier to store than diesel</li>
+</ul>
+
+<h2>Farm-Specific Features</h2>
+<ul>
+<li><strong>Rubber tracks</strong>: Less ground damage in fields</li>
+<li><strong>Extendable undercarriage</strong>: Stability on slopes</li>
+<li><strong>Canopy</strong>: Sun protection, no glass to break</li>
+<li><strong>12V outlet</strong>: Charge tools, run equipment</li>
+</ul>
+
+<h2>Maintenance Tips for Farm Use</h2>
+<ul>
+<li>Check air filter daily in dusty conditions</li>
+<li>Grease all fittings every 10 hours</li>
+<li>Inspect tracks for wear from rocky ground</li>
+<li>Keep spare filters and belts on hand</li>
+</ul>`,
+    quickAnswer: 'For farm use, choose a 1-ton mini excavator for properties under 10 acres, 2-ton for 10-50 acres, 3-4 ton for 50+ acres. Essential attachments include hydraulic thumb and auger. Kubota diesel engines are recommended for daily farm use due to better torque and fuel economy.',
+    category: 'buying-guide',
+    tags: ['farm', 'agriculture', 'attachments', 'mini excavator'],
+    author: {
+      name: 'AGT Equipment Team',
+      role: 'Agricultural Sales',
+    },
+    faq: [
+      {
+        question: 'What size mini excavator for a small farm?',
+        answer: 'For farms under 10 acres, a 1-ton mini excavator is ideal. It fits through standard gates, is easy to transport, and handles drainage, fencing, and light clearing. For 10-50 acres, a 2-ton provides more capability.',
+      },
+      {
+        question: 'What attachments do I need for farm work?',
+        answer: 'Essential farm attachments are hydraulic thumb (moving logs/rocks), auger (fence posts), and brush cutter (clearing). Add stump grinder and pallet forks as budget allows. A thumb alone increases versatility by 30%.',
+      },
+      {
+        question: 'Kubota or Rato engine for farm use?',
+        answer: 'Choose Kubota diesel for daily farm use - better torque, fuel economy, and longevity. Rato gasoline engines are fine for occasional use (under 100 hours/year) and are easier to start in cold weather.',
+      },
+    ],
+    readingTime: 6,
+    publishedAt: '2026-02-20',
+    updatedAt: '2026-02-20',
+  },
 ];
