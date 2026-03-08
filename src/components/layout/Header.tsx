@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Phone, ChevronDown } from 'lucide-react';
+import { Menu, X, Phone, ChevronDown, ChevronRight } from 'lucide-react';
 
 const navigation = [
   {
@@ -41,6 +41,23 @@ const navigation = [
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [expandedMobileItem, setExpandedMobileItem] = useState<string | null>(null);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
+
+  const toggleMobileItem = (name: string) => {
+    setExpandedMobileItem(expandedMobileItem === name ? null : name);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -103,10 +120,10 @@ export function Header() {
         {/* Mobile Menu Button */}
         <button
           type="button"
-          className="lg:hidden -mr-2 flex items-center justify-center p-2"
+          className="lg:hidden -mr-2 flex items-center justify-center p-2 rounded-md hover:bg-gray-100 transition-colors"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
         >
-          <span className="sr-only">Open menu</span>
           {mobileMenuOpen ? (
             <X className="h-6 w-6" aria-hidden="true" />
           ) : (
@@ -115,49 +132,111 @@ export function Header() {
         </button>
       </nav>
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden">
-          <div className="space-y-1 px-4 pb-3 pt-2 border-t">
-            {navigation.map((item) => (
-              <div key={item.name}>
-                <Link
-                  href={item.href}
-                  className="block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground"
-                  onClick={() => {
-                    if (!item.children) {
-                      setMobileMenuOpen(false);
-                    }
-                  }}
-                >
-                  {item.name}
-                </Link>
-                {item.children && (
-                  <div className="pl-6">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.name}
-                        href={child.href}
-                        className="block px-3 py-2 text-sm text-gray-600 hover:text-foreground"
-                        onClick={() => setMobileMenuOpen(false)}
+      {/* Mobile Menu - Slide-in Drawer */}
+      <div
+        className={`lg:hidden fixed inset-0 z-40 transition-opacity duration-300 ${
+          mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        {/* Backdrop */}
+        <div
+          className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+
+        {/* Drawer */}
+        <div
+          className={`absolute right-0 top-0 h-full w-[85%] max-w-sm bg-white shadow-2xl transform transition-transform duration-300 ease-out ${
+            mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          {/* Drawer Header */}
+          <div className="flex items-center justify-between p-4 border-b">
+            <Link
+              href="/"
+              className="flex items-center space-x-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span className="text-2xl font-bold text-primary">AGT</span>
+              <span className="text-lg font-semibold">Equipment</span>
+            </Link>
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2 rounded-md hover:bg-gray-100 transition-colors"
+              aria-label="Close menu"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+
+          {/* Drawer Content */}
+          <div className="overflow-y-auto h-[calc(100%-140px)] pb-4">
+            <nav className="px-2 py-2">
+              {navigation.map((item) => (
+                <div key={item.name} className="border-b border-gray-100 last:border-b-0">
+                  {item.children ? (
+                    <>
+                      <button
+                        onClick={() => toggleMobileItem(item.name)}
+                        className="flex items-center justify-between w-full px-4 py-3 text-left font-medium text-gray-900 hover:bg-gray-50 transition-colors"
                       >
-                        {child.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-            <div className="mt-4 pt-4 border-t">
-              <Button className="w-full" asChild>
-                <Link href="/contact/" onClick={() => setMobileMenuOpen(false)}>
-                  Get Quote
-                </Link>
-              </Button>
-            </div>
+                        <span>{item.name}</span>
+                        <ChevronRight
+                          className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${
+                            expandedMobileItem === item.name ? 'rotate-90' : ''
+                          }`}
+                        />
+                      </button>
+                      <div
+                        className={`overflow-hidden transition-all duration-200 ${
+                          expandedMobileItem === item.name ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+                        }`}
+                      >
+                        <div className="pl-4 pb-2">
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.name}
+                              href={child.href}
+                              className="block px-4 py-2.5 text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-md transition-colors"
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              {child.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className="block px-4 py-3 font-medium text-gray-900 hover:bg-gray-50 transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </nav>
+          </div>
+
+          {/* Drawer Footer */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t space-y-3">
+            <a
+              href="tel:+19498987669"
+              className="flex items-center justify-center gap-2 py-3 text-blue-600 font-medium"
+            >
+              <Phone className="h-5 w-5" />
+              <span>(949) 898-7669</span>
+            </a>
+            <Button asChild className="w-full" size="lg">
+              <Link href="/contact/" onClick={() => setMobileMenuOpen(false)}>
+                Get Quote
+              </Link>
+            </Button>
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }

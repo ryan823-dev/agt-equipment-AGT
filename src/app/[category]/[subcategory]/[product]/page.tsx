@@ -109,26 +109,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </nav>
 
         {/* Product Hero */}
-        <section className="py-12">
+        <section className="py-6 sm:py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-12">
               {/* Product Images */}
               <div>
                 <div className="bg-gray-100 rounded-lg overflow-hidden">
                   <img
                     src={product.images[0]?.url}
                     alt={product.images[0]?.alt || product.name}
-                    className="w-full h-96 object-cover"
+                    className="w-full h-64 sm:h-80 lg:h-96 object-cover"
                   />
                 </div>
                 {product.images.length > 1 && (
-                  <div className="mt-4 grid grid-cols-4 gap-2">
+                  <div className="mt-3 sm:mt-4 grid grid-cols-4 gap-1.5 sm:gap-2">
                     {product.images.map((img, index) => (
                       <div
                         key={index}
                         className="bg-gray-100 rounded cursor-pointer hover:ring-2 hover:ring-blue-500"
                       >
-                        <img src={img.url} alt={img.alt} className="w-full h-20 object-cover" />
+                        <img src={img.url} alt={img.alt} className="w-full h-14 sm:h-20 object-cover" />
                       </div>
                     ))}
                   </div>
@@ -137,34 +137,34 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
               {/* Product Info */}
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
                   {product.name}
                 </h1>
 
                 {/* Short Description - AEO Answer Block */}
-                <p className="text-xl text-gray-600 mb-6">
+                <p className="text-base sm:text-xl text-gray-600 mb-4 sm:mb-6">
                   {product.shortDescription}
                 </p>
 
                 {/* Price & Rating */}
-                <div className="flex items-center gap-6 mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 mb-6 sm:mb-8">
                   <div>
-                    <span className="text-4xl font-bold text-gray-900">
+                    <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
                       ${product.price.toLocaleString()}
                     </span>
                     {product.compareAtPrice && (
-                      <span className="ml-3 text-xl text-gray-400 line-through">
+                      <span className="ml-2 sm:ml-3 text-base sm:text-xl text-gray-400 line-through">
                         ${product.compareAtPrice.toLocaleString()}
                       </span>
                     )}
                   </div>
                   {product.rating && (
                     <div className="flex items-center">
-                      <span className="text-yellow-400 text-xl mr-1">★</span>
-                      <span className="text-gray-700 font-medium">
+                      <span className="text-yellow-400 text-lg sm:text-xl mr-1">★</span>
+                      <span className="text-gray-700 font-medium text-sm sm:text-base">
                         {product.rating.average}
                       </span>
-                      <span className="text-gray-500 ml-1">
+                      <span className="text-gray-500 ml-1 text-sm sm:text-base">
                         ({product.rating.count} reviews)
                       </span>
                     </div>
@@ -172,9 +172,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
 
                 {/* SKU & Stock */}
-                <div className="flex items-center gap-4 mb-6">
-                  <span className="text-gray-600">SKU: {product.sku}</span>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-4 sm:mb-6">
+                  <span className="text-xs sm:text-sm text-gray-600">SKU: {product.sku}</span>
+                  <span className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${
                     product.stock === 'in_stock'
                       ? 'bg-green-100 text-green-700'
                       : product.stock === 'preorder'
@@ -186,33 +186,33 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
 
                 {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
                   <a
                     href="#"
-                    className="flex-1 bg-blue-600 text-white py-4 px-8 rounded-lg font-semibold text-center hover:bg-blue-700 transition-colors"
+                    className="flex-1 bg-blue-600 text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg font-semibold text-center hover:bg-blue-700 transition-colors text-sm sm:text-base"
                   >
                     Request Quote
                   </a>
                   <a
                     href="tel:+19498987669"
-                    className="flex-1 border border-gray-300 text-gray-700 py-4 px-8 rounded-lg font-semibold text-center hover:bg-gray-50 transition-colors"
+                    className="flex-1 border border-gray-300 text-gray-700 py-3 sm:py-4 px-6 sm:px-8 rounded-lg font-semibold text-center hover:bg-gray-50 transition-colors text-sm sm:text-base"
                   >
                     Call (949) 898-7669
                   </a>
                 </div>
 
                 {/* Trust Badges */}
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-3 sm:gap-4 text-xs sm:text-sm">
                   <div className="flex items-center text-gray-600">
-                    <span className="mr-2">🚚</span>
+                    <span className="mr-1.5 sm:mr-2">🚚</span>
                     Free Shipping
                   </div>
                   <div className="flex items-center text-gray-600">
-                    <span className="mr-2">🛡️</span>
+                    <span className="mr-1.5 sm:mr-2">🛡️</span>
                     1-Year Warranty
                   </div>
                   <div className="flex items-center text-gray-600">
-                    <span className="mr-2">💳</span>
+                    <span className="mr-1.5 sm:mr-2">💳</span>
                     Financing Available
                   </div>
                 </div>
@@ -221,11 +221,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </section>
 
-        {/* Specifications Table */}
+        {/* Specifications - Mobile-friendly card layout */}
         <section className="py-12 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Specifications</h2>
-            <div className="bg-white rounded-lg shadow overflow-hidden">
+            {/* Desktop: Table view */}
+            <div className="hidden md:block bg-white rounded-lg shadow overflow-hidden">
               <table className="w-full">
                 <tbody className="divide-y divide-gray-200">
                   {Object.entries(product.specifications).map(([key, value]) => (
@@ -236,6 +237,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   ))}
                 </tbody>
               </table>
+            </div>
+            {/* Mobile: Card view */}
+            <div className="md:hidden space-y-2">
+              {Object.entries(product.specifications).map(([key, value]) => (
+                <div key={key} className="bg-white rounded-lg p-4 shadow-sm">
+                  <div className="text-sm text-gray-500 font-medium">{key}</div>
+                  <div className="mt-1 text-gray-900">{value}</div>
+                </div>
+              ))}
             </div>
           </div>
         </section>

@@ -181,7 +181,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section - Modern, balanced layout */}
-      <section id="hero-section" className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 md:py-16 lg:py-20 overflow-hidden">
+      <section id="hero-section" className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8 sm:py-12 md:py-16 lg:py-20 overflow-hidden">
         {/* Subtle background pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
@@ -190,51 +190,51 @@ export default function HomePage() {
         </div>
 
         <div className="container relative z-10">
-          <div className="grid lg:grid-cols-5 gap-8 lg:gap-12">
+          <div className="grid lg:grid-cols-5 gap-6 lg:gap-12">
             {/* Left: Hero Content - 3 columns */}
             <div className="lg:col-span-3 text-white">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
                 Mini Excavators & Mini Skid Steers{' '}
                 <span className="text-blue-400">for Sale</span>
               </h1>
 
-              <p className="mt-6 text-lg text-slate-300 max-w-xl leading-relaxed">
+              <p className="mt-4 sm:mt-6 text-base sm:text-lg text-slate-300 max-w-xl leading-relaxed">
                 AGT Equipment sells 1–4 ton mini excavators, mini skid steers, attachments, and parts with Kubota and Rato engine options, free shipping, and US-based support. Machines ship from California and Illinois warehouses with 1-year warranty coverage.
               </p>
 
               {/* Quick Answer Q&A Block for AEO */}
-              <div className="mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5">
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-white font-bold text-sm">Q</span>
+              <div className="mt-4 sm:mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-4 sm:p-5">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white font-bold text-xs sm:text-sm">Q</span>
                   </div>
                   <div>
-                    <h2 className="font-semibold text-white text-lg">What does AGT Equipment sell?</h2>
-                    <p className="mt-2 text-slate-200 leading-relaxed">
+                    <h2 className="font-semibold text-white text-base sm:text-lg">What does AGT Equipment sell?</h2>
+                    <p className="mt-1.5 sm:mt-2 text-sm sm:text-base text-slate-200 leading-relaxed">
                       AGT Equipment sells 1–4 ton mini excavators, mini skid steers, attachments, and replacement parts. Machines ship from US warehouses in California and Illinois, with Kubota or Rato engine options, free shipping, and 1-year warranty coverage.
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* CTA Buttons */}
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Button asChild size="lg" className="bg-blue-500 hover:bg-blue-600 text-white px-8 h-12 text-base">
+              {/* CTA Buttons - Stack on mobile */}
+              <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <Button asChild size="lg" className="bg-blue-500 hover:bg-blue-600 text-white px-6 sm:px-8 h-11 sm:h-12 text-base w-full sm:w-auto">
                   <Link href="/mini-excavators/">
                     Shop Mini Excavators
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" className="bg-green-500 hover:bg-green-600 text-white px-8 h-12 text-base">
+                <Button asChild size="lg" className="bg-green-500 hover:bg-green-600 text-white px-6 sm:px-8 h-11 sm:h-12 text-base w-full sm:w-auto">
                   <Link href="/mini-skid-steers/">
                     Shop Mini Skid Steers
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                   </Link>
                 </Button>
               </div>
 
               {/* Secondary CTAs */}
-              <div className="mt-4 flex flex-wrap gap-6 text-sm">
+              <div className="mt-3 sm:mt-4 flex flex-wrap gap-4 sm:gap-6 text-sm">
                 <Link href="/attachments/" className="text-slate-300 hover:text-white underline underline-offset-4 transition-colors">
                   View Attachments
                 </Link>
@@ -245,19 +245,19 @@ export default function HomePage() {
             </div>
 
             {/* Right: AI Assistant Card + Trust Signals - 2 columns */}
-            <div className="lg:col-span-2 flex flex-col gap-6">
+            <div className="lg:col-span-2 flex flex-col gap-4 sm:gap-6">
               <HeroAIAssistant />
 
               {/* Trust Signals - below AI card on right side */}
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5">
-                <div className="grid grid-cols-2 gap-4">
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 sm:p-5">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   {trustSignals.map((signal) => (
-                    <div key={signal.title} className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                        <signal.icon className="h-4 w-4 text-blue-400" />
+                    <div key={signal.title} className="flex items-center gap-2 sm:gap-3">
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                        <signal.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-400" />
                       </div>
                       <div>
-                        <div className="font-medium text-white text-sm">{signal.title}</div>
+                        <div className="font-medium text-white text-xs sm:text-sm">{signal.title}</div>
                         <div className="text-xs text-slate-400">{signal.description}</div>
                       </div>
                     </div>
@@ -270,21 +270,21 @@ export default function HomePage() {
       </section>
 
       {/* Product Categories - Image-focused cards */}
-      <section className="py-16 md:py-20 bg-white">
+      <section className="py-10 sm:py-12 md:py-16 lg:py-20 bg-white">
         <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">Product Categories</h2>
-            <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-slate-900">Product Categories</h2>
+            <p className="mt-3 sm:mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
               Explore our range of compact equipment for construction, landscaping, agriculture, and property maintenance.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {categories.map((category) => (
               <Link
                 key={category.title}
                 href={category.href}
-                className="group relative overflow-hidden rounded-2xl aspect-[4/5] bg-gradient-to-br from-slate-600 to-slate-800"
+                className="group relative overflow-hidden rounded-xl sm:rounded-2xl aspect-[4/5] bg-gradient-to-br from-slate-600 to-slate-800"
                 style={{
                   backgroundImage: `url('${category.image}')`,
                   backgroundSize: 'cover',
@@ -295,18 +295,18 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:bg-black/70 transition-colors" />
 
                 {/* Content */}
-                <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                  <div className="mb-4">
-                    <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3">
-                      <category.icon className="w-6 h-6 text-white" />
+                <div className="absolute inset-0 p-3 sm:p-4 md:p-6 flex flex-col justify-end">
+                  <div className="mb-2 sm:mb-4">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-2 sm:mb-3">
+                      <category.icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
                     </div>
-                    <h3 className="text-xl font-bold text-white">{category.title}</h3>
+                    <h3 className="text-sm sm:text-base md:text-xl font-bold text-white">{category.title}</h3>
                   </div>
 
-                  <p className="text-sm text-white/80 mb-4 line-clamp-2">{category.description}</p>
+                  <p className="text-xs sm:text-sm text-white/80 mb-2 sm:mb-4 line-clamp-2 hidden sm:block">{category.description}</p>
 
-                  {/* Sub-links */}
-                  <ul className="space-y-1.5">
+                  {/* Sub-links - Hidden on mobile */}
+                  <ul className="space-y-1 sm:space-y-1.5 hidden md:block">
                     {category.subLinks.map((link) => (
                       <li key={link.name}>
                         <span className="inline-flex items-center text-sm text-white/90 hover:text-white transition-colors">
@@ -324,28 +324,28 @@ export default function HomePage() {
       </section>
 
       {/* Featured Equipment - Large product cards */}
-      <section className="py-16 md:py-20 bg-slate-50">
+      <section className="py-10 sm:py-12 md:py-16 lg:py-20 bg-slate-50">
         <div className="container">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-12">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-8 sm:mb-12">
             <div>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">Featured Equipment</h2>
-              <p className="mt-2 text-lg text-slate-600">Top-selling mini excavators and skid steers</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-slate-900">Featured Equipment</h2>
+              <p className="mt-1 sm:mt-2 text-base sm:text-lg text-slate-600">Top-selling mini excavators and skid steers</p>
             </div>
             <Link
               href="/products/"
-              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-base group"
+              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm sm:text-base group"
             >
               View All Products
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {featuredProducts.map((product) => (
               <Link
                 key={product.id}
                 href={`/${product.categorySlug}/${product.subcategorySlug || ''}/${product.slug}/`}
-                className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300"
+                className="group bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300"
               >
                 {/* Product Image - Larger */}
                 <div className="relative aspect-square bg-slate-50 overflow-hidden">
@@ -357,27 +357,27 @@ export default function HomePage() {
                     />
                   )}
                   {/* Category Badge */}
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 bg-slate-900/80 text-white text-xs font-medium rounded-full backdrop-blur-sm">
+                  <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
+                    <span className="px-2 sm:px-3 py-1 bg-slate-900/80 text-white text-xs font-medium rounded-full backdrop-blur-sm">
                       {product.category}
                     </span>
                   </div>
                 </div>
 
                 {/* Product Info */}
-                <div className="p-6">
-                  <p className="text-sm text-slate-500 mb-1">{product.sku}</p>
-                  <h3 className="font-semibold text-lg text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight">
+                <div className="p-4 sm:p-6">
+                  <p className="text-xs sm:text-sm text-slate-500 mb-1">{product.sku}</p>
+                  <h3 className="font-semibold text-base sm:text-lg text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight">
                     {product.name}
                   </h3>
 
-                  <div className="mt-4 flex items-end justify-between">
+                  <div className="mt-3 sm:mt-4 flex items-end justify-between">
                     <div>
-                      <span className="text-2xl font-bold text-blue-600">
+                      <span className="text-xl sm:text-2xl font-bold text-blue-600">
                         ${product.price.toLocaleString()}
                       </span>
                     </div>
-                    <span className="inline-flex items-center text-sm font-medium text-slate-600 group-hover:text-blue-600 transition-colors">
+                    <span className="inline-flex items-center text-xs sm:text-sm font-medium text-slate-600 group-hover:text-blue-600 transition-colors">
                       View Details
                       <ChevronRight className="w-4 h-4 ml-1" />
                     </span>
@@ -390,19 +390,19 @@ export default function HomePage() {
       </section>
 
       {/* Shop by Application - Image overlay cards */}
-      <section className="py-16 md:py-20 bg-white">
+      <section className="py-10 sm:py-12 md:py-16 lg:py-20 bg-white">
         <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">Shop by Application</h2>
-            <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">Find equipment for your specific project needs</p>
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-slate-900">Shop by Application</h2>
+            <p className="mt-3 sm:mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">Find equipment for your specific project needs</p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
             {applications.map((app) => (
               <Link
                 key={app.title}
                 href={app.href}
-                className="group relative overflow-hidden rounded-2xl aspect-[4/3] bg-slate-200"
+                className="group relative overflow-hidden rounded-xl sm:rounded-2xl aspect-[4/3] bg-slate-200"
               >
                 <img
                   src={app.image}
@@ -410,9 +410,9 @@ export default function HomePage() {
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                  <h3 className="text-xl font-bold text-white mb-1">{app.title}</h3>
-                  <p className="text-sm text-white/80">{app.description}</p>
+                <div className="absolute inset-0 p-3 sm:p-4 md:p-6 flex flex-col justify-end">
+                  <h3 className="text-sm sm:text-base md:text-xl font-bold text-white mb-0.5 sm:mb-1">{app.title}</h3>
+                  <p className="text-xs sm:text-sm text-white/80 hidden sm:block">{app.description}</p>
                 </div>
               </Link>
             ))}
@@ -421,51 +421,51 @@ export default function HomePage() {
       </section>
 
       {/* Why Choose AGT - Split layout with stats */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-blue-600 to-blue-700 text-white">
+      <section className="py-10 sm:py-12 md:py-16 lg:py-24 bg-gradient-to-br from-blue-600 to-blue-700 text-white">
         <div className="container">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
                 Why Choose AGT Equipment?
               </h2>
-              <div className="mt-8 space-y-6">
-                <p className="text-lg text-blue-100 leading-relaxed">
+              <div className="mt-6 sm:mt-8 space-y-4 sm:space-y-6">
+                <p className="text-base sm:text-lg text-blue-100 leading-relaxed">
                   Factory-direct compact equipment for contractors, farmers, and property owners. We eliminate middleman markup and pass the savings to you.
                 </p>
-                <p className="text-lg text-blue-100 leading-relaxed">
+                <p className="text-base sm:text-lg text-blue-100 leading-relaxed">
                   Fast shipping from California and Illinois warehouses means you get your equipment in days, not weeks. No international freight delays.
                 </p>
-                <p className="text-lg text-blue-100 leading-relaxed">
+                <p className="text-base sm:text-lg text-blue-100 leading-relaxed">
                   Every machine includes a 1-year warranty, parts support from our US inventory, and technical assistance from our support team.
                 </p>
               </div>
 
-              <div className="mt-10">
-                <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-50 px-8">
+              <div className="mt-8 sm:mt-10">
+                <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-50 px-6 sm:px-8 h-11 sm:h-12 text-base">
                   <Link href="/about/">
                     Learn More About AGT
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                   </Link>
                 </Button>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-5">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
-                <div className="text-4xl font-bold">1–4 Ton</div>
-                <div className="mt-2 text-blue-100">Equipment Range</div>
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-5">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 text-center border border-white/20">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold">1–4 Ton</div>
+                <div className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-blue-100">Equipment Range</div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
-                <div className="text-4xl font-bold">2</div>
-                <div className="mt-2 text-blue-100">US Warehouses</div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 text-center border border-white/20">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold">2</div>
+                <div className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-blue-100">US Warehouses</div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
-                <div className="text-4xl font-bold">100+</div>
-                <div className="mt-2 text-blue-100">Attachments & Parts</div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 text-center border border-white/20">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold">100+</div>
+                <div className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-blue-100">Attachments & Parts</div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
-                <div className="text-4xl font-bold">1 Year</div>
-                <div className="mt-2 text-blue-100">Warranty Included</div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 text-center border border-white/20">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold">1 Year</div>
+                <div className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-blue-100">Warranty Included</div>
               </div>
             </div>
           </div>
@@ -473,9 +473,9 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-20 bg-white">
+      <section className="py-10 sm:py-12 md:py-16 lg:py-20 bg-white">
         <div className="container">
-          <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-10 md:p-16 text-center relative overflow-hidden">
+          <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-10 md:p-16 text-center relative overflow-hidden">
             {/* Subtle pattern */}
             <div className="absolute inset-0 opacity-10">
               <div className="absolute inset-0" style={{
@@ -484,19 +484,19 @@ export default function HomePage() {
             </div>
 
             <div className="relative z-10">
-              <h2 className="text-3xl sm:text-4xl font-bold text-white">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
                 Find the Right Equipment for Your Job
               </h2>
-              <p className="mt-6 text-lg text-slate-300 max-w-2xl mx-auto">
+              <p className="mt-4 sm:mt-6 text-base sm:text-lg text-slate-300 max-w-2xl mx-auto">
                 Browse our selection of mini excavators and skid steers, or contact our team for personalized recommendations.
               </p>
-              <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild size="lg" className="bg-blue-500 hover:bg-blue-600 text-white px-10 h-12 text-base">
+              <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                <Button asChild size="lg" className="bg-blue-500 hover:bg-blue-600 text-white px-8 sm:px-10 h-11 sm:h-12 text-base">
                   <Link href="/mini-excavators/">
                     View Mini Excavators
                   </Link>
                 </Button>
-                <Button asChild size="lg" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-slate-900 px-10 h-12 text-base">
+                <Button asChild size="lg" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-slate-900 px-8 sm:px-10 h-11 sm:h-12 text-base">
                   <Link href="/contact/">
                     Contact Sales
                   </Link>
@@ -508,26 +508,26 @@ export default function HomePage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 md:py-20 bg-slate-50">
+      <section className="py-10 sm:py-12 md:py-16 lg:py-20 bg-slate-50">
         <div className="container">
           <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
                 Frequently Asked Questions
               </h2>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {homepageFAQ.map((faq, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-2xl overflow-hidden shadow-sm"
+                  className="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm"
                 >
                   <button
                     onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
-                    className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-slate-50 transition-colors"
+                    className="w-full px-4 sm:px-6 py-4 sm:py-5 text-left flex justify-between items-center hover:bg-slate-50 transition-colors"
                   >
-                    <span className="font-semibold text-slate-900 text-lg pr-4">{faq.question}</span>
+                    <span className="font-semibold text-slate-900 text-base sm:text-lg pr-4">{faq.question}</span>
                     <ChevronRight
                       className={`w-5 h-5 text-slate-400 transition-transform flex-shrink-0 ${
                         openFAQ === index ? 'rotate-90' : ''
@@ -535,7 +535,7 @@ export default function HomePage() {
                     />
                   </button>
                   {openFAQ === index && (
-                    <div className="px-6 pb-5 text-slate-600 leading-relaxed">
+                    <div className="px-4 sm:px-6 pb-4 sm:pb-5 text-sm sm:text-base text-slate-600 leading-relaxed">
                       {faq.answer}
                     </div>
                   )}
