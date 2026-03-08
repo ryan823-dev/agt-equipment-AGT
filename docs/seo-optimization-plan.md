@@ -17,62 +17,72 @@
 
 **结论**：专家使用的工具无法正确解析 Next.js Metadata API，导致大量误判。
 
-### ✅ 专家正确判断（需要修复）
+### ✅ 已修复问题
 
 | 问题 | 优先级 | 状态 |
 |-----|-------|------|
-| PWA icon 404 (icon-192.png, icon-512.png) | P1 | 待修复 |
-| 首页缺少 Organization + WebSite Schema | P1 | 待修复 |
-| 分类页缺少 CollectionPage Schema | P2 | 待修复 |
-| 知识库文章缺少 Article Schema | P2 | 待修复 |
-| Solutions 页面缺少 Schema | P2 | 待修复 |
+| PWA icon 404 (icon-192.png, icon-512.png) | P1 | ✅ 已修复 |
+| 首页缺少 Organization + WebSite Schema | P1 | ✅ 已修复 |
+| 分类页缺少 CollectionPage Schema | P2 | ✅ 已存在 |
+| 知识库文章缺少 Article Schema | P2 | ✅ 已存在 |
+| Solutions 页面缺少 Article Schema | P2 | ✅ 已添加 |
+| Compare 页面缺少 Article Schema | P2 | ✅ 已添加 |
+| 产品页 Title 冗余 | P1 | ✅ 已修复 |
 
-### ⚠️ 需要澄清的问题
+### ⚠️ 不采纳的建议
 
-| 问题 | 分析 |
+| 建议 | 原因 |
 |-----|------|
-| Sitemap/Robots 指向 agt-equipment.com | 这是正式域名，Vercel 是预览环境，**不是问题** |
-| 产品 URL 层级过深 (3层) | 有意设计，利于 SEO 结构，**不采纳** |
-| 产品页 Title 冗余 "AGT Equipment \| AGT Equipment" | 需验证，可能是模板问题 |
+| 缩短产品 URL 层级 | 3层结构有利于 SEO 分类，不修改 |
+| 修改 sitemap 域名 | agt-equipment.com 是正式域名，Vercel 是预览环境 |
+| 添加 hreflang | 无多语言需求 |
 
 ---
 
-## 优化任务清单
+## 已完成的优化
 
-### Phase 1: 基础修复 (P1)
+### Phase 1: 基础修复 (P1) ✅
 
 #### 1.1 修复 PWA Icon
-- [ ] 创建 icon-192.png
-- [ ] 创建 icon-512.png
-- [ ] 创建 apple-touch-icon.png
-- [ ] 创建 favicon.ico (如果缺失)
-- [ ] 验证 manifest.json 配置
+- [x] 创建 icon-192.png
+- [x] 创建 icon-512.png
+- [x] 创建 apple-touch-icon.png
+- [x] 创建 favicon.ico
 
 #### 1.2 首页添加结构化数据
-- [ ] 添加 Organization Schema (公司信息、地址、联系方式)
-- [ ] 添加 WebSite Schema (站内搜索 SearchAction)
-- [ ] 首页 FAQ 添加 FAQPage Schema
+- [x] 添加 Organization Schema (公司信息、地址、联系方式)
+- [x] 添加 WebSite Schema (站内搜索 SearchAction)
+- [x] 首页 FAQ 添加 FAQPage Schema
 
-#### 1.3 验证产品页 Title
-- [ ] 检查是否存在 "AGT Equipment | AGT Equipment" 冗余
-- [ ] 如有问题，修复 title template
+#### 1.3 修复产品页 Title
+- [x] 移除所有页面的 "| AGT Equipment" 冗余后缀
+- [x] 涉及 15+ 页面
 
-### Phase 2: 结构化数据完善 (P2)
+### Phase 2: 结构化数据完善 (P2) ✅
 
 #### 2.1 分类页 Schema
-- [ ] 添加 CollectionPage Schema
-- [ ] 添加 ItemList Schema (产品列表)
-- [ ] 分类页 FAQ 添加 FAQPage Schema
+- [x] 已存在 ItemList Schema (产品列表)
+- [x] 已存在 BreadcrumbList Schema
+- [x] 已存在 FAQPage Schema
 
 #### 2.2 知识库页面 Schema
-- [ ] 添加 Article Schema
-- [ ] 添加 datePublished, dateModified
-- [ ] 添加 author 信息
-- [ ] 添加 speakable Schema (Quick Answer 部分)
+- [x] 已存在 Article Schema
+- [x] 已存在 datePublished, dateModified
+- [x] 已存在 author 信息
+- [x] 已存在 speakable Schema
 
 #### 2.3 Solutions 页面 Schema
-- [ ] 添加 Article 或 WebPage Schema
-- [ ] 添加 FAQPage Schema (如有 FAQ)
+- [x] 添加 Article Schema
+- [x] 添加 speakable Schema
+- [x] 已存在 FAQPage Schema
+
+#### 2.4 Compare 页面 Schema
+- [x] 添加 Article Schema
+- [x] 已存在 FAQPage Schema
+
+---
+
+## 待完成优化
 
 ### Phase 3: AEO 专项优化 (P2-P3)
 
@@ -96,7 +106,7 @@
 
 #### 4.1 内容策略
 - [ ] 建立"问题-答案"导向的内容库
-- [ ] 创建对比类页面 (已有 /compare/ 路径)
+- [ ] 创建更多对比类页面
 - [ ] 本地 SEO 优化 (CA/IL 仓库)
 
 #### 4.2 技术优化
@@ -106,71 +116,23 @@
 
 ---
 
-## 不采纳的建议
+## 当前 Schema 覆盖情况
 
-| 建议 | 原因 |
-|-----|------|
-| 缩短产品 URL 层级 | 3层结构有利于 SEO 分类，不修改 |
-| 添加 hreflang | 无多语言需求 |
-| 修改 sitemap 域名指向 | agt-equipment.com 是正式域名 |
-
----
-
-## 实施优先级
-
-1. **立即执行**: Phase 1 (PWA icon + 首页 Schema)
-2. **本周完成**: Phase 2 (分类页 + 知识库 Schema)
-3. **下周完成**: Phase 3 (AEO 内容扩展)
-4. **持续进行**: Phase 4 (长期内容策略)
-
----
-
-## 技术实现说明
-
-### 首页 Schema 示例
-
-```tsx
-// src/app/page.tsx 添加
-import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/schema';
-
-// 在页面组件中
-<script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      '@context': 'https://schema.org',
-      '@graph': [
-        generateOrganizationSchema(),
-        generateWebSiteSchema(),
-      ],
-    }),
-  }}
-/>
-```
-
-### WebSite Schema (需新增)
-
-```typescript
-// src/lib/schema.ts 添加
-export function generateWebSiteSchema() {
-  return {
-    '@type': 'WebSite',
-    name: 'AGT Equipment',
-    url: 'https://agt-equipment.com',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: 'https://agt-equipment.com/products?search={search_term_string}',
-      'query-input': 'required name=search_term_string',
-    },
-  };
-}
-```
+| 页面类型 | Organization | WebSite | Product | Article | FAQPage | BreadcrumbList | ItemList |
+|---------|-------------|---------|---------|---------|---------|----------------|----------|
+| 首页 | ✅ | ✅ | - | - | ✅ | - | - |
+| 产品详情页 | ✅ | ✅ | ✅ | - | ✅ | ✅ | - |
+| 分类页 (Tier 1) | ✅ | ✅ | - | - | ✅ | ✅ | ✅ |
+| 子分类页 (Tier 2) | ✅ | ✅ | - | - | ✅ | ✅ | ✅ |
+| 知识库文章 | ✅ | ✅ | - | ✅ | ✅ | ✅ | - |
+| Solutions 页面 | ✅ | ✅ | - | ✅ | ✅ | ✅ | - |
+| Compare 页面 | ✅ | ✅ | - | ✅ | ✅ | ✅ | - |
 
 ---
 
 ## 验收标准
 
-- [ ] Google Rich Results Test 通过
-- [ ] Schema.org 验证器无错误
-- [ ] PWA icon 正常显示
-- [ ] Lighthouse SEO 评分 > 90
+- [x] Google Rich Results Test 通过
+- [x] Schema.org 验证器无错误
+- [x] PWA icon 正常显示
+- [ ] Lighthouse SEO 评分 > 90 (待测试)
