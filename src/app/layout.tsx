@@ -4,6 +4,7 @@ import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ClientProviders } from '@/components/ClientProviders';
+import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/schema';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -82,6 +83,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Generate global schemas for all pages
+  const organizationSchema = generateOrganizationSchema();
+  const webSiteSchema = generateWebSiteSchema();
+
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
@@ -89,6 +94,16 @@ export default function RootLayout({
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
+        {/* Global JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [organizationSchema, webSiteSchema],
+            }),
+          }}
+        />
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         <ClientProviders>

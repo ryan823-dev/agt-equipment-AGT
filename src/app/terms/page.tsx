@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | AGT Equipment',
+  title: 'Terms of Service',
   description: 'Terms and conditions for using AGT Equipment website and purchasing our products.',
 };
 

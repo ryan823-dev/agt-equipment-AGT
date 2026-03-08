@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Parts Compatibility | AGT Equipment Support',
+  title: 'Parts Compatibility',
   description: 'Find the right parts for your AGT mini excavator or skid steer. Compatibility charts, part number lookup, and cross-reference guides.',
 };
 

@@ -35,8 +35,9 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     };
   }
 
+  // Note: Don't add "| AGT Equipment" suffix here - it's added by layout template
   return {
-    title: `${product.name} | AGT Equipment`,
+    title: product.name,
     description: product.shortDescription,
     openGraph: {
       title: product.name,

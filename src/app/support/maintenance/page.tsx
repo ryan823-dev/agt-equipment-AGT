@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Maintenance Guides | AGT Equipment Support',
+  title: 'Maintenance Guides',
   description: 'Keep your mini excavator or skid steer running smoothly with maintenance schedules, tips, and troubleshooting guides.',
 };
 

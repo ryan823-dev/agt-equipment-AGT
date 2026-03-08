@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { getAllSolutions } from '@/data/solutions';
 
 export const metadata: Metadata = {
-  title: 'Solutions | AGT Equipment',
+  title: 'Solutions',
   description: 'Find the right equipment for your specific needs. Browse solutions for farming, landscaping, construction, and more.',
 };
 

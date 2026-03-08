@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Shipping & Delivery | AGT Equipment Support',
+  title: 'Shipping & Delivery',
   description: 'Learn about free shipping on mini excavators and skid steers. Delivery times, shipping process, and what to expect when your equipment arrives.',
 };
 

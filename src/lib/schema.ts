@@ -104,8 +104,8 @@ export function generateOrganizationSchema() {
     name: 'AGT Equipment',
     alternateName: 'AGT Industrial Inc.',
     url: 'https://agt-equipment.com',
-    logo: 'https://agt-equipment.com/logo.png',
-    description: 'AGT Equipment sells mini excavators and skid steers direct from the factory.',
+    logo: 'https://agt-equipment.com/icon-512.png',
+    description: 'AGT Equipment sells mini excavators and skid steers direct from the factory. We offer 1-4 ton excavators with Kubota and Rato engines, shipped free from our US warehouses in California and Illinois.',
     address: [
       {
         '@type': 'PostalAddress',
@@ -129,12 +129,39 @@ export function generateOrganizationSchema() {
       telephone: '+1-949-898-7669',
       contactType: 'customer service',
       email: 'info@agrotkindustrial.com',
+      availableLanguage: ['English', 'Chinese'],
     },
     sameAs: [
       'https://facebook.com/agtequipment',
       'https://instagram.com/agtequipment',
       'https://linkedin.com/company/agtequipment',
     ],
+  };
+}
+
+export function generateWebSiteSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'AGT Equipment',
+    url: 'https://agt-equipment.com',
+    description: 'Factory direct mini excavators and skid steers. 1-4 ton excavators with Kubota and Rato engines. Free shipping from US warehouses.',
+    publisher: {
+      '@type': 'Organization',
+      name: 'AGT Equipment',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://agt-equipment.com/icon-512.png',
+      },
+    },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: 'https://agt-equipment.com/products?search={search_term_string}',
+      },
+      'query-input': 'required name=search_term_string',
+    },
   };
 }
 

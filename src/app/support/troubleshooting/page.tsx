@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Mini Excavator Troubleshooting Guide | AGT Equipment',
+  title: 'Mini Excavator Troubleshooting Guide',
   description: 'Troubleshoot common mini excavator problems: engine won\'t start, hydraulic issues, track problems. Step-by-step diagnostic guides for AGT equipment.',
 };
 

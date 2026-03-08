@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Warranty Information | AGT Equipment Support',
+  title: 'Warranty Information',
   description: 'Learn about AGT Equipment warranty coverage, how to file a warranty claim, and what\'s covered for mini excavators and skid steers.',
 };
 

@@ -29,11 +29,12 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     };
   }
 
+  // Note: Don't add "| AGT Equipment" suffix - it's added by layout template
   return {
-    title: `${category.name} | AGT Equipment`,
+    title: category.name,
     description: category.longDescription || category.description,
     openGraph: {
-      title: `${category.name} | AGT Equipment`,
+      title: category.name,
       description: category.description,
       images: category.image ? [{ url: category.image }] : [],
     },

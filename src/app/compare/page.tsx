@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { getAllCompares } from '@/data/compares';
 
 export const metadata: Metadata = {
-  title: 'Compare Equipment | AGT Equipment',
+  title: 'Compare Equipment',
   description: 'Compare mini excavators, skid steers, engines, and attachments. Side-by-side comparisons to help you choose the right equipment.',
 };
 

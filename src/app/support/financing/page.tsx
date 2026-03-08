@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Financing Options | AGT Equipment Support',
+  title: 'Financing Options',
   description: 'Flexible financing options for mini excavators and skid steers. Learn about payment plans, rates, and how to apply for equipment financing.',
 };
 

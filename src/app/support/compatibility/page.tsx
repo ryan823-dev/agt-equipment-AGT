@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Parts & Attachments Compatibility Guide | AGT Equipment',
+  title: 'Parts & Attachments Compatibility Guide',
   description: 'Find compatible parts and attachments for your AGT mini excavator or skid steer. H12, H15, QH12, DM12, KRT23, KTT23 compatibility charts.',
 };
 

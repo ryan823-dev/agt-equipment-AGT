@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Support Center | AGT Equipment',
+  title: 'Support Center',
   description: 'Find manuals, shipping information, warranty details, financing options, and maintenance guides for AGT equipment.',
 };
 
