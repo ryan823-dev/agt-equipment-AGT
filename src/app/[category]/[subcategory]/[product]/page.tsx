@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { products, getProductBySlug, getProductPath } from '@/data/products';
 import { getCategoryBySlug, getCategoryBySlugAndParent } from '@/data/categories';
 import { Product, ProductSchema, BreadcrumbSchema, FAQSchema } from '@/types';
+import { ProductActions } from '@/components/product/ProductActions';
 
 interface ProductPageProps {
   params: Promise<{
@@ -186,20 +187,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   </span>
                 </div>
 
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
-                  <a
-                    href="#"
-                    className="flex-1 bg-blue-600 text-white py-3 sm:py-4 px-6 sm:px-8 rounded-lg font-semibold text-center hover:bg-blue-700 transition-colors text-sm sm:text-base"
-                  >
-                    Request Quote
-                  </a>
-                  <a
-                    href="tel:+19498987669"
-                    className="flex-1 border border-gray-300 text-gray-700 py-3 sm:py-4 px-6 sm:px-8 rounded-lg font-semibold text-center hover:bg-gray-50 transition-colors text-sm sm:text-base"
-                  >
-                    Call (949) 898-7669
-                  </a>
+                {/* CTA Buttons - Add to Cart */}
+                <div className="mb-6 sm:mb-8">
+                  <ProductActions product={product} />
                 </div>
 
                 {/* Trust Badges */}

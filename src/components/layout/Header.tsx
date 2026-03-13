@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Phone, ChevronDown, ChevronRight, ShoppingCart } from 'lucide-react';
+import { Menu, X, Phone, ChevronDown, ChevronRight } from 'lucide-react';
 import { UserMenu } from '@/components/auth/UserMenu';
+import { CartBadge } from '@/components/cart/CartBadge';
 
 const navigation = [
   {
@@ -113,9 +114,7 @@ export function Header() {
               <Phone className="h-5 w-5" />
             </a>
           </Button>
-          <Link href="/cart" className="relative p-2 text-gray-600 hover:text-gray-900">
-            <ShoppingCart className="h-5 w-5" />
-          </Link>
+          <CartBadge />
           <UserMenu />
         </div>
 
@@ -225,14 +224,7 @@ export function Header() {
           {/* Drawer Footer */}
           <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t space-y-3">
             <div className="flex items-center justify-center gap-4 mb-3">
-              <Link
-                href="/cart"
-                className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <ShoppingCart className="h-5 w-5" />
-                <span className="text-sm font-medium">Cart</span>
-              </Link>
+              <CartBadge />
             </div>
             <a
               href="tel:+19498987669"
