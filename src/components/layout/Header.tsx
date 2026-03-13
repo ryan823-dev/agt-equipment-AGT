@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Phone, ChevronDown, ChevronRight } from 'lucide-react';
+import { Menu, X, Phone, ChevronDown, ChevronRight, ShoppingCart } from 'lucide-react';
+import { UserMenu } from '@/components/auth/UserMenu';
 
 const navigation = [
   {
@@ -106,15 +107,16 @@ export function Header() {
         </div>
 
         {/* Desktop Actions */}
-        <div className="hidden lg:flex lg:items-center lg:space-x-4">
+        <div className="hidden lg:flex lg:items-center lg:space-x-2">
           <Button variant="ghost" size="icon" asChild>
             <a href="tel:+19498987669">
               <Phone className="h-5 w-5" />
             </a>
           </Button>
-          <Button asChild>
-            <Link href="/contact/">Get Quote</Link>
-          </Button>
+          <Link href="/cart" className="relative p-2 text-gray-600 hover:text-gray-900">
+            <ShoppingCart className="h-5 w-5" />
+          </Link>
+          <UserMenu />
         </div>
 
         {/* Mobile Menu Button */}
@@ -222,18 +224,35 @@ export function Header() {
 
           {/* Drawer Footer */}
           <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t space-y-3">
+            <div className="flex items-center justify-center gap-4 mb-3">
+              <Link
+                href="/cart"
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <ShoppingCart className="h-5 w-5" />
+                <span className="text-sm font-medium">Cart</span>
+              </Link>
+            </div>
             <a
               href="tel:+19498987669"
-              className="flex items-center justify-center gap-2 py-3 text-blue-600 font-medium"
+              className="flex items-center justify-center gap-2 py-2 text-blue-600 font-medium"
             >
               <Phone className="h-5 w-5" />
               <span>(949) 898-7669</span>
             </a>
-            <Button asChild className="w-full" size="lg">
-              <Link href="/contact/" onClick={() => setMobileMenuOpen(false)}>
-                Get Quote
-              </Link>
-            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" asChild className="flex-1">
+                <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
+                  Sign In
+                </Link>
+              </Button>
+              <Button asChild className="flex-1">
+                <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>
+                  Sign Up
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

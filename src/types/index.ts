@@ -252,3 +252,293 @@ export interface ProductFilter {
   tags?: string[];
   sort?: 'price-asc' | 'price-desc' | 'name' | 'newest' | 'rating';
 }
+
+// ============================================
+// E-Commerce Types
+// ============================================
+
+// User Profile (extends Supabase Auth)
+export interface UserProfile {
+  id: string;
+  full_name: string | null;
+  phone: string | null;
+  company_name: string | null;
+  customer_type: 'b2c' | 'b2b';
+  google_id: string | null;
+  avatar_url: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+// Address
+export interface Address {
+  id: string;
+  user_id: string;
+  type: 'billing' | 'shipping';
+  is_default: boolean;
+  first_name: string | null;
+  last_name: string | null;
+  company: string | null;
+  address_line1: string;
+  address_line2: string | null;
+  city: string;
+  state: string;
+  postal_code: string;
+  country: string;
+  phone: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AddressFormData {
+  type: 'billing' | 'shipping';
+  is_default?: boolean;
+  first_name: string;
+  last_name: string;
+  company?: string;
+  address_line1: string;
+  address_line2?: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  country?: string;
+  phone?: string;
+}
+
+// Cart
+export interface CartItem {
+  id: string;
+  user_id: string | null;
+  session_id: string | null;
+  product_id: string;
+  quantity: number;
+  unit_price: number;
+  created_at: string;
+  updated_at: string;
+  // Joined data
+  product?: Product;
+}
+
+export interface CartItemWithProduct extends CartItem {
+  product: Product;
+}
+
+// Order
+export type OrderStatus = 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded';
+export type PaymentMethod = 'stripe' | 'paypal';
+
+export interface Order {
+  id: string;
+  order_number: string;
+  user_id: string | null;
+  status: OrderStatus;
+  subtotal: number;
+  shipping_cost: number;
+  tax_amount: number;
+  discount_amount: number;
+  total_amount: number;
+  currency: string;
+  shipping_address: AddressFormData;
+  billing_address: AddressFormData;
+  shipping_method: string | null;
+  tracking_number: string | null;
+  shipped_at: string | null;
+  delivered_at: string | null;
+  payment_status: PaymentStatus;
+  payment_method: PaymentMethod | null;
+  payment_id: string | null;
+  paid_at: string | null;
+  customer_notes: string | null;
+  internal_notes: string | null;
+  created_at: string;
+  updated_at: string;
+  // Joined data
+  items?: OrderItem[];
+}
+
+export interface OrderItem {
+  id: string;
+  order_id: string;
+  product_id: string;
+  product_name: string;
+  product_sku: string | null;
+  unit_price: number;
+  quantity: number;
+  subtotal: number;
+  specifications: Record<string, string> | null;
+  created_at: string;
+}
+
+// Inquiry (B2B Quote Request)
+export type InquiryType = 'single' | 'bulk' | 'custom';
+export type InquiryStatus = 'pending' | 'quoted' | 'accepted' | 'converted' | 'expired';
+
+export interface Inquiry {
+  id: string;
+  inquiry_number: string;
+  user_id: string | null;
+  contact_name: string;
+  contact_email: string;
+  contact_phone: string | null;
+  company_name: string | null;
+  type: InquiryType;
+  status: InquiryStatus;
+  message: string | null;
+  use_case: string | null;
+  preferred_timeline: string | null;
+  attachments: Record<string, unknown>[] | null;
+  quote_id: string | null;
+  converted_order_id: string | null;
+  created_at: string;
+  updated_at: string;
+  // Joined data
+  items?: InquiryItem[];
+  quote?: Quote;
+}
+
+export interface InquiryItem {
+  id: string;
+  inquiry_id: string;
+  product_id: string | null;
+  product_name: string;
+  quantity: number;
+  notes: string | null;
+  created_at: string;
+}
+
+export interface InquiryFormData {
+  contact_name: string;
+  contact_email: string;
+  contact_phone?: string;
+  company_name?: string;
+  type: InquiryType;
+  message?: string;
+  use_case?: string;
+  preferred_timeline?: string;
+  items: {
+    product_id?: string;
+    product_name: string;
+    quantity: number;
+    notes?: string;
+  }[];
+}
+
+// Quote (B2B)
+export type QuoteStatus = 'draft' | 'sent' | 'accepted' | 'rejected' | 'expired';
+
+export interface Quote {
+  id: string;
+  quote_number: string;
+  inquiry_id: string | null;
+  user_id: string | null;
+  status: QuoteStatus;
+  valid_until: string | null;
+  subtotal: number;
+  shipping_cost: number;
+  discount_amount: number;
+  total_amount: number;
+  currency: string;
+  payment_terms: string | null;
+  shipping_terms: string | null;
+  warranty_terms: string | null;
+  notes: string | null;
+  created_by: string | null;
+  approved_by: string | null;
+  approved_at: string | null;
+  sent_at: string | null;
+  created_at: string;
+  updated_at: string;
+  // Joined data
+  items?: QuoteItem[];
+}
+
+export interface QuoteItem {
+  id: string;
+  quote_id: string;
+  product_id: string | null;
+  product_name: string;
+  product_sku: string | null;
+  quantity: number;
+  unit_price: number;
+  discount_percent: number;
+  subtotal: number;
+  notes: string | null;
+  created_at: string;
+}
+
+// B2B Account
+export type B2BStatus = 'pending' | 'approved' | 'suspended';
+export type BusinessType = 'contractor' | 'dealer' | 'rental' | 'other';
+export type DiscountTier = 'bronze' | 'silver' | 'gold' | 'platinum';
+export type PaymentTerms = 'net15' | 'net30' | 'net60';
+
+export interface B2BAccount {
+  id: string;
+  user_id: string;
+  company_name: string;
+  business_type: BusinessType | null;
+  tax_id: string | null;
+  website: string | null;
+  status: B2BStatus;
+  verified_at: string | null;
+  verified_by: string | null;
+  credit_limit: number;
+  credit_used: number;
+  payment_terms: PaymentTerms | null;
+  discount_tier: DiscountTier;
+  default_discount_percent: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface B2BApplicationFormData {
+  company_name: string;
+  business_type: BusinessType;
+  tax_id?: string;
+  website?: string;
+}
+
+// Checkout
+export interface CheckoutData {
+  shipping_address: AddressFormData;
+  billing_address?: AddressFormData;
+  same_as_shipping: boolean;
+  shipping_method: string;
+  payment_method: PaymentMethod;
+  customer_notes?: string;
+}
+
+// Auth
+export interface AuthState {
+  user: {
+    id: string;
+    email: string;
+    email_confirmed_at: string | null;
+  } | null;
+  profile: UserProfile | null;
+  isLoading: boolean;
+  isAuthenticated: boolean;
+}
+
+export interface LoginFormData {
+  email: string;
+  password: string;
+}
+
+export interface RegisterFormData {
+  email: string;
+  password: string;
+  confirm_password: string;
+  full_name: string;
+  phone?: string;
+}
+
+// Cart State
+export interface CartState {
+  items: CartItemWithProduct[];
+  itemCount: number;
+  subtotal: number;
+  isLoading: boolean;
+  isOpen: boolean;
+}
