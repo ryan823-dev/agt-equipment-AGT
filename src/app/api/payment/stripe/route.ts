@@ -2,11 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@/lib/supabase/server';
 
+// Check if Stripe is configured
+function isStripeConfigured() {
+  return !!process.env.STRIPE_SECRET_KEY;
+}
+
 // Lazy initialization of Stripe to avoid build-time errors
 function getStripe() {
   const secretKey = process.env.STRIPE_SECRET_KEY;
   if (!secretKey) {
-    throw new Error('STRIPE_SECRET_KEY is not configured');
+    throw new Error('Stripe is not configured');
   }
   return new Stripe(secretKey, {
     apiVersion: '2026-02-25.clover',
@@ -15,6 +20,14 @@ function getStripe() {
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if Stripe is configured
+    if (!isStripeConfigured()) {
+      return NextResponse.json(
+        { error: 'Credit card payment is not available. Please contact support.' },
+        { status: 503 }
+      );
+    }
+
     const { amount, currency = 'usd' } = await request.json();
 
     if (!amount || amount < 50) {

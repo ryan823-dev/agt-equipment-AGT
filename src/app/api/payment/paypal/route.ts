@@ -1,17 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
+// Check if PayPal is configured
+function isPayPalConfigured() {
+  return !!(process.env.PAYPAL_CLIENT_ID && process.env.PAYPAL_CLIENT_SECRET);
+}
+
 // PayPal API configuration
-const PAYPAL_API = process.env.PAYPAL_MODE === 'live'
-  ? 'https://api-m.paypal.com'
-  : 'https://api-m.sandbox.paypal.com';
+const getPayPalApi = () => {
+  return process.env.PAYPAL_MODE === 'live'
+    ? 'https://api-m.paypal.com'
+    : 'https://api-m.sandbox.paypal.com';
+};
 
 async function getPayPalAccessToken() {
+  if (!isPayPalConfigured()) {
+    throw new Error('PayPal is not configured');
+  }
+
   const auth = Buffer.from(
     `${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_CLIENT_SECRET}`
   ).toString('base64');
 
-  const response = await fetch(`${PAYPAL_API}/v1/oauth2/token`, {
+  const response = await fetch(`${getPayPalApi()}/v1/oauth2/token`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -26,6 +37,14 @@ async function getPayPalAccessToken() {
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if PayPal is configured
+    if (!isPayPalConfigured()) {
+      return NextResponse.json(
+        { error: 'PayPal payment is not available. Please contact support.' },
+        { status: 503 }
+      );
+    }
+
     const { amount, currency = 'USD', returnUrl, cancelUrl } = await request.json();
 
     if (!amount || amount < 1) {
@@ -38,7 +57,7 @@ export async function POST(request: NextRequest) {
     const accessToken = await getPayPalAccessToken();
 
     // Create PayPal order
-    const response = await fetch(`${PAYPAL_API}/v2/checkout/orders`, {
+    const response = await fetch(`${getPayPalApi()}/v2/checkout/orders`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
