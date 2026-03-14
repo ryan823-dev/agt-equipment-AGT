@@ -15,6 +15,7 @@ CREATE TABLE user_profiles (
     customer_type TEXT DEFAULT 'b2c' CHECK (customer_type IN ('b2c', 'b2b')),
     google_id TEXT UNIQUE,
     avatar_url TEXT,
+    is_admin BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -423,3 +424,83 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE OR REPLACE TRIGGER on_auth_user_created
     AFTER INSERT ON auth.users
     FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- ============================================
+-- ADMIN POLICIES (Service Role Required)
+-- ============================================
+
+-- Create admin role for RLS
+-- Note: These policies allow admins to access all records
+-- Admin check is done via is_admin field in user_profiles
+
+-- Orders - Admin can manage all orders
+CREATE POLICY "Admins can manage all orders"
+    ON orders FOR ALL
+    USING (EXISTS (
+        SELECT 1 FROM user_profiles WHERE user_profiles.id = auth.uid() AND user_profiles.is_admin = TRUE
+    ));
+
+-- Order Items - Admin can manage all order items
+CREATE POLICY "Admins can manage all order items"
+    ON order_items FOR ALL
+    USING (EXISTS (
+        SELECT 1 FROM user_profiles WHERE user_profiles.id = auth.uid() AND user_profiles.is_admin = TRUE
+    ));
+
+-- Inquiries - Admin can manage all inquiries
+CREATE POLICY "Admins can manage all inquiries"
+    ON inquiries FOR ALL
+    USING (EXISTS (
+        SELECT 1 FROM user_profiles WHERE user_profiles.id = auth.uid() AND user_profiles.is_admin = TRUE
+    ));
+
+-- Inquiry Items - Admin can manage all inquiry items
+CREATE POLICY "Admins can manage all inquiry items"
+    ON inquiry_items FOR ALL
+    USING (EXISTS (
+        SELECT 1 FROM user_profiles WHERE user_profiles.id = auth.uid() AND user_profiles.is_admin = TRUE
+    ));
+
+-- Quotes - Admin can manage all quotes
+CREATE POLICY "Admins can manage all quotes"
+    ON quotes FOR ALL
+    USING (EXISTS (
+        SELECT 1 FROM user_profiles WHERE user_profiles.id = auth.uid() AND user_profiles.is_admin = TRUE
+    ));
+
+CREATE POLICY "Admins can insert quotes"
+    ON quotes FOR INSERT
+    WITH CHECK (EXISTS (
+        SELECT 1 FROM user_profiles WHERE user_profiles.id = auth.uid() AND user_profiles.is_admin = TRUE
+    ));
+
+-- Quote Items - Admin can manage all quote items
+CREATE POLICY "Admins can manage all quote items"
+    ON quote_items FOR ALL
+    USING (EXISTS (
+        SELECT 1 FROM user_profiles WHERE user_profiles.id = auth.uid() AND user_profiles.is_admin = TRUE
+    ));
+
+CREATE POLICY "Admins can insert quote items"
+    ON quote_items FOR INSERT
+    WITH CHECK (EXISTS (
+        SELECT 1 FROM user_profiles WHERE user_profiles.id = auth.uid() AND user_profiles.is_admin = TRUE
+    ));
+
+-- B2B Accounts - Admin can manage all b2b accounts
+CREATE POLICY "Admins can manage all b2b accounts"
+    ON b2b_accounts FOR ALL
+    USING (EXISTS (
+        SELECT 1 FROM user_profiles WHERE user_profiles.id = auth.uid() AND user_profiles.is_admin = TRUE
+    ));
+
+-- Users - Admin can view all user profiles
+CREATE POLICY "Admins can view all profiles"
+    ON user_profiles FOR SELECT
+    USING (is_admin = TRUE OR auth.uid() = id);
+
+-- ============================================
+-- GRANT ADMIN ACCESS (Run with service role)
+-- ============================================
+-- These grants allow the service role to bypass RLS for admin operations
+-- GRANT ALL ON ALL TABLES IN SCHEMA public TO service_role;

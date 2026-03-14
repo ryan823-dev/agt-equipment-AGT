@@ -37,6 +37,33 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // Admin routes - require admin privileges
+  const isAdminPath = request.nextUrl.pathname.startsWith('/admin');
+  
+  if (isAdminPath) {
+    if (!user) {
+      // Redirect to login with return URL
+      const url = request.nextUrl.clone();
+      url.pathname = '/auth/login';
+      url.searchParams.set('redirect', request.nextUrl.pathname);
+      return NextResponse.redirect(url);
+    }
+    
+    // Check if user is admin
+    const { data: profile } = await supabase
+      .from('user_profiles')
+      .select('is_admin')
+      .eq('id', user.id)
+      .single();
+    
+    if (!profile?.is_admin) {
+      // Redirect to home page if not admin
+      const url = request.nextUrl.clone();
+      url.pathname = '/';
+      return NextResponse.redirect(url);
+    }
+  }
+
   // Protected routes that require authentication
   const protectedPaths = ['/account', '/checkout', '/cart'];
   const isProtectedPath = protectedPaths.some(path => 

@@ -266,6 +266,7 @@ export interface UserProfile {
   customer_type: 'b2c' | 'b2b';
   google_id: string | null;
   avatar_url: string | null;
+  is_admin: boolean;
   created_at: string;
   updated_at: string;
 }

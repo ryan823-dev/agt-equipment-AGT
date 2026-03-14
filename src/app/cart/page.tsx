@@ -204,6 +204,16 @@ export default function CartPage() {
                 </Link>
               </Button>
 
+              <div className="text-center">
+                <span className="text-sm text-gray-500">or</span>
+              </div>
+
+              <Button asChild variant="outline" className="w-full">
+                <Link href="/inquiry">
+                  Request a Quote
+                </Link>
+              </Button>
+
               {/* Trust Signals */}
               <div className="pt-4 space-y-3 border-t">
                 <div className="flex items-center gap-2 text-sm text-gray-600">

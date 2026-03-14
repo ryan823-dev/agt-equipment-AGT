@@ -5,13 +5,14 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { User, Package, MapPin, FileText, Settings, Loader2 } from 'lucide-react';
+import { User, Package, MapPin, FileText, Settings, Loader2, Building2 } from 'lucide-react';
 
 const navItems = [
   { name: 'Overview', href: '/account', icon: User },
   { name: 'Orders', href: '/account/orders', icon: Package },
   { name: 'Addresses', href: '/account/addresses', icon: MapPin },
   { name: 'Quotes', href: '/account/quotes', icon: FileText },
+  { name: 'B2B Account', href: '/account/b2b', icon: Building2 },
   { name: 'Settings', href: '/account/settings', icon: Settings },
 ];
 
