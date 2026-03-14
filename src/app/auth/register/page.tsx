@@ -1,5 +1,8 @@
 import { RegisterForm } from '@/components/auth/RegisterForm';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Create Account',
   description: 'Create an AGT Equipment account to start shopping for mini excavators, skid steers, and attachments.',

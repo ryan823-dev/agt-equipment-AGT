@@ -2,6 +2,9 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllCompares } from '@/data/compares';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Compare Equipment',
   description: 'Compare mini excavators, skid steers, engines, and attachments. Side-by-side comparisons to help you choose the right equipment.',

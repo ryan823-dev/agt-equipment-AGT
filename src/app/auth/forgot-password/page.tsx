@@ -1,5 +1,8 @@
 import { ForgotPasswordForm } from '@/components/auth/ForgotPasswordForm';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Reset Password',
   description: 'Reset your AGT Equipment account password.',

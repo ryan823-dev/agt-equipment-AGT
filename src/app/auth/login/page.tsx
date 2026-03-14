@@ -1,6 +1,9 @@
 import { Suspense } from 'react';
 import { LoginForm } from '@/components/auth/LoginForm';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Sign In',
   description: 'Sign in to your AGT Equipment account to manage orders, track shipments, and access exclusive deals.',
