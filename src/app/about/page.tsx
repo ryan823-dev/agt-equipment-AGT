@@ -2,13 +2,14 @@ import { Metadata } from 'next';
 import { Card, CardContent } from '@/components/ui/card';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { generateOrganizationSchema } from '@/lib/schema';
+import { canonicalUrl } from '@/lib/seo';
 import { MapPin, Phone, Mail, Clock, Users, Award, Truck, Shield } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'About Us - AGT Industrial Inc.',
   description: 'AGT Industrial Inc. has been manufacturing compact construction equipment since 2004. US warehouses in California and Illinois provide fast delivery.',
   alternates: {
-    canonical: 'https://agt-equipment.com/about',
+    canonical: canonicalUrl('/about/'),
   },
 };
 

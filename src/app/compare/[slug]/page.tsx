@@ -1,7 +1,9 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { compares, getAllCompares, getCompareBySlug } from '@/data/compares';
 import { BreadcrumbSchema, FAQSchema, Compare } from '@/types';
+import { canonicalUrl } from '@/lib/seo';
 
 interface ComparePageProps {
   params: Promise<{
@@ -26,6 +28,15 @@ export async function generateMetadata({ params }: ComparePageProps): Promise<Me
   return {
     title: compare.metaTitle,
     description: compare.metaDescription,
+    alternates: {
+      canonical: canonicalUrl(`/compare/${compare.slug}/`),
+    },
+    openGraph: {
+      title: compare.metaTitle,
+      description: compare.metaDescription,
+      type: 'article',
+      url: canonicalUrl(`/compare/${compare.slug}/`),
+    },
   };
 }
 
@@ -34,14 +45,7 @@ export default async function ComparePage({ params }: ComparePageProps) {
   const compare = getCompareBySlug(slug);
 
   if (!compare) {
-    return (
-      <main className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Comparison Not Found</h1>
-          <Link href="/compare/" className="text-blue-600 hover:underline">View all comparisons</Link>
-        </div>
-      </main>
-    );
+    notFound();
   }
 
   return (
@@ -91,7 +95,7 @@ export default async function ComparePage({ params }: ComparePageProps) {
         </section>
 
         {/* AEO Answer Block */}
-        <section className="py-8 bg-orange-50">
+        <section className="py-8 bg-orange-50" data-speakable="quick-answer">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-white rounded-lg shadow-md p-8">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Answer</h2>
@@ -206,9 +210,9 @@ function generateBreadcrumbSchema(compare: Compare): BreadcrumbSchema {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://agt-equipment.com/' },
-      { '@type': 'ListItem', position: 2, name: 'Compare', item: 'https://agt-equipment.com/compare/' },
-      { '@type': 'ListItem', position: 3, name: compare.title, item: `https://agt-equipment.com/compare/${compare.slug}/` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://miniironpro.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Compare', item: 'https://miniironpro.com/compare/' },
+      { '@type': 'ListItem', position: 3, name: compare.title, item: `https://miniironpro.com/compare/${compare.slug}/` },
     ],
   };
 }
@@ -234,19 +238,19 @@ function generateArticleSchema(compare: Compare) {
     author: {
       '@type': 'Organization',
       name: 'AGT Equipment',
-      url: 'https://agt-equipment.com',
+      url: 'https://miniironpro.com',
     },
     publisher: {
       '@type': 'Organization',
       name: 'AGT Equipment',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://agt-equipment.com/icon-512.png',
+        url: 'https://miniironpro.com/icon-512.png',
       },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://agt-equipment.com/compare/${compare.slug}/`,
+      '@id': `https://miniironpro.com/compare/${compare.slug}/`,
     },
   };
 }

@@ -1,8 +1,12 @@
 import type { Metadata } from 'next';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
   description: 'Terms and conditions for using AGT Equipment website and purchasing our products.',
+  alternates: {
+    canonical: canonicalUrl('/terms/'),
+  },
 };
 
 export default function TermsOfServicePage() {
@@ -17,7 +21,7 @@ export default function TermsOfServicePage() {
           </p>
 
           <p className="text-slate-600 mb-6">
-            Welcome to AGT Industrial! By accessing our website at www.agtequipment.com or purchasing products from us, you agree to abide by these Terms of Service. Please read these terms carefully before using our services.
+            Welcome to AGT Industrial! By accessing our website at miniironpro.com or purchasing products from us, you agree to abide by these Terms of Service. Please read these terms carefully before using our services.
           </p>
 
           <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">1. Use of Service</h2>

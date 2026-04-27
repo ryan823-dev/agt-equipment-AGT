@@ -1,23 +1,14 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { requireAdminUser } from '@/lib/supabase/admin';
 
-// Create Supabase client with service role for admin operations
-function getAdminClient() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-    }
-  );
-}
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    const supabase = getAdminClient();
+    const admin = await requireAdminUser();
+    if (!admin.ok) return admin.response;
+
+    const supabase = admin.supabase;
 
     // Get order stats
     const { data: orders } = await supabase

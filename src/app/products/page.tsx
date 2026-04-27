@@ -5,19 +5,28 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { generateOrganizationSchema } from '@/lib/schema';
-import { getProducts, getCategories } from '@/lib/data';
+import { getCategories } from '@/lib/data';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Products - Mini Excavators, Skid Steers & Attachments',
   description: 'Browse AGT Equipment products: 1-4 ton mini excavators, skid steers, attachments, and parts. Factory direct pricing with free US shipping.',
   alternates: {
-    canonical: 'https://agt-equipment.com/products',
+    canonical: canonicalUrl('/products/'),
   },
 };
 
 export default async function ProductsPage() {
   const categories = await getCategories();
+
+  const getCategoryHref = (category: (typeof categories)[number]) => {
+    if (category.tier === 'tier2' && category.parentSlug) {
+      return `/${category.parentSlug}/${category.slug}/`;
+    }
+
+    return `/${category.slug}/`;
+  };
 
   return (
     <>
@@ -67,7 +76,7 @@ export default async function ProductsPage() {
                   {category.productCount} products
                 </p>
                 <Button asChild variant="outline" className="w-full">
-                  <Link href={`/products/${category.slug}`}>
+                  <Link href={getCategoryHref(category)}>
                     View Products
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>

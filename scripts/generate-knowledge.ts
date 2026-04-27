@@ -1,23 +1,22 @@
 /**
  * Knowledge Base Generator
  *
- * 从网站数据源提取知识，生成 AI 助手可用的知识库
- * 运行方式: npx tsx scripts/generate-knowledge.ts
+ * Extracts site data into the knowledge base used by the AI assistant.
+ * Run with: npx tsx scripts/generate-knowledge.ts
  */
 
 import fs from 'fs';
 import path from 'path';
 
-// 数据源路径
 const DATA_DIR = path.join(process.cwd(), 'src/data');
 const OUTPUT_FILE = path.join(process.cwd(), 'knowledge-base.json');
+const SITE_URL = 'https://miniironpro.com';
 
-// 知识条目类型
 interface KnowledgeEntry {
   id: string;
   type: 'product' | 'article' | 'faq' | 'category' | 'page';
   title: string;
-  content: string; // 用于检索和作为上下文
+  content: string;
   keywords: string[];
   metadata: Record<string, unknown>;
   updatedAt: string;
@@ -38,35 +37,78 @@ interface KnowledgeBase {
   };
 }
 
-// 提取关键词的简单函数
+function stripHtml(text: string | undefined): string {
+  if (!text) return '';
+
+  return text
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function extractKeywords(text: string): string[] {
-  // 移除标点和特殊字符，分词
-  const words = text.toLowerCase()
+  const words = text
+    .toLowerCase()
     .replace(/[^\w\s-]/g, ' ')
     .split(/\s+/)
-    .filter(w => w.length > 2);
+    .filter((word) => word.length > 2);
 
-  // 停用词列表
   const stopWords = new Set([
-    'the', 'and', 'for', 'are', 'but', 'not', 'you', 'all', 'can', 'had',
-    'her', 'was', 'one', 'our', 'out', 'has', 'have', 'been', 'will', 'your',
-    'from', 'they', 'this', 'that', 'with', 'what', 'when', 'where', 'which',
-    'how', 'why', 'who', 'its', 'his', 'she', 'him', 'her', 'their', 'them',
+    'the',
+    'and',
+    'for',
+    'are',
+    'but',
+    'not',
+    'you',
+    'all',
+    'can',
+    'had',
+    'her',
+    'was',
+    'one',
+    'our',
+    'out',
+    'has',
+    'have',
+    'been',
+    'will',
+    'your',
+    'from',
+    'they',
+    'this',
+    'that',
+    'with',
+    'what',
+    'when',
+    'where',
+    'which',
+    'how',
+    'why',
+    'who',
+    'its',
+    'his',
+    'she',
+    'him',
+    'their',
+    'them',
   ]);
 
-  // 过滤并去重
-  const filtered = words.filter(w => !stopWords.has(w) && !/^\d+$/.test(w));
+  const filtered = words.filter((word) => !stopWords.has(word) && !/^\d+$/.test(word));
   return Array.from(new Set(filtered));
 }
 
-// 从产品提取知识
 async function extractProducts(): Promise<KnowledgeEntry[]> {
   const productsPath = path.join(DATA_DIR, 'products.ts');
   if (!fs.existsSync(productsPath)) return [];
 
-  const { products } = await import('../src/data/products');
+  const { products, getProductPath } = await import('../src/data/products');
 
-  return products.map(product => ({
+  return products.map((product) => ({
     id: `product-${product.id}`,
     type: 'product' as const,
     title: product.name,
@@ -77,34 +119,51 @@ async function extractProducts(): Promise<KnowledgeEntry[]> {
       product.compareAtPrice ? `Compare at: $${product.compareAtPrice.toLocaleString()}` : '',
       `Category: ${product.category}`,
       product.subcategory ? `Subcategory: ${product.subcategory}` : '',
-      product.shortDescription || '',
-      `Features: ${product.features.join(', ')}`,
-      `Specifications: ${Object.entries(product.specifications).map(([k, v]) => `${k}: ${v}`).join('; ')}`,
-      product.stock === 'in_stock' ? 'In Stock' : product.stock === 'out_of_stock' ? 'Out of Stock' : 'Pre-order',
+      `Product URL: ${getProductPath(product)}`,
+      stripHtml(product.shortDescription || product.description),
+      product.features.length > 0 ? `Features: ${product.features.join(', ')}` : '',
+      `Specifications: ${Object.entries(product.specifications)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join('; ')}`,
+      product.primaryUseCases && product.primaryUseCases.length > 0
+        ? `Primary use cases: ${product.primaryUseCases.join(', ')}`
+        : '',
+      product.stock === 'in_stock'
+        ? 'In Stock'
+        : product.stock === 'out_of_stock'
+          ? 'Out of Stock'
+          : 'Pre-order',
       product.rating ? `Rating: ${product.rating.average}/5 (${product.rating.count} reviews)` : '',
-    ].filter(Boolean).join('\n'),
+    ]
+      .filter(Boolean)
+      .join('\n'),
     keywords: extractKeywords(
-      `${product.name} ${product.category} ${product.subcategory || ''} ${product.features.join(' ')} ${product.tags.join(' ')}`
+      `${product.name} ${product.category} ${product.subcategory || ''} ${product.features.join(
+        ' ',
+      )} ${product.tags.join(' ')}`,
     ),
     metadata: {
       sku: product.sku,
       price: product.price,
       category: product.category,
+      categorySlug: product.categorySlug,
+      subcategory: product.subcategory,
+      subcategorySlug: product.subcategorySlug,
       slug: product.slug,
+      path: getProductPath(product),
       stock: product.stock,
     },
     updatedAt: product.updatedAt,
   }));
 }
 
-// 从文章提取知识
 async function extractArticles(): Promise<KnowledgeEntry[]> {
   const articlesPath = path.join(DATA_DIR, 'articles.ts');
   if (!fs.existsSync(articlesPath)) return [];
 
   const { articles } = await import('../src/data/articles');
 
-  return articles.map(article => ({
+  return articles.map((article) => ({
     id: `article-${article.id}`,
     type: 'article' as const,
     title: article.title,
@@ -114,12 +173,10 @@ async function extractArticles(): Promise<KnowledgeEntry[]> {
       `Summary: ${article.excerpt}`,
       `Quick Answer: ${article.quickAnswer}`,
       `Reading Time: ${article.readingTime} minutes`,
-      `FAQs:`,
-      ...article.faq.map(faq => `Q: ${faq.question}\nA: ${faq.answer}`),
+      'FAQs:',
+      ...article.faq.map((faq) => `Q: ${faq.question}\nA: ${faq.answer}`),
     ].join('\n'),
-    keywords: extractKeywords(
-      `${article.title} ${article.excerpt} ${article.tags.join(' ')}`
-    ),
+    keywords: extractKeywords(`${article.title} ${article.excerpt} ${article.tags.join(' ')}`),
     metadata: {
       slug: article.slug,
       category: article.category,
@@ -129,14 +186,13 @@ async function extractArticles(): Promise<KnowledgeEntry[]> {
   }));
 }
 
-// 从分类提取知识
 async function extractCategories(): Promise<KnowledgeEntry[]> {
   const categoriesPath = path.join(DATA_DIR, 'categories.ts');
   if (!fs.existsSync(categoriesPath)) return [];
 
   const { categories } = await import('../src/data/categories');
 
-  return categories.map(category => ({
+  return categories.map((category) => ({
     id: `category-${category.id}`,
     type: 'category' as const,
     title: category.name,
@@ -154,7 +210,97 @@ async function extractCategories(): Promise<KnowledgeEntry[]> {
   }));
 }
 
-// 提取页面知识（硬编码的页面内容）
+async function extractSolutions(): Promise<KnowledgeEntry[]> {
+  const solutionsPath = path.join(DATA_DIR, 'solutions.ts');
+  if (!fs.existsSync(solutionsPath)) return [];
+
+  const { solutions } = await import('../src/data/solutions');
+
+  return solutions.map((solution) => ({
+    id: `solution-${solution.id}`,
+    type: 'article' as const,
+    title: solution.title,
+    content: [
+      `Solution: ${solution.title}`,
+      `Summary: ${solution.excerpt}`,
+      `Quick Answer: ${solution.quickAnswer}`,
+      solution.keyFacts.length > 0 ? `Key Facts: ${solution.keyFacts.join('; ')}` : '',
+      `Recommended Product IDs: ${solution.recommendedProducts.join(', ')}`,
+      `Compatible Attachment IDs: ${solution.compatibleAttachments.join(', ')}`,
+      'FAQs:',
+      ...solution.faq.map((faq) => `Q: ${faq.question}\nA: ${faq.answer}`),
+    ]
+      .filter(Boolean)
+      .join('\n'),
+    keywords: extractKeywords(`${solution.title} ${solution.excerpt} ${solution.keyFacts.join(' ')}`),
+    metadata: {
+      slug: solution.slug,
+      path: `/solutions/${solution.slug}`,
+      source: 'solutions',
+    },
+    updatedAt: new Date().toISOString(),
+  }));
+}
+
+async function extractCompares(): Promise<KnowledgeEntry[]> {
+  const comparesPath = path.join(DATA_DIR, 'compares.ts');
+  if (!fs.existsSync(comparesPath)) return [];
+
+  const { compares } = await import('../src/data/compares');
+
+  return compares.map((compare) => ({
+    id: `compare-${compare.id}`,
+    type: 'article' as const,
+    title: compare.title,
+    content: [
+      `Comparison: ${compare.title}`,
+      `Summary: ${compare.excerpt}`,
+      `Quick Answer: ${compare.quickAnswer}`,
+      `Verdict: ${compare.verdict}`,
+      `Left item: ${compare.leftItem.name}`,
+      `Right item: ${compare.rightItem.name}`,
+      `Comparison table: ${compare.comparisonTable
+        .map(
+          (row) =>
+            `${row.feature}: ${Object.entries(row.values)
+              .map(([key, value]) => `${key}=${value}`)
+              .join(', ')}`,
+        )
+        .join('; ')}`,
+      'FAQs:',
+      ...compare.faq.map((faq) => `Q: ${faq.question}\nA: ${faq.answer}`),
+    ]
+      .filter(Boolean)
+      .join('\n'),
+    keywords: extractKeywords(
+      `${compare.title} ${compare.excerpt} ${compare.leftItem.name} ${compare.rightItem.name}`,
+    ),
+    metadata: {
+      slug: compare.slug,
+      path: `/compare/${compare.slug}`,
+      source: 'compares',
+    },
+    updatedAt: new Date().toISOString(),
+  }));
+}
+
+async function extractHomepageFAQs(): Promise<KnowledgeEntry[]> {
+  const faqPath = path.join(DATA_DIR, 'faq.ts');
+  if (!fs.existsSync(faqPath)) return [];
+
+  const { homepageFAQ } = await import('../src/data/faq');
+
+  return homepageFAQ.map((faq, index) => ({
+    id: `faq-homepage-${index + 1}`,
+    type: 'faq' as const,
+    title: faq.question,
+    content: `Question: ${faq.question}\n\nAnswer: ${faq.answer}`,
+    keywords: extractKeywords(`${faq.question} ${faq.answer}`),
+    metadata: { category: 'homepage' },
+    updatedAt: new Date().toISOString(),
+  }));
+}
+
 function extractPages(): KnowledgeEntry[] {
   return [
     {
@@ -303,7 +449,6 @@ Refunds:
   ];
 }
 
-// 提取常见问题（从页面和文章汇总）
 function extractFAQs(): KnowledgeEntry[] {
   return [
     {
@@ -326,7 +471,7 @@ Answer: AGT Equipment sells mini excavators (1-4 ton), skid steers, attachments,
 Answer: You can reach AGT Equipment by:
 - Phone: +1 (949) 898-7669
 - Email: info@agrotkindustrial.com
-- Website contact form: agt-equipment.com/contact
+- Website contact form: miniironpro.com/contact
 - Business hours: Monday-Friday, 8AM-5PM PST
 
 Our team provides technical support before and after purchase.`,
@@ -364,70 +509,69 @@ All prices include free shipping within continental US. Financing available.`,
   ];
 }
 
-// 主函数
 async function generateKnowledgeBase() {
-  console.log('🔄 Generating knowledge base...');
+  console.log('Generating knowledge base...');
 
   try {
-    // 提取所有知识
-    const [products, articles, categories] = await Promise.all([
+    const [products, articles, categories, solutions, compares, homepageFaqs] = await Promise.all([
       extractProducts(),
       extractArticles(),
       extractCategories(),
+      extractSolutions(),
+      extractCompares(),
+      extractHomepageFAQs(),
     ]);
 
     const pages = extractPages();
     const faqs = extractFAQs();
 
-    // 合并所有条目
     const entries: KnowledgeEntry[] = [
       ...products,
       ...articles,
+      ...solutions,
+      ...compares,
       ...categories,
       ...pages,
+      ...homepageFaqs,
       ...faqs,
     ];
 
-    // 统计
     const byType: Record<string, number> = {};
-    entries.forEach(e => {
-      byType[e.type] = (byType[e.type] || 0) + 1;
+    entries.forEach((entry) => {
+      byType[entry.type] = (byType[entry.type] || 0) + 1;
     });
 
-    // 构建知识库
     const knowledgeBase: KnowledgeBase = {
-      version: new Date().toISOString().split('T')[0], // YYYY-MM-DD
+      version: new Date().toISOString().split('T')[0],
       generatedAt: new Date().toISOString(),
-      siteUrl: 'https://agt-equipment.com',
+      siteUrl: SITE_URL,
       siteName: 'AGT Equipment',
       entries,
       summary: {
         totalEntries: entries.length,
         byType,
         products: products.length,
-        articles: articles.length,
-        faqs: faqs.length,
+        articles: articles.length + solutions.length + compares.length,
+        faqs: faqs.length + homepageFaqs.length,
       },
     };
 
-    // 写入文件
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify(knowledgeBase, null, 2), 'utf-8');
 
-    console.log('✅ Knowledge base generated successfully!');
+    console.log('Knowledge base generated successfully!');
     console.log(`   Total entries: ${entries.length}`);
     console.log(`   Products: ${products.length}`);
-    console.log(`   Articles: ${articles.length}`);
+    console.log(`   Articles: ${articles.length + solutions.length + compares.length}`);
     console.log(`   Categories: ${categories.length}`);
     console.log(`   Pages: ${pages.length}`);
-    console.log(`   FAQs: ${faqs.length}`);
+    console.log(`   FAQs: ${faqs.length + homepageFaqs.length}`);
     console.log(`   Output: ${OUTPUT_FILE}`);
 
     return knowledgeBase;
   } catch (error) {
-    console.error('❌ Error generating knowledge base:', error);
+    console.error('Error generating knowledge base:', error);
     process.exit(1);
   }
 }
 
-// 执行
 generateKnowledgeBase();

@@ -2,6 +2,9 @@
 const nextConfig = {
   // Enable React strict mode for better development experience
   reactStrictMode: true,
+
+  // Match the site's canonical URL, internal links, and sitemap format.
+  trailingSlash: true,
   
   // Image optimization configuration
   images: {

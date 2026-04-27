@@ -1,24 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { requireAdminUser } from '@/lib/supabase/admin';
 
-// Create Supabase client with service role for admin operations
-function getAdminClient() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-    }
-  );
-}
+export const dynamic = 'force-dynamic';
 
 // GET /api/admin/b2b - List all B2B accounts with pagination and filters
 export async function GET(request: NextRequest) {
   try {
-    const supabase = getAdminClient();
+    const admin = await requireAdminUser();
+    if (!admin.ok) return admin.response;
+
+    const supabase = admin.supabase;
     const searchParams = request.nextUrl.searchParams;
     
     const page = parseInt(searchParams.get('page') || '1');
@@ -92,7 +83,10 @@ export async function GET(request: NextRequest) {
 // PATCH /api/admin/b2b - Update B2B account (approve, suspend, set credit limit, etc.)
 export async function PATCH(request: NextRequest) {
   try {
-    const supabase = getAdminClient();
+    const admin = await requireAdminUser();
+    if (!admin.ok) return admin.response;
+
+    const supabase = admin.supabase;
     const body = await request.json();
     
     const {
@@ -102,7 +96,6 @@ export async function PATCH(request: NextRequest) {
       payment_terms,
       discount_tier,
       default_discount_percent,
-      verified_by,
     } = body;
 
     if (!id) {
@@ -114,7 +107,7 @@ export async function PATCH(request: NextRequest) {
       updateData.status = status;
       if (status === 'approved') {
         updateData.verified_at = new Date().toISOString();
-        if (verified_by) updateData.verified_by = verified_by;
+        updateData.verified_by = admin.user.id;
       }
     }
     if (credit_limit !== undefined) updateData.credit_limit = credit_limit;

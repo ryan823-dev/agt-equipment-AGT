@@ -5,7 +5,16 @@ import { createContext, useContext, useState, useCallback, useRef, type ReactNod
 export interface Message {
   role: 'user' | 'assistant';
   content: string;
+  actions?: AssistantAction[];
   timestamp?: Date;
+}
+
+export interface AssistantAction {
+  type: 'view_product' | 'add_to_cart' | 'request_quote' | 'checkout' | 'contact';
+  label: string;
+  href?: string;
+  productId?: string;
+  productName?: string;
 }
 
 interface PageContext {
@@ -162,6 +171,21 @@ export function AIProvider({ children }: { children: ReactNode }) {
 
           try {
             const json = JSON.parse(data);
+            if (Array.isArray(json.actions)) {
+              setMessages((prev) => {
+                const updated = [...prev];
+                const lastIndex = updated.length - 1;
+                if (lastIndex >= 0 && updated[lastIndex].role === 'assistant') {
+                  updated[lastIndex] = {
+                    ...updated[lastIndex],
+                    actions: json.actions,
+                  };
+                }
+                return updated;
+              });
+              continue;
+            }
+
             const delta = json.choices?.[0]?.delta?.content;
             if (delta) {
               assistantContent += delta;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { getSupabaseClient } from '@/lib/supabase/client';
 import { Address, AddressFormData } from '@/types';
@@ -29,13 +29,7 @@ export default function AddressesPage() {
 
   const supabase = getSupabaseClient();
 
-  useEffect(() => {
-    if (user) {
-      fetchAddresses();
-    }
-  }, [user]);
-
-  const fetchAddresses = async () => {
+  const fetchAddresses = useCallback(async () => {
     if (!user) return;
 
     const { data, error } = await supabase
@@ -48,7 +42,13 @@ export default function AddressesPage() {
       setAddresses(data as Address[]);
     }
     setIsLoading(false);
-  };
+  }, [user, supabase]);
+
+  useEffect(() => {
+    if (user) {
+      fetchAddresses();
+    }
+  }, [user, fetchAddresses]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

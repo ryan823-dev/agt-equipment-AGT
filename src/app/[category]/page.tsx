@@ -1,9 +1,11 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { categories, getCategoryBySlug, getSubcategories, getTier1Categories } from '@/data/categories';
 import { getProductsByCategory, getProductPath } from '@/data/products';
 import { Category, Product, BreadcrumbSchema, ItemListSchema, FAQSchema } from '@/types';
+import { canonicalUrl } from '@/lib/seo';
 
 interface CategoryPageProps {
   params: Promise<{
@@ -33,9 +35,13 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   return {
     title: category.name,
     description: category.longDescription || category.description,
+    alternates: {
+      canonical: canonicalUrl(`/${category.slug}/`),
+    },
     openGraph: {
       title: category.name,
       description: category.description,
+      url: canonicalUrl(`/${category.slug}/`),
       images: category.image ? [{ url: category.image }] : [],
     },
   };
@@ -94,7 +100,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
         {/* AEO Answer Block */}
         {category.answerBlock && (
-          <section className="bg-blue-50 py-12">
+          <section className="bg-blue-50 py-12" data-speakable="quick-answer">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="bg-white rounded-lg shadow-md p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -187,7 +193,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                       {subcat.description}
                     </p>
                     <span className="text-blue-600 font-medium">
-                      View {subcat.productCount} products →
+                      View {subcat.productCount} products 鈫?
                     </span>
                   </Link>
                 ))}
@@ -210,12 +216,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                     href={getProductPath(product)}
                     className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
                   >
-                    <div className="aspect-w-16 aspect-h-9 bg-gray-200">
+                    <div className="relative h-48 bg-gray-200">
                       {product.images[0] && (
-                        <img
+                        <Image
                           src={product.images[0].url}
                           alt={product.images[0].alt}
-                          className="w-full h-48 object-cover"
+                          fill
+                          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                          className="object-cover"
                         />
                       )}
                     </div>
@@ -232,7 +240,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                         </span>
                         {product.rating && (
                           <div className="flex items-center">
-                            <span className="text-yellow-400 mr-1">★</span>
+                            <span className="text-yellow-400 mr-1">&#9733;</span>
                             <span className="text-gray-600 text-sm">
                               {product.rating.average} ({product.rating.count})
                             </span>
@@ -281,7 +289,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 href="/support/shipping-delivery/"
                 className="flex items-center p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
               >
-                <span className="text-2xl mr-4">🚚</span>
+                <span className="text-2xl mr-4">馃殮</span>
                 <div>
                   <h3 className="font-semibold text-gray-900">Shipping Info</h3>
                   <p className="text-sm text-gray-600">Free continental US shipping</p>
@@ -291,7 +299,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 href="/support/financing/"
                 className="flex items-center p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
               >
-                <span className="text-2xl mr-4">💳</span>
+                <span className="text-2xl mr-4">馃挸</span>
                 <div>
                   <h3 className="font-semibold text-gray-900">Financing Options</h3>
                   <p className="text-sm text-gray-600">Flexible payment plans</p>
@@ -301,7 +309,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 href="/support/warranty/"
                 className="flex items-center p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
               >
-                <span className="text-2xl mr-4">🛡️</span>
+                <span className="text-2xl mr-4">&#10003;</span>
                 <div>
                   <h3 className="font-semibold text-gray-900">Warranty</h3>
                   <p className="text-sm text-gray-600">1-year coverage included</p>
@@ -325,13 +333,13 @@ function generateBreadcrumbSchema(category: Category): BreadcrumbSchema {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://agt-equipment.com/',
+        item: 'https://miniironpro.com/',
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: category.name,
-        item: `https://agt-equipment.com/${category.slug}/`,
+        item: `https://miniironpro.com/${category.slug}/`,
       },
     ],
   };
@@ -347,7 +355,7 @@ function generateItemListSchema(category: Category, products: Product[]): ItemLi
     itemListElement: products.map((product, index) => ({
       '@type': 'ListItem',
       position: index + 1,
-      url: `https://agt-equipment.com${getProductPath(product)}`,
+      url: `https://miniironpro.com${getProductPath(product)}`,
       name: product.name,
       image: product.images[0]?.url,
     })),

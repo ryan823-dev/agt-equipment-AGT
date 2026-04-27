@@ -1,9 +1,13 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Mini Excavator Troubleshooting Guide',
   description: 'Troubleshoot common mini excavator problems: engine won\'t start, hydraulic issues, track problems. Step-by-step diagnostic guides for AGT equipment.',
+  alternates: {
+    canonical: canonicalUrl('/support/troubleshooting/'),
+  },
 };
 
 const troubleshootingGuides = [
@@ -233,7 +237,7 @@ export default function TroubleshootingPage() {
       </section>
 
       {/* Quick Answer */}
-      <section className="bg-blue-50 py-12">
+      <section className="bg-blue-50 py-12" data-speakable="quick-answer">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-lg shadow-md p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">

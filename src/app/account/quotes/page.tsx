@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { getSupabaseClient } from '@/lib/supabase/client';
@@ -33,15 +33,7 @@ export default function QuotesPage() {
 
   const supabase = getSupabaseClient();
 
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      fetchInquiries();
-    } else {
-      setIsLoading(false);
-    }
-  }, [isAuthenticated, user]);
-
-  const fetchInquiries = async () => {
+  const fetchInquiries = useCallback(async () => {
     if (!user) return;
 
     const { data, error } = await supabase
@@ -54,7 +46,15 @@ export default function QuotesPage() {
       setInquiries(data as Inquiry[]);
     }
     setIsLoading(false);
-  };
+  }, [user, supabase]);
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      fetchInquiries();
+    } else {
+      setIsLoading(false);
+    }
+  }, [isAuthenticated, user, fetchInquiries]);
 
   if (isLoading) {
     return (

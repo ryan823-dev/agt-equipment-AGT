@@ -1,10 +1,12 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { products, getProductBySlug, getProductPath } from '@/data/products';
 import { getCategoryBySlug, getCategoryBySlugAndParent } from '@/data/categories';
 import { Product, ProductSchema, BreadcrumbSchema, FAQSchema } from '@/types';
 import { ProductActions } from '@/components/product/ProductActions';
+import { canonicalUrl } from '@/lib/seo';
 
 interface ProductPageProps {
   params: Promise<{
@@ -40,9 +42,13 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   return {
     title: product.name,
     description: product.shortDescription,
+    alternates: {
+      canonical: canonicalUrl(getProductPath(product)),
+    },
     openGraph: {
       title: product.name,
       description: product.shortDescription,
+      url: canonicalUrl(getProductPath(product)),
       images: product.images.map((img) => ({ url: img.url, alt: img.alt })),
     },
   };
@@ -116,21 +122,32 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-12">
               {/* Product Images */}
               <div>
-                <div className="bg-gray-100 rounded-lg overflow-hidden">
-                  <img
-                    src={product.images[0]?.url}
-                    alt={product.images[0]?.alt || product.name}
-                    className="w-full h-64 sm:h-80 lg:h-96 object-cover"
-                  />
+                <div className="relative h-64 sm:h-80 lg:h-96 bg-gray-100 rounded-lg overflow-hidden">
+                  {product.images[0] && (
+                    <Image
+                      src={product.images[0].url}
+                      alt={product.images[0].alt || product.name}
+                      fill
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      className="object-cover"
+                      priority
+                    />
+                  )}
                 </div>
                 {product.images.length > 1 && (
                   <div className="mt-3 sm:mt-4 grid grid-cols-4 gap-1.5 sm:gap-2">
                     {product.images.map((img, index) => (
                       <div
                         key={index}
-                        className="bg-gray-100 rounded cursor-pointer hover:ring-2 hover:ring-blue-500"
+                        className="relative h-14 sm:h-20 bg-gray-100 rounded cursor-pointer hover:ring-2 hover:ring-blue-500"
                       >
-                        <img src={img.url} alt={img.alt} className="w-full h-14 sm:h-20 object-cover" />
+                        <Image
+                          src={img.url}
+                          alt={img.alt}
+                          fill
+                          sizes="25vw"
+                          className="object-cover"
+                        />
                       </div>
                     ))}
                   </div>
@@ -144,7 +161,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </h1>
 
                 {/* Short Description - AEO Answer Block */}
-                <p className="text-base sm:text-xl text-gray-600 mb-4 sm:mb-6">
+                <p className="text-base sm:text-xl text-gray-600 mb-4 sm:mb-6" data-speakable="quick-answer">
                   {product.shortDescription}
                 </p>
 
@@ -162,7 +179,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   </div>
                   {product.rating && (
                     <div className="flex items-center">
-                      <span className="text-yellow-400 text-lg sm:text-xl mr-1">★</span>
+                      <span className="text-yellow-400 text-lg sm:text-xl mr-1">&#9733;</span>
                       <span className="text-gray-700 font-medium text-sm sm:text-base">
                         {product.rating.average}
                       </span>
@@ -195,15 +212,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {/* Trust Badges */}
                 <div className="flex flex-wrap gap-3 sm:gap-4 text-xs sm:text-sm">
                   <div className="flex items-center text-gray-600">
-                    <span className="mr-1.5 sm:mr-2">🚚</span>
+                    <span className="mr-1.5 sm:mr-2">馃殮</span>
                     Free Shipping
                   </div>
                   <div className="flex items-center text-gray-600">
-                    <span className="mr-1.5 sm:mr-2">🛡️</span>
+                    <span className="mr-1.5 sm:mr-2">&#10003;</span>
                     1-Year Warranty
                   </div>
                   <div className="flex items-center text-gray-600">
-                    <span className="mr-1.5 sm:mr-2">💳</span>
+                    <span className="mr-1.5 sm:mr-2">馃挸</span>
                     Financing Available
                   </div>
                 </div>
@@ -266,7 +283,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {product.primaryUseCases.map((useCase, index) => (
                   <div key={index} className="bg-white rounded-lg p-4 flex items-center">
-                    <span className="text-2xl mr-3">✓</span>
+                    <span className="text-2xl mr-3">&#10003;</span>
                     <span className="text-gray-700">{useCase}</span>
                   </div>
                 ))}
@@ -314,28 +331,28 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 href="/support/manuals/"
                 className="flex items-center p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
               >
-                <span className="text-2xl mr-4">📖</span>
+                <span className="text-2xl mr-4">馃摉</span>
                 <span className="font-medium text-gray-900">Manuals</span>
               </Link>
               <Link
                 href="/support/shipping-delivery/"
                 className="flex items-center p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
               >
-                <span className="text-2xl mr-4">🚚</span>
+                <span className="text-2xl mr-4">馃殮</span>
                 <span className="font-medium text-gray-900">Shipping</span>
               </Link>
               <Link
                 href="/support/financing/"
                 className="flex items-center p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
               >
-                <span className="text-2xl mr-4">💳</span>
+                <span className="text-2xl mr-4">馃挸</span>
                 <span className="font-medium text-gray-900">Financing</span>
               </Link>
               <Link
                 href="/support/warranty/"
                 className="flex items-center p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
               >
-                <span className="text-2xl mr-4">🛡️</span>
+                <span className="text-2xl mr-4">&#10003;</span>
                 <span className="font-medium text-gray-900">Warranty</span>
               </Link>
             </div>
@@ -357,13 +374,13 @@ function generateBreadcrumbSchema(
       '@type': 'ListItem' as const,
       position: 1,
       name: 'Home',
-      item: 'https://agt-equipment.com/',
+      item: 'https://miniironpro.com/',
     },
     {
       '@type': 'ListItem' as const,
       position: 2,
       name: parent.name,
-      item: `https://agt-equipment.com/${parent.slug}/`,
+      item: `https://miniironpro.com/${parent.slug}/`,
     },
   ];
 
@@ -372,20 +389,20 @@ function generateBreadcrumbSchema(
       '@type': 'ListItem' as const,
       position: 3,
       name: subcategory.name,
-      item: `https://agt-equipment.com/${parent.slug}/${subcategory.slug}/`,
+      item: `https://miniironpro.com/${parent.slug}/${subcategory.slug}/`,
     });
     items.push({
       '@type': 'ListItem' as const,
       position: 4,
       name: product.name,
-      item: `https://agt-equipment.com${getProductPath(product)}`,
+      item: `https://miniironpro.com${getProductPath(product)}`,
     });
   } else {
     items.push({
       '@type': 'ListItem' as const,
       position: 3,
       name: product.name,
-      item: `https://agt-equipment.com${getProductPath(product)}`,
+      item: `https://miniironpro.com${getProductPath(product)}`,
     });
   }
 
@@ -417,7 +434,7 @@ function generateProductSchema(product: Product): ProductSchema {
         : product.stock === 'preorder'
         ? 'https://schema.org/PreOrder'
         : 'https://schema.org/OutOfStock',
-      url: `https://agt-equipment.com${getProductPath(product)}`,
+      url: `https://miniironpro.com${getProductPath(product)}`,
     },
     ...(product.rating && {
       aggregateRating: {

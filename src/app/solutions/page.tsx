@@ -1,10 +1,19 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllSolutions } from '@/data/solutions';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Solutions',
-  description: 'Find the right equipment for your specific needs. Browse solutions for farming, landscaping, construction, and more.',
+  title: 'Equipment Solutions',
+  description: 'Find the right mini excavator or skid steer for farming, landscaping, trenching, demolition, snow removal, and property maintenance.',
+  alternates: {
+    canonical: canonicalUrl('/solutions/'),
+  },
+  openGraph: {
+    title: 'Equipment Solutions',
+    description: 'Find the right mini excavator or skid steer for farming, landscaping, trenching, demolition, snow removal, and property maintenance.',
+    url: canonicalUrl('/solutions/'),
+  },
 };
 
 export default function SolutionsIndex() {

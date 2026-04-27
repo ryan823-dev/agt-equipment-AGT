@@ -5,13 +5,14 @@ import { Button } from '@/components/ui/button';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { FAQSection } from '@/components/seo/FAQSection';
 import { generateFAQSchema, generateOrganizationSchema } from '@/lib/schema';
+import { canonicalUrl } from '@/lib/seo';
 import { Phone, Truck, Shield, Wrench, CreditCard, Package } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions - Mini Excavators & Skid Steers',
   description: 'Answers to common questions about AGT mini excavators, skid steers, shipping, warranty, financing, and parts. Get expert advice on choosing the right equipment.',
   alternates: {
-    canonical: 'https://agt-equipment.com/faq',
+    canonical: canonicalUrl('/faq/'),
   },
 };
 
@@ -22,7 +23,7 @@ const faqCategories = [
     faqs: [
       {
         question: 'What size mini excavator do I need?',
-        answer: 'Match your excavator size to your dig depth needs: 1-ton for 3-4ft trenches, 2-ton for 5-6ft trenches, 4-ton for 8-12ft trenches. Also consider transport—a 1-ton fits in a pickup bed, while a 4-ton requires a heavy-duty trailer.',
+        answer: 'Match your excavator size to your dig depth needs: 1-ton for 3-4ft trenches, 2-ton for 5-6ft trenches, 4-ton for 8-12ft trenches. Also consider transport: 1-ton fits in a pickup bed, while a 4-ton requires a heavy-duty trailer.',
       },
       {
         question: 'What engines do AGT excavators use?',

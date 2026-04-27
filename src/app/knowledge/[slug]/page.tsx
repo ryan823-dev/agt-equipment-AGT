@@ -7,6 +7,7 @@ import { FAQSection } from '@/components/seo/FAQSection';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { generateArticleSchema, generateFAQSchema, generateBreadcrumbSchema } from '@/lib/schema';
 import { getArticleBySlug } from '@/lib/data';
+import { canonicalUrl } from '@/lib/seo';
 import { ArrowRight, Clock, User } from 'lucide-react';
 
 interface ArticlePageProps {
@@ -27,12 +28,13 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       title: article.title,
       description: article.excerpt,
       type: 'article',
+      url: canonicalUrl(`/knowledge/${article.slug}/`),
       publishedTime: article.publishedAt,
       modifiedTime: article.updatedAt,
       authors: [article.author.name],
     },
     alternates: {
-      canonical: `https://agt-equipment.com/knowledge/${article.slug}`,
+      canonical: canonicalUrl(`/knowledge/${article.slug}/`),
     },
   };
 }
@@ -56,7 +58,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         data={generateArticleSchema({
           title: article.title,
           description: article.excerpt,
-          url: `https://agt-equipment.com/knowledge/${article.slug}`,
+          url: canonicalUrl(`/knowledge/${article.slug}/`),
           datePublished: article.publishedAt,
           dateModified: article.updatedAt,
           author: { name: article.author.name },

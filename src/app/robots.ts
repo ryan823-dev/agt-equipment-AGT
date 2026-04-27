@@ -1,4 +1,15 @@
 import { MetadataRoute } from 'next';
+import { SITE_URL } from '@/lib/seo';
+
+const privatePaths = [
+  '/account/',
+  '/admin/',
+  '/api/',
+  '/auth/',
+  '/cart/',
+  '/checkout/',
+  '/inquiry/',
+];
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,40 +17,24 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
+        disallow: privatePaths,
       },
       {
-        userAgent: 'GPTBot',
+        userAgent: [
+          'GPTBot',
+          'ChatGPT-User',
+          'Claude-Web',
+          'Claude-User',
+          'Anthropic-AI',
+          'Google-Extended',
+          'PerplexityBot',
+          'YouBot',
+        ],
         allow: '/',
-      },
-      {
-        userAgent: 'ChatGPT-User',
-        allow: '/',
-      },
-      {
-        userAgent: 'Claude-Web',
-        allow: '/',
-      },
-      {
-        userAgent: 'Claude-User',
-        allow: '/',
-      },
-      {
-        userAgent: 'Anthropic-AI',
-        allow: '/',
-      },
-      {
-        userAgent: 'Google-Extended',
-        allow: '/',
-      },
-      {
-        userAgent: 'PerplexityBot',
-        allow: '/',
-      },
-      {
-        userAgent: 'YouBot',
-        allow: '/',
+        disallow: privatePaths,
       },
     ],
-    sitemap: 'https://agt-equipment.com/sitemap.xml',
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   };
 }

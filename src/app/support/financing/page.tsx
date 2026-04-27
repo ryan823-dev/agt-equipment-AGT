@@ -1,9 +1,13 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Financing Options',
   description: 'Flexible financing options for mini excavators and skid steers. Learn about payment plans, rates, and how to apply for equipment financing.',
+  alternates: {
+    canonical: canonicalUrl('/support/financing/'),
+  },
 };
 
 export default function FinancingPage() {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { getSupabaseClient } from '@/lib/supabase/client';
@@ -64,16 +64,7 @@ export default function B2BPage() {
 
   const supabase = getSupabaseClient();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/auth/login');
-      return;
-    }
-
-    fetchB2BAccount();
-  }, [isAuthenticated]);
-
-  const fetchB2BAccount = async () => {
+  const fetchB2BAccount = useCallback(async () => {
     if (!user) return;
 
     const { data, error } = await supabase
@@ -86,7 +77,16 @@ export default function B2BPage() {
       setB2bAccount(data as B2BAccount);
     }
     setIsLoading(false);
-  };
+  }, [user, supabase]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/auth/login');
+      return;
+    }
+
+    fetchB2BAccount();
+  }, [isAuthenticated, router, fetchB2BAccount]);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};

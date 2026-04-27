@@ -7,6 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { X, Minus, Plus, Loader2 } from 'lucide-react';
 
+function getProductHref(product: CartItemWithProduct['product']) {
+  if (product.subcategorySlug) {
+    return `/${product.categorySlug}/${product.subcategorySlug}/${product.slug}/`;
+  }
+
+  return `/${product.categorySlug}/${product.slug}/`;
+}
+
 interface CartItemProps {
   item: CartItemWithProduct;
   onRemove: (id: string) => void;
@@ -31,7 +39,7 @@ export function CartItemCard({ item, onRemove, onUpdateQuantity, isUpdating }: C
   return (
     <div className="flex gap-4 py-4 border-b last:border-b-0">
       {/* Product Image */}
-      <Link href={`/products/${product.slug}`} className="flex-shrink-0">
+      <Link href={getProductHref(product)} className="flex-shrink-0">
         <div className="relative h-20 w-20 rounded-md overflow-hidden bg-gray-100">
           {product.images[0] ? (
             <Image
@@ -51,7 +59,7 @@ export function CartItemCard({ item, onRemove, onUpdateQuantity, isUpdating }: C
       {/* Product Info */}
       <div className="flex-1 min-w-0">
         <Link
-          href={`/products/${product.slug}`}
+          href={getProductHref(product)}
           className="text-sm font-medium text-gray-900 hover:text-blue-600 line-clamp-2"
         >
           {product.name}

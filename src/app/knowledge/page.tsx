@@ -5,13 +5,14 @@ import { Button } from '@/components/ui/button';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { generateOrganizationSchema } from '@/lib/schema';
 import { articles } from '@/data/articles';
+import { canonicalUrl } from '@/lib/seo';
 import { ArrowRight, BookOpen, HelpCircle, Scale, FileText } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Knowledge Center - Buying Guides & How-To Articles',
   description: 'Expert guides on choosing mini excavators, skid steers, and attachments. Learn about equipment specifications, maintenance, and applications.',
   alternates: {
-    canonical: 'https://agt-equipment.com/knowledge',
+    canonical: canonicalUrl('/knowledge/'),
   },
 };
 

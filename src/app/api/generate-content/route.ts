@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { requireAdminUser } from '@/lib/supabase/admin';
+
+export const dynamic = 'force-dynamic';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
@@ -67,6 +70,9 @@ Output format:
 
 export async function POST(request: NextRequest) {
   try {
+    const admin = await requireAdminUser();
+    if (!admin.ok) return admin.response;
+
     const body = await request.json();
     const { type, topic, context, additionalInstructions } = body;
 
@@ -95,7 +101,7 @@ Generate the content now. Output ONLY valid JSON, no markdown code blocks.`;
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': process.env.NEXT_PUBLIC_SITE_URL || 'https://agt-equipment.com',
+        'HTTP-Referer': process.env.NEXT_PUBLIC_SITE_URL || 'https://miniironpro.com',
         'X-Title': 'AGT Equipment Content Generator',
       },
       body: JSON.stringify({

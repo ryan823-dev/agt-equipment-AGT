@@ -1,9 +1,13 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Parts Compatibility',
   description: 'Find the right parts for your AGT mini excavator or skid steer. Compatibility charts, part number lookup, and cross-reference guides.',
+  alternates: {
+    canonical: canonicalUrl('/support/parts-compatibility/'),
+  },
 };
 
 export default function PartsCompatibilityPage() {

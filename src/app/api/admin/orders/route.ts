@@ -1,24 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { requireAdminUser } from '@/lib/supabase/admin';
 
-// Create Supabase client with service role for admin operations
-function getAdminClient() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-    }
-  );
-}
+export const dynamic = 'force-dynamic';
 
 // GET /api/admin/orders - List all orders with pagination and filters
 export async function GET(request: NextRequest) {
   try {
-    const supabase = getAdminClient();
+    const admin = await requireAdminUser();
+    if (!admin.ok) return admin.response;
+
+    const supabase = admin.supabase;
     const searchParams = request.nextUrl.searchParams;
     
     const page = parseInt(searchParams.get('page') || '1');
@@ -69,7 +60,10 @@ export async function GET(request: NextRequest) {
 // PATCH /api/admin/orders - Update order status
 export async function PATCH(request: NextRequest) {
   try {
-    const supabase = getAdminClient();
+    const admin = await requireAdminUser();
+    if (!admin.ok) return admin.response;
+
+    const supabase = admin.supabase;
     const body = await request.json();
     
     const { id, status, tracking_number, internal_notes } = body;

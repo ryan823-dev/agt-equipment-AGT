@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -15,16 +15,7 @@ export default function PayPalSuccessContent() {
   const token = searchParams.get('token');
   const PayerID = searchParams.get('PayerID');
 
-  useEffect(() => {
-    if (token && PayerID) {
-      capturePayment();
-    } else {
-      setError('Invalid PayPal response');
-      setIsProcessing(false);
-    }
-  }, [token, PayerID]);
-
-  const capturePayment = async () => {
+  const capturePayment = useCallback(async () => {
     try {
       // Get pending order ID from session storage
       const pendingOrderId = sessionStorage.getItem('pendingOrderId');
@@ -53,7 +44,16 @@ export default function PayPalSuccessContent() {
       setError('An error occurred while processing your payment');
       setIsProcessing(false);
     }
-  };
+  }, [router, token]);
+
+  useEffect(() => {
+    if (token && PayerID) {
+      capturePayment();
+    } else {
+      setError('Invalid PayPal response');
+      setIsProcessing(false);
+    }
+  }, [token, PayerID, capturePayment]);
 
   if (isProcessing) {
     return (

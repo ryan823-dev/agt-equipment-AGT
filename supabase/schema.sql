@@ -54,13 +54,13 @@ CREATE TABLE cart_items (
     unit_price DECIMAL(10,2) NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW(),
-    
+
     CONSTRAINT cart_owner CHECK (user_id IS NOT NULL OR session_id IS NOT NULL)
 );
 
-CREATE UNIQUE INDEX idx_cart_user_product ON cart_items(user_id, product_id) 
+CREATE UNIQUE INDEX idx_cart_user_product ON cart_items(user_id, product_id)
     WHERE user_id IS NOT NULL;
-CREATE UNIQUE INDEX idx_cart_session_product ON cart_items(session_id, product_id) 
+CREATE UNIQUE INDEX idx_cart_session_product ON cart_items(session_id, product_id)
     WHERE session_id IS NOT NULL;
 
 -- ============================================
@@ -71,10 +71,10 @@ CREATE TABLE orders (
     order_number TEXT UNIQUE NOT NULL,
     user_id UUID REFERENCES user_profiles(id) ON DELETE SET NULL,
     status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN (
-        'pending', 'confirmed', 'processing', 'shipped', 
+        'pending', 'confirmed', 'processing', 'shipped',
         'delivered', 'cancelled', 'refunded'
     )),
-    
+
     -- Amounts
     subtotal DECIMAL(12,2) NOT NULL,
     shipping_cost DECIMAL(10,2) DEFAULT 0,
@@ -82,7 +82,7 @@ CREATE TABLE orders (
     discount_amount DECIMAL(10,2) DEFAULT 0,
     total_amount DECIMAL(12,2) NOT NULL,
     currency TEXT DEFAULT 'USD',
-    
+
     -- Shipping
     shipping_address JSONB NOT NULL,
     billing_address JSONB NOT NULL,
@@ -90,7 +90,7 @@ CREATE TABLE orders (
     tracking_number TEXT,
     shipped_at TIMESTAMPTZ,
     delivered_at TIMESTAMPTZ,
-    
+
     -- Payment
     payment_status TEXT DEFAULT 'pending' CHECK (payment_status IN (
         'pending', 'paid', 'failed', 'refunded'
@@ -98,11 +98,11 @@ CREATE TABLE orders (
     payment_method TEXT CHECK (payment_method IN ('stripe', 'paypal')),
     payment_id TEXT,
     paid_at TIMESTAMPTZ,
-    
+
     -- Notes
     customer_notes TEXT,
     internal_notes TEXT,
-    
+
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -124,38 +124,78 @@ CREATE TABLE order_items (
 );
 
 -- ============================================
+-- QUOTES (B2B) - Must be created before inquiries due to foreign key
+-- ============================================
+CREATE TABLE quotes (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    quote_number TEXT UNIQUE NOT NULL,
+    inquiry_id UUID,  -- Will add foreign key constraint after inquiries table
+    user_id UUID REFERENCES user_profiles(id),
+
+    status TEXT DEFAULT 'draft' CHECK (status IN (
+        'draft', 'sent', 'accepted', 'rejected', 'expired'
+    )),
+    valid_until TIMESTAMPTZ,
+
+    -- Amounts
+    subtotal DECIMAL(12,2) NOT NULL,
+    shipping_cost DECIMAL(10,2) DEFAULT 0,
+    discount_amount DECIMAL(10,2) DEFAULT 0,
+    total_amount DECIMAL(12,2) NOT NULL,
+    currency TEXT DEFAULT 'USD',
+
+    -- Terms
+    payment_terms TEXT,
+    shipping_terms TEXT,
+    warranty_terms TEXT DEFAULT '1 Year Manufacturer Warranty',
+    notes TEXT,
+
+    -- Approval
+    created_by UUID,
+    approved_by UUID,
+    approved_at TIMESTAMPTZ,
+    sent_at TIMESTAMPTZ,
+
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ============================================
 -- INQUIRIES (B2B Quote Requests)
 -- ============================================
 CREATE TABLE inquiries (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     inquiry_number TEXT UNIQUE NOT NULL,
     user_id UUID REFERENCES user_profiles(id) ON DELETE SET NULL,
-    
+
     -- Contact Info
     contact_name TEXT NOT NULL,
     contact_email TEXT NOT NULL,
     contact_phone TEXT,
     company_name TEXT,
-    
+
     -- Inquiry Type
     type TEXT NOT NULL CHECK (type IN ('single', 'bulk', 'custom')),
     status TEXT DEFAULT 'pending' CHECK (status IN (
         'pending', 'quoted', 'accepted', 'converted', 'expired'
     )),
-    
+
     -- Requirements
     message TEXT,
     use_case TEXT,
     preferred_timeline TEXT,
     attachments JSONB,
-    
+
     -- Related Quote
     quote_id UUID REFERENCES quotes(id),
     converted_order_id UUID REFERENCES orders(id),
-    
+
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Add foreign key from quotes to inquiries
+ALTER TABLE quotes ADD CONSTRAINT fk_quotes_inquiry_id FOREIGN KEY (inquiry_id) REFERENCES inquiries(id);
 
 -- ============================================
 -- INQUIRY ITEMS
@@ -168,43 +208,6 @@ CREATE TABLE inquiry_items (
     quantity INTEGER DEFAULT 1,
     notes TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- ============================================
--- QUOTES (B2B)
--- ============================================
-CREATE TABLE quotes (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    quote_number TEXT UNIQUE NOT NULL,
-    inquiry_id UUID REFERENCES inquiries(id),
-    user_id UUID REFERENCES user_profiles(id),
-    
-    status TEXT DEFAULT 'draft' CHECK (status IN (
-        'draft', 'sent', 'accepted', 'rejected', 'expired'
-    )),
-    valid_until TIMESTAMPTZ,
-    
-    -- Amounts
-    subtotal DECIMAL(12,2) NOT NULL,
-    shipping_cost DECIMAL(10,2) DEFAULT 0,
-    discount_amount DECIMAL(10,2) DEFAULT 0,
-    total_amount DECIMAL(12,2) NOT NULL,
-    currency TEXT DEFAULT 'USD',
-    
-    -- Terms
-    payment_terms TEXT,
-    shipping_terms TEXT,
-    warranty_terms TEXT DEFAULT '1 Year Manufacturer Warranty',
-    notes TEXT,
-    
-    -- Approval
-    created_by UUID,
-    approved_by UUID,
-    approved_at TIMESTAMPTZ,
-    sent_at TIMESTAMPTZ,
-    
-    created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- ============================================
@@ -230,7 +233,7 @@ CREATE TABLE quote_items (
 CREATE TABLE b2b_accounts (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
-    
+
     -- Company Info
     company_name TEXT NOT NULL,
     business_type TEXT CHECK (business_type IN (
@@ -238,25 +241,25 @@ CREATE TABLE b2b_accounts (
     )),
     tax_id TEXT,
     website TEXT,
-    
+
     -- Account Status
     status TEXT DEFAULT 'pending' CHECK (status IN (
         'pending', 'approved', 'suspended'
     )),
     verified_at TIMESTAMPTZ,
     verified_by UUID,
-    
+
     -- Credit
     credit_limit DECIMAL(12,2) DEFAULT 0,
     credit_used DECIMAL(12,2) DEFAULT 0,
     payment_terms TEXT CHECK (payment_terms IN ('net15', 'net30', 'net60')),
-    
+
     -- Discount Tier
     discount_tier TEXT DEFAULT 'bronze' CHECK (discount_tier IN (
         'bronze', 'silver', 'gold', 'platinum'
     )),
     default_discount_percent DECIMAL(5,2) DEFAULT 0,
-    
+
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -375,7 +378,7 @@ CREATE POLICY "Users can manage own inquiries"
 CREATE POLICY "Users can view own inquiry items"
     ON inquiry_items FOR SELECT
     USING (EXISTS (
-        SELECT 1 FROM inquiries WHERE inquiries.id = inquiry_items.inquiry_id 
+        SELECT 1 FROM inquiries WHERE inquiries.id = inquiry_items.inquiry_id
         AND (inquiries.user_id = auth.uid() OR inquiries.contact_email = auth.email())
     ));
 

@@ -1,71 +1,80 @@
-# AGT Equipment - LLMs.txt
-# This file helps AI assistants understand our website content
+# AGT Equipment
 
-> AGT Equipment sells mini excavators and skid steers direct from the factory.
-> We operate warehouses in California and Illinois, USA.
-> All products include a 1-year warranty and free continental US shipping.
+> AGT Equipment sells factory-direct mini excavators, mini skid steers,
+> attachments, and replacement parts for US contractors, landowners,
+> landscapers, farms, and property-maintenance teams.
 
-## Company Information
+## Canonical Site
 
-- Name: AGT Industrial Inc. (also known as AGT Equipment)
-- Founded: 2004
-- Headquarters: China
-- US Warehouses:
+- Website: https://miniironpro.com
+- Brand: AGT Equipment
+- Company: AGT Industrial Inc.
+- Phone: +1 (949) 898-7669
+- Email: info@agrotkindustrial.com
+- Primary market: United States
+- US warehouses:
   - California: 2602 Halladay Street, Santa Ana, CA 92707
   - Illinois: 6200 S Oak Park Ave, Chicago, IL 60638
-- Contact: +1 (949) 898-7669
-- Email: info@agrotkindustrial.com
-- Website: https://agt-equipment.com
 
-## Product Categories
+## What AGT Equipment Sells
 
-### Mini Excavators
-- 1-ton class: AGT H15R, AGT DM12X
-- 2-ton class: Various models
-- 4-ton class: CFG-40UF
+- Mini excavators from 1-4 tons for digging, trenching, backyard access, farm work, landscaping, foundations, utilities, and property maintenance.
+- Mini skid steers and compact loaders for loading, grading, carrying material, landscaping, and attachment-driven work.
+- Attachments including buckets, augers, hydraulic thumbs, brush cutters, hammers, pallet forks, trenchers, sweepers, grapples, snow-removal tools, and specialty attachments.
+- Replacement parts and accessories including hydraulic parts, filters, tracks, electrical parts, hardware, and model-specific service parts.
 
-### Skid Steers
-- Stand-on loaders: MSL-500, MSL-700
-- Track loaders: Various models
+## Purchase And Support Facts
 
-### Attachments
-- Hydraulic thumbs
-- Augers
-- Brush cutters
-- Hammers
-- Buckets
+- Factory-direct pricing.
+- Free shipping within the continental United States.
+- One-year warranty coverage on equipment.
+- Equipment ships from California and Illinois warehouses.
+- Kubota and RATO engine options are available across relevant models.
+- Financing options are available for qualified customers.
 
-## Key Specifications
+## Important Public URLs
 
-| Model | Engine | Power | Weight | Dig Depth | Price |
-|-------|--------|-------|--------|-----------|-------|
-| H15R | Rato 186F | 13.5 HP | 2,425 lbs | 5 ft 9 in | $11,999 |
-| DM12X | Kubota D1103 | 24.8 HP | 2,645 lbs | 6 ft 7 in | $14,999 |
-| CFG-40UF | Kubota V2403-CR | 54 HP | 8,818 lbs | 12 ft | $29,000 |
-| MSL-500 | Kohler Command | 25 HP | 1,102 lbs cap | N/A | $8,999 |
+- Home: https://miniironpro.com/
+- Products: https://miniironpro.com/products/
+- Mini excavators: https://miniironpro.com/mini-excavators/
+- Mini skid steers: https://miniironpro.com/mini-skid-steers/
+- Attachments: https://miniironpro.com/attachments/
+- Parts: https://miniironpro.com/parts/
+- Solutions: https://miniironpro.com/solutions/
+- Equipment comparisons: https://miniironpro.com/compare/
+- Knowledge center: https://miniironpro.com/knowledge/
+- FAQ: https://miniironpro.com/faq/
+- Support: https://miniironpro.com/support/
+- Shipping and delivery: https://miniironpro.com/support/shipping-delivery/
+- Financing: https://miniironpro.com/support/financing/
+- Warranty: https://miniironpro.com/support/warranty/
+- Maintenance: https://miniironpro.com/support/maintenance/
+- Manuals: https://miniironpro.com/support/manuals/
+- Troubleshooting: https://miniironpro.com/support/troubleshooting/
+- Contact: https://miniironpro.com/contact/
 
 ## Common Questions
 
-Q: What is the warranty on AGT equipment?
-A: All AGT equipment comes with a 1-year warranty covering manufacturing defects.
+Q: What does AGT Equipment sell?
+A: AGT Equipment sells mini excavators, mini skid steers, attachments, and replacement parts. Machines ship from US warehouses in California and Illinois with free continental US shipping and one-year warranty coverage.
 
-Q: Do you offer financing?
-A: Yes, financing options are available. Contact us for details.
+Q: What size mini excavator should I choose?
+A: A 1-ton excavator is best for backyard access, shallow trenching, landscaping, and light property work. A 1-2 ton model adds power and dig depth while staying relatively compact. A 3-4 ton model is better for contractors, foundations, utilities, and heavier excavation.
 
-Q: What is the shipping cost?
+Q: Should I buy a mini excavator or a mini skid steer?
+A: Choose a mini excavator when digging is the main job. Choose a mini skid steer when loading, grading, carrying material, and frequent attachment changes are the main tasks.
+
+Q: Where does AGT Equipment ship from?
+A: AGT Equipment ships from US warehouses in Santa Ana, California and Chicago, Illinois.
+
+Q: Is shipping free?
 A: Shipping is free within the continental United States.
 
-Q: Do you ship internationally?
-A: We primarily serve the US market. Contact us for international inquiries.
+Q: What warranty is included?
+A: AGT equipment includes one-year warranty coverage for manufacturing defects and normal-use component failures, subject to warranty terms.
 
-Q: What engines do you use?
-A: We offer both Kubota and Rato diesel engines. Kubota offers more power; Rato is more affordable.
+## Crawler Notes
 
-## Content Pages
-
-- /knowledge/how-to-choose-mini-excavator - Buying guide for mini excavators
-- /knowledge/mini-excavator-vs-skid-steer - Comparison article
-- /products - All products listing
-- /products/mini-excavators - Mini excavator category
-- /products/skid-steer - Skid steer category
-- /products/attachments - Attachments category
+- Use the sitemap at https://miniironpro.com/sitemap.xml for the complete canonical URL list.
+- Public product, category, solution, comparison, knowledge, FAQ, and support pages are intended for search and AI-answer indexing.
+- Account, admin, auth, cart, checkout, inquiry, and API paths are not public knowledge sources.

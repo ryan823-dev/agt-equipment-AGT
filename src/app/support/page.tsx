@@ -1,9 +1,13 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Support Center',
   description: 'Find manuals, shipping information, warranty details, financing options, and maintenance guides for AGT equipment.',
+  alternates: {
+    canonical: canonicalUrl('/support/'),
+  },
 };
 
 const supportPages = [

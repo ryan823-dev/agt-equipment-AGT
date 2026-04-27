@@ -7,6 +7,18 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Minus, Plus, X, ShoppingBag, ArrowRight, Loader2, Truck, Shield, RotateCcw } from 'lucide-react';
 
+function getProductHref(product: {
+  slug: string;
+  categorySlug: string;
+  subcategorySlug?: string;
+}) {
+  if (product.subcategorySlug) {
+    return `/${product.categorySlug}/${product.subcategorySlug}/${product.slug}/`;
+  }
+
+  return `/${product.categorySlug}/${product.slug}/`;
+}
+
 export default function CartPage() {
   const {
     items,
@@ -65,7 +77,7 @@ export default function CartPage() {
                   <div key={item.id} className="p-6 flex gap-4">
                     {/* Product Image */}
                     <Link
-                      href={`/products/${item.product.slug}`}
+                      href={getProductHref(item.product)}
                       className="flex-shrink-0"
                     >
                       <div className="relative h-24 w-24 rounded-md overflow-hidden bg-gray-100">
@@ -87,7 +99,7 @@ export default function CartPage() {
                     {/* Product Info */}
                     <div className="flex-1 min-w-0">
                       <Link
-                        href={`/products/${item.product.slug}`}
+                        href={getProductHref(item.product)}
                         className="text-base font-medium text-gray-900 hover:text-blue-600"
                       >
                         {item.product.name}

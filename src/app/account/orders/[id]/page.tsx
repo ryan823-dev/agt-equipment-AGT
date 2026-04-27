@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -43,16 +43,7 @@ export default function OrderDetailsPage() {
   const orderId = params.id as string;
   const supabase = getSupabaseClient();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/auth/login');
-      return;
-    }
-
-    fetchOrder();
-  }, [isAuthenticated, orderId]);
-
-  const fetchOrder = async () => {
+  const fetchOrder = useCallback(async () => {
     if (!user) return;
 
     const { data, error } = await supabase
@@ -66,7 +57,18 @@ export default function OrderDetailsPage() {
       setOrder(data as Order);
     }
     setIsLoading(false);
-  };
+  }, [orderId, user, supabase]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/auth/login');
+      return;
+    }
+
+    if (user) {
+      fetchOrder();
+    }
+  }, [isAuthenticated, user, router, fetchOrder]);
 
   if (isLoading) {
     return (

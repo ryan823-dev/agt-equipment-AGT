@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/lib/contexts/AuthContext';
@@ -13,22 +13,13 @@ import { CheckCircle, Package, Truck, ArrowRight, Loader2 } from 'lucide-react';
 export default function CheckoutSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [order, setOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const orderId = searchParams.get('orderId');
 
-  useEffect(() => {
-    if (!isAuthenticated && !orderId) {
-      router.push('/auth/login');
-      return;
-    }
-
-    fetchOrder();
-  }, [isAuthenticated, orderId]);
-
-  const fetchOrder = async () => {
+  const fetchOrder = useCallback(async () => {
     const supabase = getSupabaseClient();
 
     let query = supabase
@@ -53,7 +44,16 @@ export default function CheckoutSuccessContent() {
     }
 
     setIsLoading(false);
-  };
+  }, [orderId]);
+
+  useEffect(() => {
+    if (!isAuthenticated && !orderId) {
+      router.push('/auth/login');
+      return;
+    }
+
+    fetchOrder();
+  }, [isAuthenticated, orderId, router, fetchOrder]);
 
   if (isLoading) {
     return (

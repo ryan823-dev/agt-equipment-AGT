@@ -195,11 +195,11 @@ export default function HomePage() {
               </h1>
 
               <p className="mt-4 sm:mt-6 text-base sm:text-lg text-slate-300 max-w-xl leading-relaxed">
-                AGT Equipment sells 1–4 ton mini excavators, mini skid steers, attachments, and parts with Kubota and Rato engine options, free shipping, and US-based support. Machines ship from California and Illinois warehouses with 1-year warranty coverage.
+                AGT Equipment sells 1-4 ton mini excavators, mini skid steers, attachments, and parts with Kubota and Rato engine options, free shipping, and US-based support. Machines ship from California and Illinois warehouses with 1-year warranty coverage.
               </p>
 
               {/* Quick Answer Q&A Block for AEO */}
-              <div className="mt-4 sm:mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-4 sm:p-5">
+              <div className="mt-4 sm:mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-4 sm:p-5" data-speakable="quick-answer">
                 <div className="flex items-start gap-3 sm:gap-4">
                   <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <span className="text-white font-bold text-xs sm:text-sm">Q</span>
@@ -207,7 +207,7 @@ export default function HomePage() {
                   <div>
                     <h2 className="font-semibold text-white text-base sm:text-lg">What does AGT Equipment sell?</h2>
                     <p className="mt-1.5 sm:mt-2 text-sm sm:text-base text-slate-200 leading-relaxed">
-                      AGT Equipment sells 1–4 ton mini excavators, mini skid steers, attachments, and replacement parts. Machines ship from US warehouses in California and Illinois, with Kubota or Rato engine options, free shipping, and 1-year warranty coverage.
+                      AGT Equipment sells 1-4 ton mini excavators, mini skid steers, attachments, and replacement parts. Machines ship from US warehouses in California and Illinois, with Kubota or Rato engine options, free shipping, and 1-year warranty coverage.
                     </p>
                   </div>
                 </div>
@@ -346,10 +346,12 @@ export default function HomePage() {
                 {/* Product Image - Larger */}
                 <div className="relative aspect-square bg-slate-50 overflow-hidden">
                   {product.images[0] && (
-                    <img
+                    <Image
                       src={product.images[0].url}
                       alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   )}
                   {/* Category Badge */}
@@ -400,10 +402,12 @@ export default function HomePage() {
                 href={app.href}
                 className="group relative overflow-hidden rounded-xl sm:rounded-2xl aspect-[4/3] bg-slate-200"
               >
-                <img
+                <Image
                   src={app.image}
                   alt={app.title}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  fill
+                  sizes="(min-width: 1024px) 33vw, 50vw"
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                 <div className="absolute inset-0 p-3 sm:p-4 md:p-6 flex flex-col justify-end">
@@ -448,7 +452,7 @@ export default function HomePage() {
 
             <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-5">
               <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 text-center border border-white/20">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-bold">1–4 Ton</div>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold">1-4 Ton</div>
                 <div className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-blue-100">Equipment Range</div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 text-center border border-white/20">

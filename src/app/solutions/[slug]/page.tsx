@@ -1,8 +1,11 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { solutions, getAllSolutions, getSolutionBySlug } from '@/data/solutions';
 import { getProductById, getProductPath } from '@/data/products';
 import { Solution, BreadcrumbSchema, FAQSchema } from '@/types';
+import { canonicalUrl } from '@/lib/seo';
 
 interface SolutionPageProps {
   params: Promise<{
@@ -27,6 +30,15 @@ export async function generateMetadata({ params }: SolutionPageProps): Promise<M
   return {
     title: solution.metaTitle,
     description: solution.metaDescription,
+    alternates: {
+      canonical: canonicalUrl(`/solutions/${solution.slug}/`),
+    },
+    openGraph: {
+      title: solution.metaTitle,
+      description: solution.metaDescription,
+      type: 'article',
+      url: canonicalUrl(`/solutions/${solution.slug}/`),
+    },
   };
 }
 
@@ -35,14 +47,7 @@ export default async function SolutionPage({ params }: SolutionPageProps) {
   const solution = getSolutionBySlug(slug);
 
   if (!solution) {
-    return (
-      <main className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Solution Not Found</h1>
-          <Link href="/solutions/" className="text-blue-600 hover:underline">View all solutions</Link>
-        </div>
-      </main>
-    );
+    notFound();
   }
 
   const recommendedProducts = solution.recommendedProducts
@@ -96,7 +101,7 @@ export default async function SolutionPage({ params }: SolutionPageProps) {
         </section>
 
         {/* AEO Answer Block */}
-        <section className="py-8 bg-teal-50">
+        <section className="py-8 bg-teal-50" data-speakable="quick-answer">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-white rounded-lg shadow-md p-8">
               <h2 className="text-xl font-bold text-gray-900 mb-4">
@@ -154,17 +159,23 @@ export default async function SolutionPage({ params }: SolutionPageProps) {
                     href={getProductPath(product)}
                     className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
                   >
-                    <img
-                      src={product.images[0]?.url}
-                      alt={product.images[0]?.alt}
-                      className="w-full h-48 object-cover"
-                    />
+                    <div className="relative h-48 bg-gray-200">
+                      {product.images[0] && (
+                        <Image
+                          src={product.images[0].url}
+                          alt={product.images[0].alt}
+                          fill
+                          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                          className="object-cover"
+                        />
+                      )}
+                    </div>
                     <div className="p-6">
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">{product.name}</h3>
                       <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.shortDescription}</p>
                       <div className="flex items-center justify-between">
                         <span className="text-2xl font-bold text-gray-900">${product.price.toLocaleString()}</span>
-                        <span className="text-blue-600 font-medium">View Details →</span>
+                        <span className="text-blue-600 font-medium">View Details -&gt;</span>
                       </div>
                     </div>
                   </Link>
@@ -197,15 +208,15 @@ export default async function SolutionPage({ params }: SolutionPageProps) {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Need Help?</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Link href="/support/shipping-delivery/" className="flex items-center p-4 bg-white rounded-lg shadow hover:shadow-md">
-                <span className="text-2xl mr-4">🚚</span>
+                <span className="text-2xl mr-4">馃殮</span>
                 <div><h3 className="font-semibold">Shipping Info</h3><p className="text-sm text-gray-600">Free continental US shipping</p></div>
               </Link>
               <Link href="/support/financing/" className="flex items-center p-4 bg-white rounded-lg shadow hover:shadow-md">
-                <span className="text-2xl mr-4">💳</span>
+                <span className="text-2xl mr-4">馃挸</span>
                 <div><h3 className="font-semibold">Financing</h3><p className="text-sm text-gray-600">Flexible payment options</p></div>
               </Link>
               <Link href="/contact/" className="flex items-center p-4 bg-white rounded-lg shadow hover:shadow-md">
-                <span className="text-2xl mr-4">📞</span>
+                <span className="text-2xl mr-4">馃摓</span>
                 <div><h3 className="font-semibold">Contact Us</h3><p className="text-sm text-gray-600">Get expert advice</p></div>
               </Link>
             </div>
@@ -221,9 +232,9 @@ function generateBreadcrumbSchema(solution: Solution): BreadcrumbSchema {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://agt-equipment.com/' },
-      { '@type': 'ListItem', position: 2, name: 'Solutions', item: 'https://agt-equipment.com/solutions/' },
-      { '@type': 'ListItem', position: 3, name: solution.title, item: `https://agt-equipment.com/solutions/${solution.slug}/` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://miniironpro.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Solutions', item: 'https://miniironpro.com/solutions/' },
+      { '@type': 'ListItem', position: 3, name: solution.title, item: `https://miniironpro.com/solutions/${solution.slug}/` },
     ],
   };
 }
@@ -249,19 +260,19 @@ function generateArticleSchema(solution: Solution) {
     author: {
       '@type': 'Organization',
       name: 'AGT Equipment',
-      url: 'https://agt-equipment.com',
+      url: 'https://miniironpro.com',
     },
     publisher: {
       '@type': 'Organization',
       name: 'AGT Equipment',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://agt-equipment.com/icon-512.png',
+        url: 'https://miniironpro.com/icon-512.png',
       },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://agt-equipment.com/solutions/${solution.slug}/`,
+      '@id': `https://miniironpro.com/solutions/${solution.slug}/`,
     },
     speakable: {
       '@type': 'SpeakableSpecification',

@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllCompares } from '@/data/compares';
+import { canonicalUrl } from '@/lib/seo';
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
@@ -8,6 +9,14 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'Compare Equipment',
   description: 'Compare mini excavators, skid steers, engines, and attachments. Side-by-side comparisons to help you choose the right equipment.',
+  alternates: {
+    canonical: canonicalUrl('/compare/'),
+  },
+  openGraph: {
+    title: 'Compare Equipment',
+    description: 'Compare mini excavators, skid steers, engines, and attachments. Side-by-side comparisons to help you choose the right equipment.',
+    url: canonicalUrl('/compare/'),
+  },
 };
 
 export default function CompareIndex() {

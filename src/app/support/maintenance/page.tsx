@@ -1,9 +1,13 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Maintenance Guides',
   description: 'Keep your mini excavator or skid steer running smoothly with maintenance schedules, tips, and troubleshooting guides.',
+  alternates: {
+    canonical: canonicalUrl('/support/maintenance/'),
+  },
 };
 
 export default function MaintenancePage() {

@@ -1,49 +1,44 @@
 import { MetadataRoute } from 'next';
-import { categories, getTier1Categories, getTier2Categories } from '@/data/categories';
+import { getTier1Categories, getTier2Categories } from '@/data/categories';
 import { products, getProductPath } from '@/data/products';
 import { getAllSolutions } from '@/data/solutions';
 import { getAllCompares } from '@/data/compares';
+import { articles } from '@/data/articles';
+import { canonicalUrl } from '@/lib/seo';
+
+function sitemapEntry(
+  path: string,
+  priority: number,
+  changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'],
+  lastModified = new Date()
+): MetadataRoute.Sitemap[number] {
+  return {
+    url: canonicalUrl(path),
+    lastModified,
+    changeFrequency,
+    priority,
+  };
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://agt-equipment.com';
-
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/about/`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/contact/`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/faq/`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/knowledge/`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    },
+    sitemapEntry('/', 1, 'weekly'),
+    sitemapEntry('/products/', 0.9, 'weekly'),
+    sitemapEntry('/solutions/', 0.8, 'weekly'),
+    sitemapEntry('/compare/', 0.7, 'weekly'),
+    sitemapEntry('/knowledge/', 0.8, 'weekly'),
+    sitemapEntry('/support/', 0.6, 'monthly'),
+    sitemapEntry('/about/', 0.5, 'monthly'),
+    sitemapEntry('/contact/', 0.5, 'monthly'),
+    sitemapEntry('/faq/', 0.6, 'monthly'),
+    sitemapEntry('/privacy/', 0.2, 'yearly'),
+    sitemapEntry('/terms/', 0.2, 'yearly'),
   ];
 
   // Tier 1 Categories
   const tier1Urls: MetadataRoute.Sitemap = getTier1Categories().map((category) => ({
-    url: `${baseUrl}/${category.slug}/`,
+    url: canonicalUrl(`/${category.slug}/`),
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.9,
@@ -51,7 +46,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Tier 2 Subcategories
   const tier2Urls: MetadataRoute.Sitemap = getTier2Categories().map((category) => ({
-    url: `${baseUrl}/${category.parentSlug}/${category.slug}/`,
+    url: canonicalUrl(`/${category.parentSlug}/${category.slug}/`),
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
@@ -59,15 +54,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Product pages (4-layer URLs)
   const productUrls: MetadataRoute.Sitemap = products.map((product) => ({
-    url: `${baseUrl}${getProductPath(product)}`,
+    url: canonicalUrl(getProductPath(product)),
     lastModified: new Date(product.updatedAt),
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   }));
 
+  // Knowledge articles
+  const articleUrls: MetadataRoute.Sitemap = articles.map((article) => ({
+    url: canonicalUrl(`/knowledge/${article.slug}/`),
+    lastModified: new Date(article.updatedAt),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
   // Solutions pages
   const solutionUrls: MetadataRoute.Sitemap = getAllSolutions().map((solution) => ({
-    url: `${baseUrl}/solutions/${solution.slug}/`,
+    url: canonicalUrl(`/solutions/${solution.slug}/`),
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.6,
@@ -75,7 +78,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Compare pages
   const compareUrls: MetadataRoute.Sitemap = getAllCompares().map((compare) => ({
-    url: `${baseUrl}/compare/${compare.slug}/`,
+    url: canonicalUrl(`/compare/${compare.slug}/`),
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.6,
@@ -83,15 +86,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Support pages
   const supportUrls: MetadataRoute.Sitemap = [
-    '/support/',
+    '/support/compatibility/',
     '/support/manuals/',
     '/support/shipping-delivery/',
     '/support/financing/',
     '/support/warranty/',
     '/support/maintenance/',
     '/support/parts-compatibility/',
+    '/support/troubleshooting/',
   ].map((path) => ({
-    url: `${baseUrl}${path}`,
+    url: canonicalUrl(path),
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.5,
@@ -102,6 +106,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...tier1Urls,
     ...tier2Urls,
     ...productUrls,
+    ...articleUrls,
     ...solutionUrls,
     ...compareUrls,
     ...supportUrls,

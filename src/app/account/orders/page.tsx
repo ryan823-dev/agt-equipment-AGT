@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { getSupabaseClient } from '@/lib/supabase/client';
@@ -26,15 +26,7 @@ export default function OrdersPage() {
 
   const supabase = getSupabaseClient();
 
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      fetchOrders();
-    } else {
-      setIsLoading(false);
-    }
-  }, [isAuthenticated, user]);
-
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     if (!user) return;
 
     const { data, error } = await supabase
@@ -47,7 +39,15 @@ export default function OrdersPage() {
       setOrders(data as Order[]);
     }
     setIsLoading(false);
-  };
+  }, [user, supabase]);
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      fetchOrders();
+    } else {
+      setIsLoading(false);
+    }
+  }, [isAuthenticated, user, fetchOrders]);
 
   if (isLoading) {
     return (

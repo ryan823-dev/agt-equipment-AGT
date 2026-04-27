@@ -1,8 +1,12 @@
 import type { Metadata } from 'next';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'AGT Industrial Inc. privacy policy - how we collect, use, and protect your personal information.',
+  alternates: {
+    canonical: canonicalUrl('/privacy/'),
+  },
 };
 
 export default function PrivacyPolicyPage() {

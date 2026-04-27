@@ -1,9 +1,11 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { categories, getCategoryBySlug, getCategoryBySlugAndParent, getTier2Categories } from '@/data/categories';
 import { getProductsBySubcategory, getProductPath } from '@/data/products';
 import { Category, Product, BreadcrumbSchema, ItemListSchema, FAQSchema } from '@/types';
+import { canonicalUrl } from '@/lib/seo';
 
 interface SubcategoryPageProps {
   params: Promise<{
@@ -36,9 +38,13 @@ export async function generateMetadata({ params }: SubcategoryPageProps): Promis
   return {
     title: `${subcategory.name} | ${parentCategory?.name || 'AGT Equipment'}`,
     description: subcategory.longDescription || subcategory.description,
+    alternates: {
+      canonical: canonicalUrl(`/${categorySlug}/${subcategory.slug}/`),
+    },
     openGraph: {
       title: subcategory.name,
       description: subcategory.description,
+      url: canonicalUrl(`/${categorySlug}/${subcategory.slug}/`),
       images: subcategory.image ? [{ url: subcategory.image }] : [],
     },
   };
@@ -102,7 +108,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
 
         {/* AEO Answer Block */}
         {subcategory.answerBlock && (
-          <section className="bg-blue-50 py-12">
+          <section className="bg-blue-50 py-12" data-speakable="quick-answer">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="bg-white rounded-lg shadow-md p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -155,12 +161,14 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
                     href={getProductPath(product)}
                     className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
                   >
-                    <div className="aspect-w-16 aspect-h-9 bg-gray-200">
+                    <div className="relative h-48 bg-gray-200">
                       {product.images[0] && (
-                        <img
+                        <Image
                           src={product.images[0].url}
                           alt={product.images[0].alt}
-                          className="w-full h-48 object-cover"
+                          fill
+                          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                          className="object-cover"
                         />
                       )}
                     </div>
@@ -177,7 +185,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
                         </span>
                         {product.rating && (
                           <div className="flex items-center">
-                            <span className="text-yellow-400 mr-1">★</span>
+                            <span className="text-yellow-400 mr-1">&#9733;</span>
                             <span className="text-gray-600 text-sm">
                               {product.rating.average} ({product.rating.count})
                             </span>
@@ -256,19 +264,19 @@ function generateBreadcrumbSchema(parent: Category, subcategory: Category): Brea
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://agt-equipment.com/',
+        item: 'https://miniironpro.com/',
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: parent.name,
-        item: `https://agt-equipment.com/${parent.slug}/`,
+        item: `https://miniironpro.com/${parent.slug}/`,
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: subcategory.name,
-        item: `https://agt-equipment.com/${parent.slug}/${subcategory.slug}/`,
+        item: `https://miniironpro.com/${parent.slug}/${subcategory.slug}/`,
       },
     ],
   };
@@ -284,7 +292,7 @@ function generateItemListSchema(subcategory: Category, products: Product[]): Ite
     itemListElement: products.map((product, index) => ({
       '@type': 'ListItem',
       position: index + 1,
-      url: `https://agt-equipment.com${getProductPath(product)}`,
+      url: `https://miniironpro.com${getProductPath(product)}`,
       name: product.name,
       image: product.images[0]?.url,
     })),

@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ClientProviders } from '@/components/ClientProviders';
 import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/schema';
+import { SITE_URL } from '@/lib/seo';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -13,7 +14,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://agt-equipment.com'),
+  metadataBase: new URL(SITE_URL),
+  applicationName: 'AGT Equipment',
   title: {
     default: 'AGT Equipment - Mini Excavators & Skid Steers | Factory Direct',
     template: '%s | AGT Equipment',
@@ -31,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://agt-equipment.com',
+    url: SITE_URL,
     siteName: 'AGT Equipment',
     title: 'AGT Equipment - Mini Excavators & Skid Steers',
     description: 'Factory direct mini excavators and skid steers. 1-4 ton excavators with Kubota and Rato engines.',
@@ -61,11 +63,13 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'your-google-verification-code',
-  },
+  ...(process.env.GOOGLE_SITE_VERIFICATION && {
+    verification: {
+      google: process.env.GOOGLE_SITE_VERIFICATION,
+    },
+  }),
   alternates: {
-    canonical: 'https://agt-equipment.com',
+    canonical: SITE_URL,
   },
 };
 

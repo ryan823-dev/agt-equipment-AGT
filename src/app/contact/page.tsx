@@ -4,13 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { generateOrganizationSchema } from '@/lib/schema';
+import { canonicalUrl } from '@/lib/seo';
 import { Phone, Mail, MapPin, Clock, MessageSquare } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Contact Us - Get a Quote',
   description: 'Contact AGT Equipment for quotes, technical support, and product inquiries. Call +1 (949) 898-7669 or email info@agrotkindustrial.com.',
   alternates: {
-    canonical: 'https://agt-equipment.com/contact',
+    canonical: canonicalUrl('/contact/'),
   },
 };
 

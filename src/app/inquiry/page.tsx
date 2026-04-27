@@ -1,17 +1,18 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import InquiryForm from '@/components/inquiry/InquiryForm';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 
-export default function InquiryPage() {
-  const router = useRouter();
+function InquiryPageContent() {
+  const searchParams = useSearchParams();
   const [isSuccess, setIsSuccess] = useState(false);
-  const [inquiryNumber, setInquiryNumber] = useState('');
+  const productId = searchParams.get('productId') || undefined;
+  const productName = searchParams.get('productName') || undefined;
 
   const handleSuccess = () => {
     setIsSuccess(true);
@@ -61,7 +62,11 @@ export default function InquiryPage() {
 
         <Card>
           <CardContent className="p-6">
-            <InquiryForm onSuccess={handleSuccess} />
+            <InquiryForm
+              productId={productId}
+              productName={productName}
+              onSuccess={handleSuccess}
+            />
           </CardContent>
         </Card>
 
@@ -82,5 +87,13 @@ export default function InquiryPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function InquiryPage() {
+  return (
+    <Suspense fallback={<div className="container py-8" />}>
+      <InquiryPageContent />
+    </Suspense>
   );
 }

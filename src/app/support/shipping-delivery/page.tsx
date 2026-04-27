@@ -1,9 +1,13 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { canonicalUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Shipping & Delivery',
   description: 'Learn about free shipping on mini excavators and skid steers. Delivery times, shipping process, and what to expect when your equipment arrives.',
+  alternates: {
+    canonical: canonicalUrl('/support/shipping-delivery/'),
+  },
 };
 
 export default function ShippingPage() {

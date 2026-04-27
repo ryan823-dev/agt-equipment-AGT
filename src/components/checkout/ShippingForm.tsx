@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { useCheckout } from '@/lib/contexts/CheckoutContext';
 import { getSupabaseClient } from '@/lib/supabase/client';
@@ -44,6 +44,27 @@ export default function ShippingForm() {
 
   const supabase = getSupabaseClient();
 
+  const selectAddress = useCallback((address: Address) => {
+    const addrData: AddressFormData = {
+      type: 'shipping',
+      is_default: address.is_default,
+      first_name: address.first_name || '',
+      last_name: address.last_name || '',
+      company: address.company || undefined,
+      address_line1: address.address_line1,
+      address_line2: address.address_line2 || undefined,
+      city: address.city,
+      state: address.state,
+      postal_code: address.postal_code,
+      country: address.country,
+      phone: address.phone || undefined,
+    };
+    setFormData(addrData);
+    setShippingAddress(addrData);
+    setShowNewForm(false);
+    setErrors({});
+  }, [setShippingAddress]);
+
   // Fetch saved addresses for logged-in users
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -67,28 +88,7 @@ export default function ShippingForm() {
           setIsLoadingAddresses(false);
         });
     }
-  }, [isAuthenticated, user]);
-
-  const selectAddress = (address: Address) => {
-    const addrData: AddressFormData = {
-      type: 'shipping',
-      is_default: address.is_default,
-      first_name: address.first_name || '',
-      last_name: address.last_name || '',
-      company: address.company || undefined,
-      address_line1: address.address_line1,
-      address_line2: address.address_line2 || undefined,
-      city: address.city,
-      state: address.state,
-      postal_code: address.postal_code,
-      country: address.country,
-      phone: address.phone || undefined,
-    };
-    setFormData(addrData);
-    setShippingAddress(addrData);
-    setShowNewForm(false);
-    setErrors({});
-  };
+  }, [isAuthenticated, user, supabase, shippingAddress, selectAddress]);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
