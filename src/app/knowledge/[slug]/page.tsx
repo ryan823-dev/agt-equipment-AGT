@@ -5,13 +5,22 @@ import { Button } from '@/components/ui/button';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { FAQSection } from '@/components/seo/FAQSection';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { generateArticleSchema, generateFAQSchema, generateBreadcrumbSchema } from '@/lib/schema';
-import { getArticleBySlug } from '@/lib/data';
-import { canonicalUrl } from '@/lib/seo';
+import { generateArticleSchema, generateFAQSchema, generateBreadcrumbSchema, generateProductSchema } from '@/lib/schema';
+import { getArticleBySlug, getArticles } from '@/lib/data';
+import { canonicalUrl, seoDescription } from '@/lib/seo';
+import { getProductPath, products } from '@/data/products';
 import { ArrowRight, Clock, User } from 'lucide-react';
 
 interface ArticlePageProps {
   params: { slug: string };
+}
+
+export async function generateStaticParams() {
+  const articleList = await getArticles();
+
+  return articleList.map((article) => ({
+    slug: article.slug,
+  }));
 }
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
@@ -46,6 +55,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
+  const articleProducts = (article.productIds || [])
+    .map((productId) => products.find((product) => product.id === productId))
+    .filter((product): product is NonNullable<typeof product> => Boolean(product));
+
   const breadcrumbs = [
     { name: 'Knowledge', href: '/knowledge' },
     { name: article.title, href: `/knowledge/${article.slug}` },
@@ -66,6 +79,21 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       />
       <JsonLd data={generateFAQSchema(article.faq)} />
       <JsonLd data={generateBreadcrumbSchema(breadcrumbs)} />
+      {articleProducts.map((product) => (
+        <JsonLd
+          key={product.id}
+          data={generateProductSchema({
+            name: product.name,
+            description: seoDescription(product.shortDescription || product.description),
+            images: product.images.map((image) => image.url),
+            sku: product.sku,
+            price: product.price,
+            availability: product.stock,
+            url: getProductPath(product),
+            rating: product.rating,
+          })}
+        />
+      ))}
 
       <div className="container py-8">
         <Breadcrumbs items={breadcrumbs.slice(0, -1)} />
@@ -104,6 +132,31 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             className="article-content"
             dangerouslySetInnerHTML={{ __html: article.content }}
           />
+
+          {articleProducts.length > 0 && (
+            <section className="mt-12 border-t pt-8">
+              <h2 className="text-2xl font-bold tracking-tight mb-4">Related Equipment</h2>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {articleProducts.map((product) => (
+                  <Link
+                    key={product.id}
+                    href={getProductPath(product)}
+                    className="rounded-lg border bg-card p-4 transition-colors hover:border-primary"
+                  >
+                    <div className="text-sm text-muted-foreground">{product.sku}</div>
+                    <h3 className="mt-1 font-semibold text-card-foreground">{product.name}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {seoDescription(product.shortDescription || product.description, 110)}
+                    </p>
+                    <div className="mt-3 text-sm font-medium text-primary">
+                      View product
+                      <ArrowRight className="ml-1 inline h-4 w-4" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* FAQ Section */}
           <div className="mt-12">

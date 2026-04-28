@@ -84,6 +84,7 @@ export interface Article {
   tags: string[];
   author: Author;
   faq: FAQ[];
+  productIds?: string[];
   readingTime: number;
   publishedAt: string;
   updatedAt: string;
@@ -183,6 +184,13 @@ export interface ProductSchema {
     priceCurrency: string;
     availability: string;
     url: string;
+    itemCondition?: string;
+    seller?: {
+      '@type': 'Organization';
+      name: string;
+      url: string;
+    };
+    shippingDetails?: Record<string, unknown>;
   };
   aggregateRating?: {
     '@type': 'AggregateRating';

@@ -44,6 +44,10 @@ const categories = [
 ];
 
 export default function KnowledgePage() {
+  const publishedArticles = [...articles].sort(
+    (left, right) => new Date(right.updatedAt).getTime() - new Date(left.updatedAt).getTime()
+  );
+
   return (
     <>
       <JsonLd data={generateOrganizationSchema()} />
@@ -89,7 +93,7 @@ export default function KnowledgePage() {
         <div className="mb-12">
           <h2 className="text-2xl font-bold mb-6">Featured Articles</h2>
           <div className="grid md:grid-cols-2 gap-6">
-            {articles.map((article) => (
+            {publishedArticles.map((article) => (
               <Card key={article.slug} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="text-sm text-primary font-medium mb-2 uppercase tracking-wide">

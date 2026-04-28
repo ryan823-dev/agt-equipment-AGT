@@ -1,6 +1,7 @@
 import { Article } from '@/types';
+import { longTailArticles } from '@/data/longtail-articles';
 
-export const articles: Article[] = [
+const coreArticles: Article[] = [
   {
     id: '1',
     slug: 'how-to-choose-mini-excavator',
@@ -1111,3 +1112,5 @@ export const articles: Article[] = [
     updatedAt: '2026-02-20',
   },
 ];
+
+export const articles: Article[] = [...coreArticles, ...longTailArticles];

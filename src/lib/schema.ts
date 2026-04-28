@@ -54,6 +54,39 @@ export function generateProductSchema(params: GenerateProductSchemaParams): Prod
       priceCurrency: params.currency || 'USD',
       availability: `https://schema.org/${params.availability === 'in_stock' ? 'InStock' : params.availability === 'preorder' ? 'PreOrder' : 'OutOfStock'}`,
       url: canonicalUrl(params.url),
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: {
+        '@type': 'Organization',
+        name: 'AGT Equipment',
+        url: SITE_URL,
+      },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: {
+          '@type': 'MonetaryAmount',
+          value: '0',
+          currency: params.currency || 'USD',
+        },
+        shippingDestination: {
+          '@type': 'DefinedRegion',
+          addressCountry: 'US',
+        },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          handlingTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 1,
+            maxValue: 3,
+            unitCode: 'DAY',
+          },
+          transitTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 3,
+            maxValue: 10,
+            unitCode: 'DAY',
+          },
+        },
+      },
     },
     ...(params.rating && {
       aggregateRating: {

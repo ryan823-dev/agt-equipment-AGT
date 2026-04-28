@@ -61,6 +61,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
+  const compatibleAttachments = (product.compatibleAttachments || [])
+    .map((productId) => products.find((candidate) => candidate.id === productId))
+    .filter((candidate): candidate is Product => Boolean(candidate));
+  const relatedParts = (product.relatedParts || [])
+    .map((productId) => products.find((candidate) => candidate.id === productId))
+    .filter((candidate): candidate is Product => Boolean(candidate));
+
   return (
     <>
       {/* JSON-LD Structured Data */}
@@ -288,6 +295,53 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </section>
         )}
 
+        {(compatibleAttachments.length > 0 || relatedParts.length > 0) && (
+          <section className="py-12 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Compatible Attachments and Parts</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {compatibleAttachments.length > 0 && (
+                  <div className="rounded-lg border border-gray-200 p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Attachments to Compare</h3>
+                    <div className="space-y-3">
+                      {compatibleAttachments.map((attachment) => (
+                        <Link
+                          key={attachment.id}
+                          href={getProductPath(attachment)}
+                          className="block rounded-md bg-gray-50 p-3 hover:bg-gray-100"
+                        >
+                          <div className="text-sm text-gray-500">{attachment.sku}</div>
+                          <div className="font-medium text-gray-900">{attachment.name}</div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {relatedParts.length > 0 && (
+                  <div className="rounded-lg border border-gray-200 p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Common Service Parts</h3>
+                    <div className="space-y-3">
+                      {relatedParts.map((part) => (
+                        <Link
+                          key={part.id}
+                          href={getProductPath(part)}
+                          className="block rounded-md bg-gray-50 p-3 hover:bg-gray-100"
+                        >
+                          <div className="text-sm text-gray-500">{part.sku}</div>
+                          <div className="font-medium text-gray-900">{part.name}</div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <p className="mt-4 text-sm text-gray-600">
+                Always confirm model, serial number, pin size, hydraulic flow, and fitting type before ordering attachments or replacement parts.
+              </p>
+            </div>
+          </section>
+        )}
+
         {/* Description */}
         <section className="py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -431,6 +485,39 @@ function generateProductSchema(product: Product): ProductSchema {
         ? 'https://schema.org/PreOrder'
         : 'https://schema.org/OutOfStock',
       url: `https://miniironpro.com${getProductPath(product)}`,
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: {
+        '@type': 'Organization',
+        name: 'AGT Equipment',
+        url: 'https://miniironpro.com',
+      },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: {
+          '@type': 'MonetaryAmount',
+          value: '0',
+          currency: 'USD',
+        },
+        shippingDestination: {
+          '@type': 'DefinedRegion',
+          addressCountry: 'US',
+        },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          handlingTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 1,
+            maxValue: 3,
+            unitCode: 'DAY',
+          },
+          transitTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 3,
+            maxValue: 10,
+            unitCode: 'DAY',
+          },
+        },
+      },
     },
     ...(product.rating && {
       aggregateRating: {
