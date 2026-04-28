@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { compares, getAllCompares, getCompareBySlug } from '@/data/compares';
 import { BreadcrumbSchema, FAQSchema, Compare } from '@/types';
-import { canonicalUrl } from '@/lib/seo';
+import { canonicalUrl, stripBrandSuffix } from '@/lib/seo';
 
 interface ComparePageProps {
   params: Promise<{
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: ComparePageProps): Promise<Me
   }
 
   return {
-    title: compare.metaTitle,
+    title: stripBrandSuffix(compare.metaTitle),
     description: compare.metaDescription,
     alternates: {
       canonical: canonicalUrl(`/compare/${compare.slug}/`),

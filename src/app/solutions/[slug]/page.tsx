@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { solutions, getAllSolutions, getSolutionBySlug } from '@/data/solutions';
 import { getProductById, getProductPath } from '@/data/products';
 import { Solution, BreadcrumbSchema, FAQSchema } from '@/types';
-import { canonicalUrl } from '@/lib/seo';
+import { canonicalUrl, stripBrandSuffix } from '@/lib/seo';
 
 interface SolutionPageProps {
   params: Promise<{
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: SolutionPageProps): Promise<M
   }
 
   return {
-    title: solution.metaTitle,
+    title: stripBrandSuffix(solution.metaTitle),
     description: solution.metaDescription,
     alternates: {
       canonical: canonicalUrl(`/solutions/${solution.slug}/`),

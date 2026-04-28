@@ -5698,6 +5698,65 @@ export function getProductBySlug(slug: string): Product | undefined {
   return products.find(p => p.slug === slug);
 }
 
+function slugifyPathSegment(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function hasSameBasePath(left: Product, right: Product): boolean {
+  return (
+    left.categorySlug === right.categorySlug &&
+    left.subcategorySlug === right.subcategorySlug &&
+    left.slug === right.slug
+  );
+}
+
+export function getProductRouteSlug(product: Product): string {
+  const samePathProducts = products.filter((candidate) => hasSameBasePath(candidate, product));
+
+  if (samePathProducts.length <= 1 || samePathProducts[0]?.id === product.id) {
+    return product.slug;
+  }
+
+  const suffix = slugifyPathSegment(product.sku || product.id);
+  return `${product.slug}-${suffix || product.id}`;
+}
+
+export function getProductByPath(
+  categorySlug: string,
+  subcategorySlug: string | undefined,
+  productSlug: string
+): Product | undefined {
+  const candidates = products.filter(
+    (product) =>
+      product.categorySlug === categorySlug &&
+      product.subcategorySlug === subcategorySlug
+  );
+
+  return (
+    candidates.find((product) => getProductRouteSlug(product) === productSlug) ||
+    candidates.find((product) => product.slug === productSlug)
+  );
+}
+
+export function getProductRouteParams(product: Product): {
+  category: string;
+  subcategory: string;
+  product: string;
+} | null {
+  if (!product.subcategorySlug) {
+    return null;
+  }
+
+  return {
+    category: product.categorySlug,
+    subcategory: product.subcategorySlug,
+    product: getProductRouteSlug(product),
+  };
+}
+
 export function getProductById(id: string): Product | undefined {
   return products.find(p => p.id === id);
 }
@@ -5719,7 +5778,7 @@ export function getRelatedProducts(product: Product): Product[] {
 
 export function getProductPath(product: Product): string {
   if (product.subcategorySlug) {
-    return `/${product.categorySlug}/${product.subcategorySlug}/${product.slug}/`;
+    return `/${product.categorySlug}/${product.subcategorySlug}/${getProductRouteSlug(product)}/`;
   }
-  return `/${product.categorySlug}/${product.slug}/`;
+  return `/${product.categorySlug}/${getProductRouteSlug(product)}/`;
 }

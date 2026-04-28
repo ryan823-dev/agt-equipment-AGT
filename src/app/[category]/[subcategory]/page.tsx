@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { categories, getCategoryBySlug, getCategoryBySlugAndParent, getTier2Categories } from '@/data/categories';
 import { getProductsBySubcategory, getProductPath } from '@/data/products';
 import { Category, Product, BreadcrumbSchema, ItemListSchema, FAQSchema } from '@/types';
-import { canonicalUrl } from '@/lib/seo';
+import { canonicalUrl, seoDescription } from '@/lib/seo';
 
 interface SubcategoryPageProps {
   params: Promise<{
@@ -37,13 +37,13 @@ export async function generateMetadata({ params }: SubcategoryPageProps): Promis
 
   return {
     title: `${subcategory.name} | ${parentCategory?.name || 'AGT Equipment'}`,
-    description: subcategory.longDescription || subcategory.description,
+    description: seoDescription(subcategory.description || subcategory.longDescription),
     alternates: {
       canonical: canonicalUrl(`/${categorySlug}/${subcategory.slug}/`),
     },
     openGraph: {
       title: subcategory.name,
-      description: subcategory.description,
+      description: seoDescription(subcategory.description || subcategory.longDescription),
       url: canonicalUrl(`/${categorySlug}/${subcategory.slug}/`),
       images: subcategory.image ? [{ url: subcategory.image }] : [],
     },

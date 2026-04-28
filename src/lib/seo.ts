@@ -27,3 +27,24 @@ export function canonicalUrl(path = '/') {
   const url = absoluteUrl(path);
   return url.endsWith('/') ? url : `${url}/`;
 }
+
+export function stripBrandSuffix(title: string) {
+  return title.replace(/\s*\|\s*AGT Equipment\s*$/i, '').trim();
+}
+
+export function seoDescription(value = '', maxLength = 155) {
+  const text = value
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (text.length <= maxLength) {
+    return text;
+  }
+
+  const snippet = text.slice(0, maxLength + 1);
+  const lastSpace = snippet.lastIndexOf(' ');
+  const cutIndex = lastSpace > 80 ? lastSpace : maxLength;
+
+  return `${snippet.slice(0, cutIndex).replace(/[.,;:\s]+$/g, '')}...`;
+}

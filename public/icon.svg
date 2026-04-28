@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="AGT Equipment">
+  <rect width="512" height="512" rx="96" fill="#0f172a"/>
+  <path d="M96 344h320v48H96z" fill="#facc15"/>
+  <path d="M132 312 216 120h80l84 192h-68l-14-38H214l-14 38h-68zm102-92h44l-22-62-22 62z" fill="#ffffff"/>
+  <path d="M326 120h58v58h-58zM326 198h58v114h-58z" fill="#60a5fa"/>
+</svg>

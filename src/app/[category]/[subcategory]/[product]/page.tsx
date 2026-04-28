@@ -2,11 +2,11 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { products, getProductBySlug, getProductPath } from '@/data/products';
+import { products, getProductByPath, getProductPath, getProductRouteParams } from '@/data/products';
 import { getCategoryBySlug, getCategoryBySlugAndParent } from '@/data/categories';
 import { Product, ProductSchema, BreadcrumbSchema, FAQSchema } from '@/types';
 import { ProductActions } from '@/components/product/ProductActions';
-import { canonicalUrl } from '@/lib/seo';
+import { canonicalUrl, seoDescription } from '@/lib/seo';
 
 interface ProductPageProps {
   params: Promise<{
@@ -19,18 +19,14 @@ interface ProductPageProps {
 // Generate static params for all products with subcategories
 export async function generateStaticParams() {
   return products
-    .filter((p) => p.subcategorySlug)
-    .map((p) => ({
-      category: p.categorySlug,
-      subcategory: p.subcategorySlug!,
-      product: p.slug,
-    }));
+    .map(getProductRouteParams)
+    .filter((params): params is NonNullable<ReturnType<typeof getProductRouteParams>> => params !== null);
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  const { product: productSlug } = await params;
-  const product = getProductBySlug(productSlug);
+  const { category: categorySlug, subcategory: subcategorySlug, product: productSlug } = await params;
+  const product = getProductByPath(categorySlug, subcategorySlug, productSlug);
 
   if (!product) {
     return {
@@ -41,13 +37,13 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   // Note: Don't add "| AGT Equipment" suffix here - it's added by layout template
   return {
     title: product.name,
-    description: product.shortDescription,
+    description: seoDescription(product.shortDescription || product.description),
     alternates: {
       canonical: canonicalUrl(getProductPath(product)),
     },
     openGraph: {
       title: product.name,
-      description: product.shortDescription,
+      description: seoDescription(product.shortDescription || product.description),
       url: canonicalUrl(getProductPath(product)),
       images: product.images.map((img) => ({ url: img.url, alt: img.alt })),
     },
@@ -57,7 +53,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 export default async function ProductPage({ params }: ProductPageProps) {
   const { category: categorySlug, subcategory: subcategorySlug, product: productSlug } = await params;
 
-  const product = getProductBySlug(productSlug);
+  const product = getProductByPath(categorySlug, subcategorySlug, productSlug);
   const parentCategory = getCategoryBySlug(categorySlug);
   const subcategory = getCategoryBySlugAndParent(subcategorySlug, categorySlug);
 

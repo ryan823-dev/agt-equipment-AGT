@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { categories, getCategoryBySlug, getSubcategories, getTier1Categories } from '@/data/categories';
 import { getProductsByCategory, getProductPath } from '@/data/products';
 import { Category, Product, BreadcrumbSchema, ItemListSchema, FAQSchema } from '@/types';
-import { canonicalUrl } from '@/lib/seo';
+import { canonicalUrl, seoDescription } from '@/lib/seo';
 
 interface CategoryPageProps {
   params: Promise<{
@@ -34,13 +34,13 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   // Note: Don't add "| AGT Equipment" suffix - it's added by layout template
   return {
     title: category.name,
-    description: category.longDescription || category.description,
+    description: seoDescription(category.description || category.longDescription),
     alternates: {
       canonical: canonicalUrl(`/${category.slug}/`),
     },
     openGraph: {
       title: category.name,
-      description: category.description,
+      description: seoDescription(category.description || category.longDescription),
       url: canonicalUrl(`/${category.slug}/`),
       images: category.image ? [{ url: category.image }] : [],
     },

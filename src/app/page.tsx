@@ -47,9 +47,9 @@ const categories = [
     icon: Truck,
     image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=800&fit=crop',
     subLinks: [
-      { name: 'Track Loaders', href: '/mini-skid-steers/track-loaders/' },
+      { name: 'Track Loaders', href: '/mini-skid-steers/track/' },
       { name: 'Stand-On Models', href: '/mini-skid-steers/stand-on/' },
-      { name: 'Landscaping Use', href: '/solutions/landscaping-mini-excavator' },
+      { name: 'Landscaping Use', href: '/solutions/landscaping-mini-excavator/' },
     ],
   },
   {
@@ -59,7 +59,7 @@ const categories = [
     icon: Wrench,
     image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&h=800&fit=crop',
     subLinks: [
-      { name: 'Hydraulic Thumbs', href: '/attachments/hydraulic-thumbs/' },
+      { name: 'Hydraulic Thumbs', href: '/attachments/thumbs/' },
       { name: 'Buckets', href: '/attachments/buckets/' },
       { name: 'Brush Cutters', href: '/attachments/brush-cutters/' },
     ],
@@ -71,7 +71,7 @@ const categories = [
     icon: Wrench,
     image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=800&fit=crop',
     subLinks: [
-      { name: 'Hydraulic Parts', href: '/parts/hydraulic/' },
+      { name: 'Hydraulic Parts', href: '/parts/hydraulic-parts/' },
       { name: 'Filters', href: '/parts/filters/' },
       { name: 'Parts by Model', href: '/parts/by-model/' },
     ],
@@ -112,7 +112,7 @@ const applications = [
   {
     title: 'Landscaping',
     description: 'Grading, planting, hardscape installation.',
-    href: '/solutions/landscaping-mini-excavator',
+    href: '/solutions/landscaping-mini-excavator/',
     image: 'https://images.unsplash.com/photo-1558904541-efa843a96f01?w=400&h=300&fit=crop',
   },
   {
@@ -124,7 +124,7 @@ const applications = [
   {
     title: 'Trenching',
     description: 'Utility trenches, irrigation lines, and drainage.',
-    href: '/solutions/utility-trenching-excavation',
+    href: '/solutions/utility-trenching/',
     image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&h=300&fit=crop',
   },
   {

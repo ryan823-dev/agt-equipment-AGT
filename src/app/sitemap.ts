@@ -20,6 +20,19 @@ function sitemapEntry(
   };
 }
 
+function dedupeSitemap(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
+  const seen = new Set<string>();
+
+  return entries.filter((entry) => {
+    if (seen.has(entry.url)) {
+      return false;
+    }
+
+    seen.add(entry.url);
+    return true;
+  });
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
@@ -101,7 +114,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [
+  return dedupeSitemap([
     ...staticPages,
     ...tier1Urls,
     ...tier2Urls,
@@ -110,5 +123,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...solutionUrls,
     ...compareUrls,
     ...supportUrls,
-  ];
+  ]);
 }
